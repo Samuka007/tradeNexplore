@@ -43,6 +43,10 @@ def wma(P: np.ndarray, N: int, kernel: np.ndarray) -> np.ndarray:
     """
     if len(P) == 0:
         return np.array([])
+    if N > len(P):
+        raise ValueError(
+            f"Window size N={N} cannot exceed price sequence length {len(P)}"
+        )
     return np.convolve(pad(P, N), kernel, mode='valid')
 
 
