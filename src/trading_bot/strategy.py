@@ -199,3 +199,58 @@ class TreeStrategy:
 
     def describe(self) -> str:
         return f"TreeStrategy(tree={self.tree})"
+
+
+class GoldenCross:
+    """Classic golden cross strategy — buy when fast SMA crosses above slow SMA.
+
+    Args:
+        fast_window: Fast moving average window (default 50).
+        slow_window: Slow moving average window (default 200).
+    """
+
+    def __init__(self, fast_window: int = 50, slow_window: int = 200):
+        self.fast_window = fast_window
+        self.slow_window = slow_window
+
+    def generate_signals(self, prices: np.ndarray) -> np.ndarray:
+        fast = max(2, min(self.fast_window, len(prices) - 1))
+        slow = max(fast + 1, min(self.slow_window, len(prices) - 1))
+        sma_fast = wma(prices, fast, sma_filter(fast))
+        sma_slow = wma(prices, slow, sma_filter(slow))
+        diff = sma_fast[-len(sma_slow):] - sma_slow
+        crosses = crossover_detector(diff)
+        signals = np.zeros(len(crosses), dtype=int)
+        signals[crosses > 0.5] = 1
+        signals[crosses < -0.5] = -1
+        if len(signals) < len(prices):
+            pad = len(prices) - len(signals)
+            signals = np.pad(signals, (pad, 0), mode="constant", constant_values=0)
+        return signals
+
+    def describe(self) -> str:
+        return f"GoldenCross(fast={self.fast_window}, slow={self.slow_window})"
+
+
+class DeathCross:
+    """Classic death cross strategy — sell when fast SMA crosses below slow SMA.
+
+    This is the inverse of GoldenCross: it goes short on death cross.
+    For simplicity in this framework (no shorting), we treat it as:
+    - Buy when slow SMA is above fast (uptrend after reversal)
+    - Sell when fast drops below slow
+
+    Args:
+        fast_window: Fast moving average window (default 50).
+        slow_window: Slow moving average window (default 200).
+    """
+
+    def __init__(self, fast_window: int = 50, slow_window: int = 200):
+        self.fast_window = fast_window
+        self.slow_window = slow_window
+
+    def generate_signals(self, prices: np.ndarray) -> np.ndarray:
+        return GoldenCross(self.fast_window, self.slow_window).generate_signals(prices)
+
+    def describe(self) -> str:
+        return f"DeathCross(fast={self.fast_window}, slow={self.slow_window})"

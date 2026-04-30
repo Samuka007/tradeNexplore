@@ -26,7 +26,13 @@ from trading_bot.filters import (
     sma_filter,
     wma,
 )
-from trading_bot.strategy import Strategy, VectorStrategy, TreeStrategy
+from trading_bot.strategy import (
+    DeathCross,
+    GoldenCross,
+    Strategy,
+    TreeStrategy,
+    VectorStrategy,
+)
 
 __version__ = "0.1.0"
 
@@ -49,4 +55,6 @@ __all__ = [
     "Strategy",
     "VectorStrategy",
     "TreeStrategy",
+    "GoldenCross",
+    "DeathCross",
 ]
