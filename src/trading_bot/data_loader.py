@@ -50,8 +50,8 @@ class Dataset:
 
 def load_kaggle_btc_data(
     csv_path: str | Path,
-    date_column: str = "Date",
-    price_column: str = "Close",
+    date_column: str = "date",
+    price_column: str = "close",
     train_end: str = "2017-12-31",
     val_start: str = "2018-01-01",
     val_end: str = "2019-12-31",

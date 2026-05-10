@@ -55,7 +55,7 @@ class TestLoadKaggleBtcData:
     def test_loads_valid_csv(self, tmp_path):
         csv = tmp_path / "btc.csv"
         csv.write_text(
-            "Date,Open,High,Low,Close,Volume\n"
+            "date,Open,High,Low,close,Volume\n"
             "2016-01-01,100,110,90,105,1000\n"
             "2017-01-01,105,115,95,110,1200\n"
             "2018-01-01,110,120,100,115,1500\n"
@@ -81,7 +81,7 @@ class TestLoadKaggleBtcData:
     def test_train_test_split_dates(self, tmp_path):
         csv = tmp_path / "btc.csv"
         csv.write_text(
-            "Date,Close\n"
+            "date,close\n"
             "2016-12-30,100\n"
             "2017-12-31,101\n"
             "2018-01-01,102\n"

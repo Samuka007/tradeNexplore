@@ -103,10 +103,15 @@ class VectorStrategy:
         Signal = EMA(MACD, signal_d, signal_a)
         Trigger = Sign(MACD - Signal) when |MACD - Signal| > threshold
         """
-        ema_fast = wma(prices, self.macd_d1, ema_filter(self.macd_d1, self.macd_a1))
-        ema_slow = wma(prices, self.macd_d2, ema_filter(self.macd_d2, self.macd_a2))
+        max_n = len(prices) - 1
+        d1 = max(2, min(self.macd_d1, max_n))
+        d2 = max(2, min(self.macd_d2, max_n))
+        sd = max(2, min(self.signal_d, max_n))
+
+        ema_fast = wma(prices, d1, ema_filter(d1, self.macd_a1))
+        ema_slow = wma(prices, d2, ema_filter(d2, self.macd_a2))
         macd_line = ema_fast - ema_slow
-        signal_line = wma(macd_line, self.signal_d, ema_filter(self.signal_d, self.signal_a))
+        signal_line = wma(macd_line, sd, ema_filter(sd, self.signal_a))
 
         min_len = min(len(macd_line), len(signal_line))
         macd_aligned = macd_line[-min_len:]
