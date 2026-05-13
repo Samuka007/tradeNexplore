@@ -1,0 +1,28 @@
+{
+  "baseline": {
+    "buy_and_hold_train": 14799.811937511215,
+    "buy_and_hold_test": 2169.582627048214,
+    "pso_train": 53207.654095321566,
+    "pso_test": 803.1760496492735,
+    "gp_train": 38003.05179391849,
+    "gp_test": 336.26126669935326
+  },
+  "h1_zero_fee": {
+    "pso_train": 81437.7229054028,
+    "pso_test": 3239.9615983039403,
+    "gp_train": 40390.10712500636,
+    "gp_test": 357.3825770000566
+  },
+  "h2_reverse_split": {
+    "pso_train": 5122.386081768638,
+    "pso_test": 20182.494878833,
+    "gp_train": 5117.0025363266395,
+    "gp_test": 7888.3779137859065
+  },
+  "h3_shuffled_train": {
+    "pso_train": Infinity,
+    "pso_test": 2455.7676934922188,
+    "gp_train": Infinity,
+    "gp_test": 0.9175319151193122
+  }
+}
