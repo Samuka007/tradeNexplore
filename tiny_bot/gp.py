@@ -179,13 +179,19 @@ class GP:
             return v[1] if v[0] else v[2]
         return 0.0
 
-    def evaluate(self, tree: GPNode, prices: np.ndarray) -> np.ndarray:
-        """Evaluate tree across all prices to generate signals (+1, -1, 0)."""
+    def evaluate(self, tree: GPNode, prices: np.ndarray, continuous: bool = False) -> np.ndarray:
+        """Evaluate tree across all prices to generate signals.
+
+        continuous=False: discrete {-1, 0, +1} (legacy)
+        continuous=True:  continuous [0, 1] via sigmoid (position sizing)
+        """
         n = len(prices)
         cache = self._cache(tree, prices)
         raw = np.zeros(n)
         for i in range(n):
             raw[i] = self._eval(tree, cache, i)
+        if continuous:
+            return 1.0 / (1.0 + np.exp(-raw))
         sig = np.zeros(n, dtype=int)
         prev = 0
         for i in range(n):

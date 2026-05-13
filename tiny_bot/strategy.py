@@ -10,8 +10,8 @@ class VectorStrategy:
     dual_crossover (14D): [w1,w2,w3,d1,d2,d3,a3, w4,w5,w6,d4,d5,d6,a6]
     macd (7D): [d1,a1,d2,a2,d3,a3,threshold]
     trivial_sma (2D): [d_fast, d_slow]  -- simple dual-SMA crossover, no weighting
+    position_sma (3D): [d_fast, d_slow, scale] -- dual-SMA with sigmoid position sizing
     """
-
     def __init__(self, params: np.ndarray, stype: str = "dual_crossover"):
         self.params = params
         self.type = stype
@@ -37,6 +37,10 @@ class VectorStrategy:
         elif self.type == "trivial_sma":
             self.d_fast = max(2, min(int(np.round(p[0])), 200))
             self.d_slow = max(2, min(int(np.round(p[1])), 200))
+        elif self.type == "position_sma":
+            self.d_fast = max(2, min(int(np.round(p[0])), 200))
+            self.d_slow = max(2, min(int(np.round(p[1])), 200))
+            self.scale = max(1e-6, float(p[2]))
         else:
             raise ValueError(f"unknown strategy type: {self.type}")
 
@@ -83,6 +87,14 @@ class VectorStrategy:
             sma_slow = wma(prices, d_slow, sma_filter(d_slow))
             m = min(len(sma_fast), len(sma_slow))
             diff = sma_fast[-m:] - sma_slow[-m:]
+        elif self.type == "position_sma":
+            d_fast = min(max(self.d_fast, 2), len(prices) - 1)
+            d_slow = min(max(self.d_slow, 2), len(prices) - 1)
+            sma_fast = wma(prices, d_fast, sma_filter(d_fast))
+            sma_slow = wma(prices, d_slow, sma_filter(d_slow))
+            diff = np.nan_to_num(sma_fast - sma_slow, nan=0.0)
+            # Sigmoid position: 0 = empty, 1 = full long
+            return 1.0 / (1.0 + np.exp(-diff / self.scale))
         else:
             raise ValueError(f"unknown strategy type: {self.type}")
 
