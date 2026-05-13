@@ -77,6 +77,27 @@
       "seed": 77,
       "test": 1768,
       "tree_size": 3
+    },
+    {
+      "seed": 88,
+      "train": 25411.559054751757,
+      "test": 1606.0507213394196,
+      "tree_size": 3,
+      "tree": "(> price volatility(139))"
+    },
+    {
+      "seed": 99,
+      "train": 28175.102362300793,
+      "test": 1720.081807072984,
+      "tree_size": 3,
+      "tree": "(> momentum(190) volatility(142))"
+    },
+    {
+      "seed": 123,
+      "train": 29254.71112840756,
+      "test": 2068.80918702465,
+      "tree_size": 3,
+      "tree": "(< volatility(115) volatility(82))"
     }
   ],
   "gp_note": "Partial results (7/10 seeds). Key finding: GP results are highly seed-dependent. The reported $3,143 from exp/11-gp-tradeoff was specific to seed=42; other seeds average ~$1,600.",
@@ -87,14 +108,16 @@
     "pso_min": 2170.0,
     "pso_max": 2366.0,
     "pso_beats_bh": 10,
-    "gp_mean": 1506.4285714285713,
-    "gp_std": 473.7032998898473,
+    "gp_mean": 1593.9941715437053,
+    "gp_std": 431.9641889905794,
     "gp_min": 359.0,
-    "gp_max": 1768.0,
+    "gp_max": 2068.80918702465,
     "gp_beats_bh": 0,
     "basin_a_best": 5,
     "basin_b_second": 3,
     "basin_c_poor": 2,
-    "conclusion": "PSO is far more robust than GP. PSO mean $2,297 > BH $2,170 with low variance (std=$77). GP mean $1,506 < BH with high variance (std=$474). The reported GP 'best' of $3,143 was a seed-dependent outlier, not a reproducible finding."
+    "conclusion": "PSO is far more robust than GP. PSO mean $2,297 > BH $2,170 with low variance (std=$77). GP mean $1,506 < BH with high variance (std=$474). The reported GP 'best' of $3,143 was a seed-dependent outlier, not a reproducible finding.",
+    "gp_n_seeds": 10,
+    "updated_note": "All 10 seeds completed for PSO, 10/10 for GP"
   }
 }
