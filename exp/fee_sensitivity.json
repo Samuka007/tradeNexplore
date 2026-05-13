@@ -1,0 +1,56 @@
+[
+  {
+    "fee_pct": 0.0,
+    "final_cash": 2841.01856195129,
+    "n_trades": 6,
+    "total_return_pct": 184.101856195129
+  },
+  {
+    "fee_pct": 0.5,
+    "final_cash": 2756.846275157089,
+    "n_trades": 6,
+    "total_return_pct": 175.6846275157089
+  },
+  {
+    "fee_pct": 1.0,
+    "final_cash": 2674.762545295438,
+    "n_trades": 6,
+    "total_return_pct": 167.4762545295438
+  },
+  {
+    "fee_pct": 1.5,
+    "final_cash": 2594.72567093745,
+    "n_trades": 6,
+    "total_return_pct": 159.47256709374503
+  },
+  {
+    "fee_pct": 2.0,
+    "final_cash": 2516.694614196447,
+    "n_trades": 6,
+    "total_return_pct": 151.66946141964473
+  },
+  {
+    "fee_pct": 2.5,
+    "final_cash": 2440.6289573871927,
+    "n_trades": 6,
+    "total_return_pct": 144.06289573871928
+  },
+  {
+    "fee_pct": 3.0,
+    "final_cash": 2366.488896745473,
+    "n_trades": 6,
+    "total_return_pct": 136.64888967454732
+  },
+  {
+    "fee_pct": 4.0,
+    "final_cash": 2223.8293810540536,
+    "n_trades": 6,
+    "total_return_pct": 122.38293810540534
+  },
+  {
+    "fee_pct": 5.0,
+    "final_cash": 2088.409678786237,
+    "n_trades": 6,
+    "total_return_pct": 108.84096787862367
+  }
+]
