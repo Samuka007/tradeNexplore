@@ -1,0 +1,29 @@
+{
+  "basin_a": {
+    "params": [
+      119,
+      179,
+      0.1
+    ],
+    "test_cash": 2366,
+    "n_trades": 6,
+    "avg_position": 1.0,
+    "sharpe": 0.655,
+    "max_drawdown": -0.746,
+    "signal_std": 0.4895
+  },
+  "basin_b": {
+    "params": [
+      37,
+      99,
+      0.1
+    ],
+    "test_cash": 2265,
+    "n_trades": 12,
+    "avg_position": 0.998,
+    "sharpe": 0.645,
+    "max_drawdown": -0.568,
+    "signal_std": 0.4964
+  },
+  "insight": "Basin A (slow, 119/179) trades half as often as Basin B (fast, 37/99). Fewer trades = less fee erosion = higher final cash. This aligns with Classic 50/200 SMA outperforming: low-frequency signals minimize transaction costs."
+}
