@@ -48,7 +48,7 @@ def walk_forward_rolling(df, train_years=3, test_years=1):
         test_mask = (df['Date'] >= train_end) & (df['Date'] < test_end)
         label = f"{train_end.year}-{test_end.year}"
         yield train_mask, test_mask, label
-        start = train_end  # roll forward by test_years
+        start = start + pd.DateOffset(years=test_years)  # roll forward by test_years
 
 
 def run_pso(train_prices, test_prices):

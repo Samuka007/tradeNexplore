@@ -53,6 +53,7 @@ def run_single(train, test):
 
 def run_walkforward(df):
     results = []
+    test_years = 1
     start = df['Date'].iloc[0]
     while True:
         train_end = start + pd.DateOffset(years=3)
@@ -85,7 +86,7 @@ def run_walkforward(df):
             'best_params': [float(x) for x in pso_res['best']],
         })
         print(f"  {label:12s}  PSO=${test_cash:>10,.0f}  BH=${bh:>10,.0f}  {'Y' if test_cash > bh else 'N'}")
-        start = train_end
+        start = start + pd.DateOffset(years=test_years)
 
     avg_test = np.mean([r['test_cash'] for r in results])
     win_rate = sum(r['wins'] for r in results) / len(results) if results else 0

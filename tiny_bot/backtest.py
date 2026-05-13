@@ -41,14 +41,15 @@ def backtest(
                 cash = 0.0
                 holding_cash = False
             elif signals[i] == -1 and not holding_cash:
-                cash = btc * price * (1 - fee)
+                cash = min(btc * price * (1 - fee), 1e12)
                 btc = 0.0
+
                 holding_cash = True
                 trades.append(cash - entry_cost)
             equity[i] = cash + btc * price
 
         if not holding_cash:
-            cash = btc * prices[-1] * (1 - fee)
+            cash = min(btc * prices[-1] * (1 - fee), 1e12)
             equity[-1] = cash
             trades.append(cash - entry_cost)
     else:
@@ -61,7 +62,7 @@ def backtest(
             current_value = cash + btc * price
             current_pos = (btc * price) / current_value if current_value > 0 else 0.0
 
-            if abs(target - current_pos) > 1e-6 and i > 0:
+            if abs(target - current_pos) > 1e-6:
                 if target > current_pos:
                     # Buy delta
                     delta = target - current_pos
