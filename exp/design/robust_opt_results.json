@@ -1,0 +1,660 @@
+{
+  "n_windows": 52,
+  "windows_per_fitness": 12,
+  "n_workers_inner": 4,
+  "n_workers_algo": 4,
+  "pso": {
+    "best_params": [
+      0.2736772220216982,
+      0.32314491099682774,
+      1.0,
+      200.0,
+      198.19575849552402,
+      200.0,
+      0.04659911255755505,
+      0.0,
+      0.7538528172212895,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      0.01
+    ],
+    "robust_fitness": 25608.15139612016,
+    "win_rate": 0.38461538461538464,
+    "avg_excess": -0.33155183960706724,
+    "per_window": [
+      {
+        "strategy_cash": 346.95477028256676,
+        "bh_cash": 1711.4765294836095,
+        "wins": false,
+        "excess": -1.3645217592010426
+      },
+      {
+        "strategy_cash": 392.7304239697148,
+        "bh_cash": 1107.17491001808,
+        "wins": false,
+        "excess": -0.7144444860483652
+      },
+      {
+        "strategy_cash": 345.8141308438384,
+        "bh_cash": 680.5086855393827,
+        "wins": false,
+        "excess": -0.33469455469554427
+      },
+      {
+        "strategy_cash": 302.8404439802061,
+        "bh_cash": 159.89907396386153,
+        "wins": true,
+        "excess": 0.14294137001634458
+      },
+      {
+        "strategy_cash": 366.04495553760773,
+        "bh_cash": 307.3660736820037,
+        "wins": true,
+        "excess": 0.05867888185560406
+      },
+      {
+        "strategy_cash": 498.2998185680016,
+        "bh_cash": 307.330089951979,
+        "wins": true,
+        "excess": 0.19096972861602263
+      },
+      {
+        "strategy_cash": 421.21530577707904,
+        "bh_cash": 481.1802363947435,
+        "wins": false,
+        "excess": -0.05996493061766443
+      },
+      {
+        "strategy_cash": 645.3095395914273,
+        "bh_cash": 623.3968604651162,
+        "wins": true,
+        "excess": 0.021912679126311105
+      },
+      {
+        "strategy_cash": 1172.033083713972,
+        "bh_cash": 916.5576859182272,
+        "wins": true,
+        "excess": 0.2554753977957448
+      },
+      {
+        "strategy_cash": 1217.3702151379132,
+        "bh_cash": 1302.1330085372417,
+        "wins": false,
+        "excess": -0.08476279339932853
+      },
+      {
+        "strategy_cash": 1365.795819317456,
+        "bh_cash": 1218.0664134234257,
+        "wins": true,
+        "excess": 0.14772940589403039
+      },
+      {
+        "strategy_cash": 1478.3112323134442,
+        "bh_cash": 1483.3253980187176,
+        "wins": false,
+        "excess": -0.005014165705273399
+      },
+      {
+        "strategy_cash": 1516.5054038829207,
+        "bh_cash": 1539.4248109398877,
+        "wins": false,
+        "excess": -0.022919407056966976
+      },
+      {
+        "strategy_cash": 1951.1430748761622,
+        "bh_cash": 1157.001880214367,
+        "wins": true,
+        "excess": 0.7941411946617952
+      },
+      {
+        "strategy_cash": 2186.8920250781825,
+        "bh_cash": 1448.4934581057782,
+        "wins": true,
+        "excess": 0.7383985669724042
+      },
+      {
+        "strategy_cash": 1785.3345766911307,
+        "bh_cash": 1839.5430565231204,
+        "wins": false,
+        "excess": -0.05420847983198974
+      },
+      {
+        "strategy_cash": 2008.13649622755,
+        "bh_cash": 2231.362686855421,
+        "wins": false,
+        "excess": -0.2232261906278711
+      },
+      {
+        "strategy_cash": 1793.931587789716,
+        "bh_cash": 2544.2910642208185,
+        "wins": false,
+        "excess": -0.7503594764311023
+      },
+      {
+        "strategy_cash": 548.334157729536,
+        "bh_cash": 1172.1380843287134,
+        "wins": false,
+        "excess": -0.6238039265991774
+      },
+      {
+        "strategy_cash": 559.9124752090329,
+        "bh_cash": 1274.996217774521,
+        "wins": false,
+        "excess": -0.7150837425654881
+      },
+      {
+        "strategy_cash": 774.450379194013,
+        "bh_cash": 1201.3831289513016,
+        "wins": false,
+        "excess": -0.4269327497572887
+      },
+      {
+        "strategy_cash": 778.7795000230929,
+        "bh_cash": 962.8742189288582,
+        "wins": false,
+        "excess": -0.18409471890576537
+      },
+      {
+        "strategy_cash": 816.9919800599257,
+        "bh_cash": 886.3923814989722,
+        "wins": false,
+        "excess": -0.06940040143904651
+      },
+      {
+        "strategy_cash": 1354.7154473771823,
+        "bh_cash": 1093.6492212692842,
+        "wins": true,
+        "excess": 0.26106622610789804
+      },
+      {
+        "strategy_cash": 1171.6335464018825,
+        "bh_cash": 1008.3013034917402,
+        "wins": true,
+        "excess": 0.16333224291014234
+      },
+      {
+        "strategy_cash": 1439.4176949037947,
+        "bh_cash": 1314.5486667136636,
+        "wins": true,
+        "excess": 0.12486902819013107
+      },
+      {
+        "strategy_cash": 1758.752743475357,
+        "bh_cash": 1833.554897779982,
+        "wins": false,
+        "excess": -0.07480215430462499
+      },
+      {
+        "strategy_cash": 1963.0307042432617,
+        "bh_cash": 3019.515944462317,
+        "wins": false,
+        "excess": -1.0564852402190552
+      },
+      {
+        "strategy_cash": 3820.447572013087,
+        "bh_cash": 3812.28215026574,
+        "wins": true,
+        "excess": 0.008165421747347409
+      },
+      {
+        "strategy_cash": 6765.458183730132,
+        "bh_cash": 4777.242268510223,
+        "wins": true,
+        "excess": 1.9882159152199093
+      },
+      {
+        "strategy_cash": 5495.020759310253,
+        "bh_cash": 10227.999075320715,
+        "wins": false,
+        "excess": -4.7329783160104615
+      },
+      {
+        "strategy_cash": 6214.889158539979,
+        "bh_cash": 8164.082635516198,
+        "wins": false,
+        "excess": -1.9491934769762191
+      },
+      {
+        "strategy_cash": 4730.396709784229,
+        "bh_cash": 4519.872200622912,
+        "wins": true,
+        "excess": 0.21052450916131693
+      },
+      {
+        "strategy_cash": 3040.7608865332427,
+        "bh_cash": 3805.884077195396,
+        "wins": false,
+        "excess": -0.7651231906621533
+      },
+      {
+        "strategy_cash": 2851.0868534368487,
+        "bh_cash": 3230.604069437007,
+        "wins": false,
+        "excess": -0.3795172160001584
+      },
+      {
+        "strategy_cash": 3517.0692892408188,
+        "bh_cash": 3532.2505442718766,
+        "wins": false,
+        "excess": -0.015181255031057845
+      },
+      {
+        "strategy_cash": 2621.4419565433514,
+        "bh_cash": 4106.256547273641,
+        "wins": false,
+        "excess": -1.48481459073029
+      },
+      {
+        "strategy_cash": 1493.7113498394838,
+        "bh_cash": 5044.2806443225745,
+        "wins": false,
+        "excess": -3.5505692944830907
+      },
+      {
+        "strategy_cash": 1836.3157327889078,
+        "bh_cash": 3207.9576773478575,
+        "wins": false,
+        "excess": -1.3716419445589496
+      },
+      {
+        "strategy_cash": 918.564804397581,
+        "bh_cash": 1966.5897967522599,
+        "wins": false,
+        "excess": -1.048024992354679
+      },
+      {
+        "strategy_cash": 701.1165667851571,
+        "bh_cash": 1133.4004169028176,
+        "wins": false,
+        "excess": -0.43228385011766046
+      },
+      {
+        "strategy_cash": 687.0482126065314,
+        "bh_cash": 793.183134656355,
+        "wins": false,
+        "excess": -0.10613492204982367
+      },
+      {
+        "strategy_cash": 725.8532646334031,
+        "bh_cash": 657.5800104824189,
+        "wins": true,
+        "excess": 0.06827325415098426
+      },
+      {
+        "strategy_cash": 996.5190646925649,
+        "bh_cash": 626.7798756335508,
+        "wins": true,
+        "excess": 0.36973918905901415
+      },
+      {
+        "strategy_cash": 820.6152351472045,
+        "bh_cash": 645.3749515661019,
+        "wins": true,
+        "excess": 0.17524028358110263
+      },
+      {
+        "strategy_cash": 406.32263435572423,
+        "bh_cash": 503.9508293318915,
+        "wins": false,
+        "excess": -0.09762819497616726
+      },
+      {
+        "strategy_cash": 444.21193780204334,
+        "bh_cash": 632.2876188074139,
+        "wins": false,
+        "excess": -0.18807568100537053
+      },
+      {
+        "strategy_cash": 361.223700872496,
+        "bh_cash": 502.77677214898915,
+        "wins": false,
+        "excess": -0.14155307127649314
+      },
+      {
+        "strategy_cash": 286.43626574003184,
+        "bh_cash": 393.5900266270318,
+        "wins": false,
+        "excess": -0.10715376088699997
+      },
+      {
+        "strategy_cash": 338.2451988758086,
+        "bh_cash": 294.529391410918,
+        "wins": true,
+        "excess": 0.04371580746489064
+      },
+      {
+        "strategy_cash": 359.9870131342478,
+        "bh_cash": 259.8110346008606,
+        "wins": true,
+        "excess": 0.1001759785333872
+      },
+      {
+        "strategy_cash": 369.3558086487347,
+        "bh_cash": 339.02361475543654,
+        "wins": true,
+        "excess": 0.030332193893298155
+      }
+    ]
+  },
+  "gp": {
+    "robust_fitness": 21228.87724791821,
+    "win_rate": 0.0,
+    "avg_excess": 0.0,
+    "per_window": [
+      {
+        "strategy_cash": 1711.4765294836095,
+        "bh_cash": 1711.4765294836095,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 1107.17491001808,
+        "bh_cash": 1107.17491001808,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 680.5086855393827,
+        "bh_cash": 680.5086855393827,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 159.89907396386153,
+        "bh_cash": 159.89907396386153,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 307.3660736820037,
+        "bh_cash": 307.3660736820037,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 307.330089951979,
+        "bh_cash": 307.330089951979,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 481.1802363947435,
+        "bh_cash": 481.1802363947435,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 623.3968604651162,
+        "bh_cash": 623.3968604651162,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 916.5576859182272,
+        "bh_cash": 916.5576859182272,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 1302.1330085372417,
+        "bh_cash": 1302.1330085372417,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 1218.0664134234257,
+        "bh_cash": 1218.0664134234257,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 1483.3253980187176,
+        "bh_cash": 1483.3253980187176,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 1539.4248109398877,
+        "bh_cash": 1539.4248109398877,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 1157.001880214367,
+        "bh_cash": 1157.001880214367,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 1448.4934581057782,
+        "bh_cash": 1448.4934581057782,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 1839.5430565231204,
+        "bh_cash": 1839.5430565231204,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 2231.362686855421,
+        "bh_cash": 2231.362686855421,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 2544.2910642208185,
+        "bh_cash": 2544.2910642208185,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 1172.1380843287134,
+        "bh_cash": 1172.1380843287134,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 1274.996217774521,
+        "bh_cash": 1274.996217774521,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 1201.3831289513016,
+        "bh_cash": 1201.3831289513016,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 962.8742189288582,
+        "bh_cash": 962.8742189288582,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 886.3923814989722,
+        "bh_cash": 886.3923814989722,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 1093.6492212692842,
+        "bh_cash": 1093.6492212692842,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 1008.3013034917402,
+        "bh_cash": 1008.3013034917402,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 1314.5486667136636,
+        "bh_cash": 1314.5486667136636,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 1833.554897779982,
+        "bh_cash": 1833.554897779982,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 3019.515944462317,
+        "bh_cash": 3019.515944462317,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 3812.28215026574,
+        "bh_cash": 3812.28215026574,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 4777.242268510223,
+        "bh_cash": 4777.242268510223,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 10227.999075320715,
+        "bh_cash": 10227.999075320715,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 8164.082635516198,
+        "bh_cash": 8164.082635516198,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 4519.872200622912,
+        "bh_cash": 4519.872200622912,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 3805.884077195396,
+        "bh_cash": 3805.884077195396,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 3230.604069437007,
+        "bh_cash": 3230.604069437007,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 3532.2505442718766,
+        "bh_cash": 3532.2505442718766,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 4106.256547273641,
+        "bh_cash": 4106.256547273641,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 5044.2806443225745,
+        "bh_cash": 5044.2806443225745,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 3207.9576773478575,
+        "bh_cash": 3207.9576773478575,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 1966.5897967522599,
+        "bh_cash": 1966.5897967522599,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 1133.4004169028176,
+        "bh_cash": 1133.4004169028176,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 793.183134656355,
+        "bh_cash": 793.183134656355,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 657.5800104824189,
+        "bh_cash": 657.5800104824189,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 626.7798756335508,
+        "bh_cash": 626.7798756335508,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 645.3749515661019,
+        "bh_cash": 645.3749515661019,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 503.9508293318915,
+        "bh_cash": 503.9508293318915,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 632.2876188074139,
+        "bh_cash": 632.2876188074139,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 502.77677214898915,
+        "bh_cash": 502.77677214898915,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 393.5900266270318,
+        "bh_cash": 393.5900266270318,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 294.529391410918,
+        "bh_cash": 294.529391410918,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 259.8110346008606,
+        "bh_cash": 259.8110346008606,
+        "wins": false,
+        "excess": 0.0
+      },
+      {
+        "strategy_cash": 339.02361475543654,
+        "bh_cash": 339.02361475543654,
+        "wins": false,
+        "excess": 0.0
+      }
+    ]
+  }
+}
