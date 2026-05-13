@@ -1,0 +1,46 @@
+{
+  "0": [
+    {
+      "gen": 0,
+      "best_raw": 25000
+    },
+    {
+      "gen": 12,
+      "best_raw": 40897,
+      "tree_size": 7
+    }
+  ],
+  "42": [
+    {
+      "gen": 0,
+      "best_raw": 22000
+    },
+    {
+      "gen": 16,
+      "best_raw": 29967,
+      "tree_size": 3
+    }
+  ],
+  "77": [
+    {
+      "gen": 0,
+      "best_raw": 28000
+    },
+    {
+      "gen": 4,
+      "best_raw": 38003,
+      "tree_size": 5
+    }
+  ],
+  "99": [
+    {
+      "gen": 0,
+      "best_raw": 18000
+    },
+    {
+      "gen": 13,
+      "best_raw": 24080,
+      "tree_size": 3
+    }
+  ]
+}
