@@ -1,9 +1,33 @@
 """Genetic Programming for tree-structured trading rules."""
-
 import numpy as np
 from concurrent.futures import ThreadPoolExecutor
 from tiny_bot.filters import wma, sma_filter, lma_filter, ema_filter
 
+def _rsi(prices: np.ndarray, N: int) -> np.ndarray:
+    """Causal RSI: first N-1 values are NaN."""
+    diff = np.diff(prices)
+    gains = np.where(diff > 0, diff, 0)
+    losses = np.where(diff < 0, -diff, 0)
+    avg_gain = np.convolve(gains, np.ones(N) / N, mode='valid')
+    avg_loss = np.convolve(losses, np.ones(N) / N, mode='valid')
+    rs = avg_gain / (avg_loss + 1e-10)
+    rsi = 100 - 100 / (1 + rs)
+    full = np.full(len(prices), np.nan)
+    full[N:] = rsi
+    return full
+
+def _momentum(prices: np.ndarray, N: int) -> np.ndarray:
+    """Causal momentum: P[t] - P[t-N].  First N values are NaN."""
+    full = np.full(len(prices), np.nan)
+    full[N:] = prices[N:] - prices[:-N]
+    return full
+
+def _volatility(prices: np.ndarray, N: int) -> np.ndarray:
+    """Causal rolling standard deviation.  First N-1 values are NaN."""
+    ret = np.full(len(prices), np.nan)
+    for i in range(N - 1, len(prices)):
+        ret[i] = np.std(prices[i - N + 1:i + 1])
+    return ret
 class GPNode:
     """Node in a GP program tree."""
 
@@ -25,6 +49,8 @@ class GPNode:
                 return f"{self.value}({self.params.get('N', '?')})"
             if self.value == "ema":
                 return f"ema({self.params.get('N', '?')},{self.params.get('alpha', '?'):.2f})"
+            if self.value in ("rsi", "momentum", "volatility"):
+                return f"{self.value}({self.params.get('N', '?')})"
             if self.value == "const":
                 return f"{self.params.get('value', 0):.3f}"
             return self.value
@@ -33,22 +59,22 @@ class GPNode:
 
 class GP:
     """Tree-based Genetic Programming."""
-
     def __init__(
         self,
         pop_size: int = 100,
         generations: int = 50,
         seed: int | None = None,
+        parsimony_penalty: float = 0.0,
     ):
         if seed is not None:
             np.random.seed(seed)
         self.pop_size = pop_size
         self.generations = generations
-        self.funs = ["+", "-", "*", ">", "<", "AND", "IF"]
-        self.terms = ["price", "sma", "lma", "ema", "const"]
-        self.arity = {"+": 2, "-": 2, "*": 2, ">": 2, "<": 2, "AND": 2, "IF": 3}
+        self.parsimony_penalty = parsimony_penalty
+        self.funs = ["+", "-", "*", "/", "ABS", "MAX", "MIN", ">", "<", "AND", "IF"]
+        self.terms = ["price", "sma", "lma", "ema", "rsi", "momentum", "volatility", "const"]
+        self.arity = {"+": 2, "-": 2, "*": 2, "/": 2, "ABS": 1, "MAX": 2, "MIN": 2, ">": 2, "<": 2, "AND": 2, "IF": 3}
         self.max_depth = 5
-
     def _random_tree(self, depth: int = 0, max_depth: int | None = None) -> GPNode:
         if max_depth is None:
             max_depth = self.max_depth
@@ -60,6 +86,8 @@ class GP:
             elif t == "ema":
                 n.params["N"] = np.random.randint(5, 200)
                 n.params["alpha"] = np.random.uniform(0.01, 0.99)
+            elif t in ("rsi", "momentum", "volatility"):
+                n.params["N"] = np.random.randint(5, 200)
             elif t == "const":
                 n.params["value"] = np.random.uniform(-1, 1)
             return n
@@ -71,12 +99,12 @@ class GP:
 
     def _collect(self, node: GPNode):
         if node.terminal:
-            if node.value == "sma":
-                return {("sma", node.params["N"])}
-            if node.value == "lma":
-                return {("lma", node.params["N"])}
+            if node.value in ("sma", "lma"):
+                return {(node.value, node.params["N"])}
             if node.value == "ema":
                 return {("ema", node.params["N"], node.params["alpha"])}
+            if node.value in ("rsi", "momentum", "volatility"):
+                return {(node.value, node.params["N"])}
             return set()
         r = set()
         for c in node.children:
@@ -98,6 +126,15 @@ class GP:
                 _, N_raw, alpha = ref
                 N = min(N_raw, n)
                 cache[ref] = wma(prices, N, ema_filter(N, alpha))
+            elif ref[0] == "rsi":
+                N = min(ref[1], n)
+                cache[ref] = _rsi(prices, N)
+            elif ref[0] == "momentum":
+                N = min(ref[1], n)
+                cache[ref] = _momentum(prices, N)
+            elif ref[0] == "volatility":
+                N = min(ref[1], n)
+                cache[ref] = _volatility(prices, N)
         return cache
 
     def _eval(self, node: GPNode, cache: dict, idx: int) -> float:
@@ -112,6 +149,9 @@ class GP:
                 return float(arr[idx]) if idx < len(arr) else float(cache["price"][idx])
             if node.value == "const":
                 return float(node.params["value"])
+            if node.value in ("rsi", "momentum", "volatility"):
+                arr = cache[(node.value, node.params["N"])]
+                return float(arr[idx]) if idx < len(arr) and not np.isnan(arr[idx]) else float(cache["price"][idx])
             return 0.0
         v = [self._eval(c, cache, idx) for c in node.children]
         op = node.value
@@ -121,6 +161,14 @@ class GP:
             return v[0] - v[1]
         if op == "*":
             return v[0] * v[1]
+        if op == "/":
+            return v[0] / (v[1] + 1e-10)
+        if op == "ABS":
+            return abs(v[0])
+        if op == "MAX":
+            return max(v[0], v[1])
+        if op == "MIN":
+            return min(v[0], v[1])
         if op == ">":
             return 1.0 if v[0] > v[1] else 0.0
         if op == "<":
@@ -152,6 +200,10 @@ class GP:
         for c in node.children:
             ns.extend(self._nodes(c))
         return ns
+
+    def _tree_size(self, node: GPNode) -> int:
+        """Number of nodes in the tree."""
+        return 1 + sum(self._tree_size(c) for c in node.children)
 
     def _crossover(self, p1: GPNode, p2: GPNode) -> GPNode:
         c = p1.copy()
@@ -198,7 +250,8 @@ class GP:
                     return list(ex.map(fitness_fn, population))
             return [fitness_fn(ind) for ind in population]
 
-        fit = _eval_all(pop)
+        raw_fit = _eval_all(pop)
+        fit = [f - self.parsimony_penalty * self._tree_size(ind) for f, ind in zip(raw_fit, pop)]
         history = []
         for _ in range(self.generations):
             new = []
@@ -216,7 +269,8 @@ class GP:
                 else:
                     new.append(self._select(pop, fit).copy())
             pop = new
-            fit = _eval_all(pop)
+            raw_fit = _eval_all(pop)
+            fit = [f - self.parsimony_penalty * self._tree_size(ind) for f, ind in zip(raw_fit, pop)]
             history.append(float(max(fit)))
         best_idx = int(np.argmax(fit))
         return {"best": pop[best_idx], "fitness": fit[best_idx], "history": history}

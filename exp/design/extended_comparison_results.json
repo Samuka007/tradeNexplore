@@ -1,0 +1,52 @@
+{
+  "buy_and_hold": {
+    "train": 14799.811937511215,
+    "test": 2169.582627048214
+  },
+  "experiments": [
+    {
+      "name": "PSO+MACD",
+      "train_cash": 85508.59713501185,
+      "test_cash": 948.8227287297426,
+      "best_params": [
+        91.247275986676,
+        0.01,
+        2.0,
+        0.9564705811750859,
+        2.0,
+        0.01,
+        8.992562632928127
+      ]
+    },
+    {
+      "name": "PSO+trivial_sma",
+      "train_cash": 49113.126321112126,
+      "test_cash": 1847.8065979912255,
+      "best_params": [
+        120.34948433955888,
+        178.99144996103126
+      ]
+    },
+    {
+      "name": "GP_original_no_penalty",
+      "train_cash": 38003.05179391849,
+      "test_cash": 336.26126669935326,
+      "tree_size": 14,
+      "tree_repr": "(* (> sma(130) price) (> sma(151) (+ 0.368 (IF 0.751 ema(15,0.94) (+ 0.975 -0.694)))))"
+    },
+    {
+      "name": "GP_extended_no_penalty",
+      "train_cash": 33967.96948523908,
+      "test_cash": 1737.9101171482139,
+      "tree_size": 96,
+      "tree_repr": "(AND price (AND (> (AND -0.734 (MAX rsi(154) (ABS (MIN momentum(130) momentum(130))))) (AND (> (AND (AND -0.734 (MIN momentum(111) (MIN (+ momentum(195) price) (MIN (MIN (+ price lma(194)) momentum(111)) 0.068)))) (MAX rsi(154) (ABS (> sma(192) ema(45,0.30))))) (/ volatility(38) volatility(12))) (/ (< (/ (> (AND -0.734 (MIN momentum(111) (> (AND -0.734 (MIN momentum(111) volatility(22))) (* (< volatility(32) sma(43)) (MIN momentum(130) ema(29,0.88)))))) (* lma(74) (MIN momentum(130) momentum(130)))) (IF -0.525 volatility(42) -0.059)) (* sma(173) rsi(10))) (- lma(113) (< momentum(199) rsi(154)))))) (/ (< (/ (> (AND -0.734 (MIN momentum(111) ema(58,0.04))) (* lma(74) (MIN momentum(130) momentum(130)))) volatility(12)) (< rsi(122) momentum(150))) lma(148))))"
+    },
+    {
+      "name": "GP_extended_with_penalty",
+      "train_cash": 38003.05179391849,
+      "test_cash": 1621.586838010873,
+      "tree_size": 3,
+      "tree_repr": "(> volatility(20) rsi(49))"
+    }
+  ]
+}

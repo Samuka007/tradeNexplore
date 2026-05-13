@@ -9,6 +9,7 @@ class VectorStrategy:
 
     dual_crossover (14D): [w1,w2,w3,d1,d2,d3,a3, w4,w5,w6,d4,d5,d6,a6]
     macd (7D): [d1,a1,d2,a2,d3,a3,threshold]
+    trivial_sma (2D): [d_fast, d_slow]  -- simple dual-SMA crossover, no weighting
     """
 
     def __init__(self, params: np.ndarray, stype: str = "dual_crossover"):
@@ -33,6 +34,9 @@ class VectorStrategy:
             self.sd = max(2, min(int(np.round(p[4])), 200))
             self.sa = np.clip(p[5], 0.01, 0.99)
             self.thresh = p[6] if len(p) > 6 else 0.0
+        elif self.type == "trivial_sma":
+            self.d_fast = max(2, min(int(np.round(p[0])), 200))
+            self.d_slow = max(2, min(int(np.round(p[1])), 200))
         else:
             raise ValueError(f"unknown strategy type: {self.type}")
 
@@ -72,6 +76,13 @@ class VectorStrategy:
             diff = macd_line[-m:] - signal_line[-m:]
             if self.thresh > 0:
                 diff = np.where(np.abs(diff) > self.thresh, diff, 0.0)
+        elif self.type == "trivial_sma":
+            d_fast = min(max(self.d_fast, 2), len(prices) - 1)
+            d_slow = min(max(self.d_slow, 2), len(prices) - 1)
+            sma_fast = wma(prices, d_fast, sma_filter(d_fast))
+            sma_slow = wma(prices, d_slow, sma_filter(d_slow))
+            m = min(len(sma_fast), len(sma_slow))
+            diff = sma_fast[-m:] - sma_slow[-m:]
         else:
             raise ValueError(f"unknown strategy type: {self.type}")
 
