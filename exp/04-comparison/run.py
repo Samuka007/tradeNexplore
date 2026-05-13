@@ -3,9 +3,10 @@
 Experiments:
 1. PSO + MACD        (7D, "validated" structure from literature)
 2. PSO + trivial_sma (2D, simplest possible crossover)
-3. GP  + original function set + no parsimony penalty
-4. GP  + extended function set + no parsimony penalty
-5. GP  + extended function set + parsimony penalty
+3. Classic 50/200 SMA crossover (fixed, no optimisation — human baseline)
+4. GP  + original function set + no parsimony penalty
+5. GP  + extended function set + no parsimony penalty
+6. GP  + extended function set + parsimony penalty
 
 All evaluated on the same train/test split for fair comparison.
 """
@@ -97,6 +98,16 @@ def main():
     print(f"  train=${r['train_cash']:>10,.0f}  test=${r['test_cash']:>10,.0f}")
     results['experiments'].append({'name': 'PSO+trivial_sma', **r})
 
+    # --- Classic baseline (no optimisation) ---
+    print("\n[Classic 50/200 SMA crossover]")
+    classic_train = backtest(train, VectorStrategy(np.array([50.0, 200.0]), 'trivial_sma').signals(train))
+    classic_test = backtest(test, VectorStrategy(np.array([50.0, 200.0]), 'trivial_sma').signals(test))
+    r = {
+        'train_cash': float(classic_train['final_cash']),
+        'test_cash': float(classic_test['final_cash']),
+    }
+    print(f"  train=${r['train_cash']:>10,.0f}  test=${r['test_cash']:>10,.0f}")
+    results['experiments'].append({'name': 'Classic_50_200_SMA', **r})
     # --- GP experiments ---
     print("\n[GP + original set, no penalty]")
     r = run_gp(train, test, extended=False, parsimony_penalty=0.0)
