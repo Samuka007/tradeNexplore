@@ -1,0 +1,125 @@
+{
+  "buy_and_hold_test": 2169.582627048214,
+  "experiments": [
+    {
+      "penalty": 0.0,
+      "max_depth": 3,
+      "train_cash": 30788.24628013623,
+      "test_cash": 1666.1954471054903,
+      "tree_size": 13,
+      "tree_repr": "(< (IF (* rsi(48) rsi(74)) (ABS rsi(187)) (> volatility(108) momentum(36))) (MAX sma(173) rsi(189)))"
+    },
+    {
+      "penalty": 0.0,
+      "max_depth": 5,
+      "train_cash": 33967.96948523908,
+      "test_cash": 1737.9101171482139,
+      "tree_size": 96,
+      "tree_repr": "(AND price (AND (> (AND -0.734 (MAX rsi(154) (ABS (MIN momentum(130) momentum(130))))) (AND (> (AND (AND -0.734 (MIN momentum(111) (MIN (+ momentum(195) price) (MIN (MIN (+ price lma(194)) momentum(111)) 0.068)))) (MAX rsi(154) (ABS (> sma(192) ema(45,0.30))))) (/ volatility(38) volatility(12))) (/ (< (/ (> (AND -0.734 (MIN momentum(111) (> (AND -0.734 (MIN momentum(111) volatility(22))) (* (< volatility(32) sma(43)) (MIN momentum(130) ema(29,0.88)))))) (* lma(74) (MIN momentum(130) momentum(130)))) (IF -0.525 volatility(42) -0.059)) (* sma(173) rsi(10))) (- lma(113) (< momentum(199) rsi(154)))))) (/ (< (/ (> (AND -0.734 (MIN momentum(111) ema(58,0.04))) (* lma(74) (MIN momentum(130) momentum(130)))) volatility(12)) (< rsi(122) momentum(150))) lma(148))))"
+    },
+    {
+      "penalty": 0.0,
+      "max_depth": 7,
+      "train_cash": 38003.05179391849,
+      "test_cash": 1690.5613663752765,
+      "tree_size": 18,
+      "tree_repr": "(ABS (IF (< (+ volatility(195) momentum(150)) sma(130)) ema(65,0.82) (* (< (+ price momentum(62)) 0.112) (MAX (ABS lma(24)) volatility(53)))))"
+    },
+    {
+      "penalty": 100.0,
+      "max_depth": 3,
+      "train_cash": 38003.05179391849,
+      "test_cash": 2003.8702545023796,
+      "tree_size": 7,
+      "tree_repr": "(< (/ (* rsi(112) momentum(171)) rsi(46)) sma(130))"
+    },
+    {
+      "penalty": 100.0,
+      "max_depth": 5,
+      "train_cash": 32254.71112840756,
+      "test_cash": 1536.090230838659,
+      "tree_size": 7,
+      "tree_repr": "(AND (> lma(162) price) (< volatility(32) volatility(22)))"
+    },
+    {
+      "penalty": 100.0,
+      "max_depth": 7,
+      "train_cash": 38003.05179391849,
+      "test_cash": 821.4148017779132,
+      "tree_size": 5,
+      "tree_repr": "(< (+ price momentum(62)) 0.112)"
+    },
+    {
+      "penalty": 500.0,
+      "max_depth": 3,
+      "train_cash": 32254.71112840756,
+      "test_cash": 418.43499278189,
+      "tree_size": 5,
+      "tree_repr": "(< (MAX lma(105) price) lma(133))"
+    },
+    {
+      "penalty": 500.0,
+      "max_depth": 5,
+      "train_cash": 38003.05179391849,
+      "test_cash": 1621.586838010873,
+      "tree_size": 3,
+      "tree_repr": "(> volatility(20) rsi(49))"
+    },
+    {
+      "penalty": 500.0,
+      "max_depth": 7,
+      "train_cash": 38003.05179391849,
+      "test_cash": 1696.2630139624252,
+      "tree_size": 5,
+      "tree_repr": "(< (+ volatility(62) volatility(144)) ema(128,0.01))"
+    },
+    {
+      "penalty": 1000.0,
+      "max_depth": 3,
+      "train_cash": 38003.05179391849,
+      "test_cash": 2194.8739116746447,
+      "tree_size": 3,
+      "tree_repr": "(< volatility(113) volatility(90))"
+    },
+    {
+      "penalty": 1000.0,
+      "max_depth": 5,
+      "train_cash": 29820.671313628514,
+      "test_cash": 1615.3235747695333,
+      "tree_size": 3,
+      "tree_repr": "(> volatility(76) rsi(137))"
+    },
+    {
+      "penalty": 1000.0,
+      "max_depth": 7,
+      "train_cash": 38003.05179391849,
+      "test_cash": 2274.6721384095326,
+      "tree_size": 3,
+      "tree_repr": "(> volatility(62) rsi(94))"
+    },
+    {
+      "penalty": 5000.0,
+      "max_depth": 3,
+      "train_cash": 20778.13764631034,
+      "test_cash": 1514.8561933412864,
+      "tree_size": 1,
+      "tree_repr": "lma(157)"
+    },
+    {
+      "penalty": 5000.0,
+      "max_depth": 5,
+      "train_cash": 38003.05179391849,
+      "test_cash": 358.8026162245327,
+      "tree_size": 3,
+      "tree_repr": "(> sma(136) ema(121,0.28))"
+    },
+    {
+      "penalty": 5000.0,
+      "max_depth": 7,
+      "train_cash": 20006.0212782075,
+      "test_cash": 1529.3510999017642,
+      "tree_size": 1,
+      "tree_repr": "lma(152)"
+    }
+  ]
+}

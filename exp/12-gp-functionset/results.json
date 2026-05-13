@@ -1,0 +1,26 @@
+{
+  "buy_and_hold_test": 2169.582627048214,
+  "experiments": [
+    {
+      "label": "minimal",
+      "train_cash": 38003.05179391849,
+      "test_cash": 1000.0,
+      "tree_size": 5,
+      "tree_repr": "(> (- sma(134) price) sma(195))"
+    },
+    {
+      "label": "original",
+      "train_cash": 38003.05179391849,
+      "test_cash": 358.8026162245327,
+      "tree_size": 10,
+      "tree_repr": "(< (IF (< ema(142,0.10) sma(137)) ema(142,0.10) (+ 0.346 ema(93,0.33))) sma(137))"
+    },
+    {
+      "label": "extended",
+      "train_cash": 38003.05179391849,
+      "test_cash": 1621.586838010873,
+      "tree_size": 3,
+      "tree_repr": "(> volatility(20) rsi(49))"
+    }
+  ]
+}

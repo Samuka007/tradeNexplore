@@ -1,0 +1,61 @@
+{
+  "buy_and_hold_test": 2169.582627048214,
+  "experiments": [
+    {
+      "config": {
+        "particles": 15,
+        "iterations": 100,
+        "label": "15p\u00d7100i"
+      },
+      "train_cash": 48048.42482784395,
+      "test_cash": 2366.488896745473,
+      "best_params": [
+        118.69404418434026,
+        179.32118246480312,
+        0.1
+      ]
+    },
+    {
+      "config": {
+        "particles": 30,
+        "iterations": 50,
+        "label": "30p\u00d750i (baseline)"
+      },
+      "train_cash": 48048.42482784395,
+      "test_cash": 2366.488896745473,
+      "best_params": [
+        119.09959531045105,
+        179.43209099856824,
+        0.1
+      ]
+    },
+    {
+      "config": {
+        "particles": 60,
+        "iterations": 25,
+        "label": "60p\u00d725i"
+      },
+      "train_cash": 48048.42482784395,
+      "test_cash": 2366.488896745473,
+      "best_params": [
+        119.04025482503772,
+        178.97458679557704,
+        0.1
+      ]
+    },
+    {
+      "config": {
+        "particles": 100,
+        "iterations": 15,
+        "label": "100p\u00d715i"
+      },
+      "train_cash": 37741.54717766068,
+      "test_cash": 2169.582627048214,
+      "best_params": [
+        120.60326971241928,
+        182.96167136336373,
+        0.1
+      ]
+    }
+  ]
+}

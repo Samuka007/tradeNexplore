@@ -1,0 +1,41 @@
+{
+  "buy_and_hold_test": 2169.582627048214,
+  "experiments": [
+    {
+      "pop": 25,
+      "gen": 60,
+      "evals": 1500,
+      "train_cash": 38003.05179391849,
+      "test_cash": 334.0742187698403,
+      "tree_size": 3,
+      "tree_repr": "(< ema(135,0.68) lma(195))"
+    },
+    {
+      "pop": 50,
+      "gen": 30,
+      "evals": 1500,
+      "train_cash": 38003.05179391849,
+      "test_cash": 1621.586838010873,
+      "tree_size": 3,
+      "tree_repr": "(> volatility(20) rsi(49))"
+    },
+    {
+      "pop": 75,
+      "gen": 20,
+      "evals": 1500,
+      "train_cash": 38003.05179391849,
+      "test_cash": 3142.6350990071487,
+      "tree_size": 9,
+      "tree_repr": "(> (< momentum(44) lma(162)) (> (+ price volatility(63)) ema(45,0.30)))"
+    },
+    {
+      "pop": 100,
+      "gen": 15,
+      "evals": 1500,
+      "train_cash": 38003.05179391849,
+      "test_cash": 336.26126669935326,
+      "tree_size": 3,
+      "tree_repr": "(> lma(179) lma(8))"
+    }
+  ]
+}
