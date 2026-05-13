@@ -1,0 +1,222 @@
+"""Genetic Programming for tree-structured trading rules."""
+
+import numpy as np
+from concurrent.futures import ThreadPoolExecutor
+from tiny_bot.filters import wma, sma_filter, lma_filter, ema_filter
+
+class GPNode:
+    """Node in a GP program tree."""
+
+    def __init__(self, value: str, terminal: bool = False):
+        self.value = value
+        self.terminal = terminal
+        self.children: list[GPNode] = []
+        self.params: dict = {}
+
+    def copy(self) -> "GPNode":
+        n = GPNode(self.value, self.terminal)
+        n.params = self.params.copy()
+        n.children = [c.copy() for c in self.children]
+        return n
+
+    def __repr__(self) -> str:
+        if self.terminal:
+            if self.value in ("sma", "lma"):
+                return f"{self.value}({self.params.get('N', '?')})"
+            if self.value == "ema":
+                return f"ema({self.params.get('N', '?')},{self.params.get('alpha', '?'):.2f})"
+            if self.value == "const":
+                return f"{self.params.get('value', 0):.3f}"
+            return self.value
+        return f"({self.value} {' '.join(repr(c) for c in self.children)})"
+
+
+class GP:
+    """Tree-based Genetic Programming."""
+
+    def __init__(
+        self,
+        pop_size: int = 100,
+        generations: int = 50,
+        seed: int | None = None,
+    ):
+        if seed is not None:
+            np.random.seed(seed)
+        self.pop_size = pop_size
+        self.generations = generations
+        self.funs = ["+", "-", "*", ">", "<", "AND", "IF"]
+        self.terms = ["price", "sma", "lma", "ema", "const"]
+        self.arity = {"+": 2, "-": 2, "*": 2, ">": 2, "<": 2, "AND": 2, "IF": 3}
+        self.max_depth = 5
+
+    def _random_tree(self, depth: int = 0, max_depth: int | None = None) -> GPNode:
+        if max_depth is None:
+            max_depth = self.max_depth
+        if depth >= max_depth or (depth > 0 and np.random.rand() < 0.3):
+            t = np.random.choice(self.terms)
+            n = GPNode(t, True)
+            if t in ("sma", "lma"):
+                n.params["N"] = np.random.randint(5, 200)
+            elif t == "ema":
+                n.params["N"] = np.random.randint(5, 200)
+                n.params["alpha"] = np.random.uniform(0.01, 0.99)
+            elif t == "const":
+                n.params["value"] = np.random.uniform(-1, 1)
+            return n
+        f = np.random.choice(self.funs)
+        n = GPNode(f, False)
+        for _ in range(self.arity[f]):
+            n.children.append(self._random_tree(depth + 1, max_depth))
+        return n
+
+    def _collect(self, node: GPNode):
+        if node.terminal:
+            if node.value == "sma":
+                return {("sma", node.params["N"])}
+            if node.value == "lma":
+                return {("lma", node.params["N"])}
+            if node.value == "ema":
+                return {("ema", node.params["N"], node.params["alpha"])}
+            return set()
+        r = set()
+        for c in node.children:
+            r |= self._collect(c)
+        return r
+
+    def _cache(self, tree: GPNode, prices: np.ndarray) -> dict:
+        cache = {"price": prices}
+        refs = self._collect(tree)
+        n = len(prices)
+        for ref in refs:
+            if ref[0] == "sma":
+                N = min(ref[1], n)
+                cache[ref] = wma(prices, N, sma_filter(N))
+            elif ref[0] == "lma":
+                N = min(ref[1], n)
+                cache[ref] = wma(prices, N, lma_filter(N))
+            elif ref[0] == "ema":
+                _, N_raw, alpha = ref
+                N = min(N_raw, n)
+                cache[ref] = wma(prices, N, ema_filter(N, alpha))
+        return cache
+
+    def _eval(self, node: GPNode, cache: dict, idx: int) -> float:
+        if node.terminal:
+            if node.value == "price":
+                return float(cache["price"][idx])
+            if node.value in ("sma", "lma"):
+                arr = cache[(node.value, node.params["N"])]
+                return float(arr[idx]) if idx < len(arr) else float(cache["price"][idx])
+            if node.value == "ema":
+                arr = cache[("ema", node.params["N"], node.params["alpha"])]
+                return float(arr[idx]) if idx < len(arr) else float(cache["price"][idx])
+            if node.value == "const":
+                return float(node.params["value"])
+            return 0.0
+        v = [self._eval(c, cache, idx) for c in node.children]
+        op = node.value
+        if op == "+":
+            return v[0] + v[1]
+        if op == "-":
+            return v[0] - v[1]
+        if op == "*":
+            return v[0] * v[1]
+        if op == ">":
+            return 1.0 if v[0] > v[1] else 0.0
+        if op == "<":
+            return 1.0 if v[0] < v[1] else 0.0
+        if op == "AND":
+            return 1.0 if (v[0] and v[1]) else 0.0
+        if op == "IF":
+            return v[1] if v[0] else v[2]
+        return 0.0
+
+    def evaluate(self, tree: GPNode, prices: np.ndarray) -> np.ndarray:
+        """Evaluate tree across all prices to generate signals (+1, -1, 0)."""
+        n = len(prices)
+        cache = self._cache(tree, prices)
+        raw = np.zeros(n)
+        for i in range(n):
+            raw[i] = self._eval(tree, cache, i)
+        sig = np.zeros(n, dtype=int)
+        prev = 0
+        for i in range(n):
+            curr = 1 if raw[i] > 0 else (-1 if raw[i] < 0 else 0)
+            if curr != 0 and curr != prev:
+                sig[i] = curr
+                prev = curr
+        return sig
+
+    def _nodes(self, node: GPNode) -> list[GPNode]:
+        ns = [node]
+        for c in node.children:
+            ns.extend(self._nodes(c))
+        return ns
+
+    def _crossover(self, p1: GPNode, p2: GPNode) -> GPNode:
+        c = p1.copy()
+        ns1 = self._nodes(c)
+        ns2 = self._nodes(p2)
+        if not ns1 or not ns2:
+            return c
+        n1 = np.random.choice(ns1)
+        n2 = np.random.choice(ns2)
+        n1.value = n2.value
+        n1.terminal = n2.terminal
+        n1.params = n2.params.copy()
+        n1.children = [c.copy() for c in n2.children]
+        return c
+
+    def _mutate(self, ind: GPNode) -> GPNode:
+        m = ind.copy()
+        ns = self._nodes(m)
+        if not ns:
+            return m
+        t = np.random.choice(ns)
+        st = self._random_tree(max_depth=self.max_depth // 2)
+        t.value = st.value
+        t.terminal = st.terminal
+        t.params = st.params.copy()
+        t.children = [c.copy() for c in st.children]
+        return m
+
+    def _select(self, pop: list[GPNode], fit: list[float]) -> GPNode:
+        idxs = np.random.choice(len(pop), size=3, replace=False)
+        return pop[idxs[np.argmax([fit[i] for i in idxs])]]
+
+    def optimize(self, fitness_fn, n_workers: int = 1):
+        """Return dict with keys: best, fitness, history.
+
+        Args:
+            n_workers: number of threads for parallel fitness evaluation.
+        """
+        pop = [self._random_tree() for _ in range(self.pop_size)]
+
+        def _eval_all(population):
+            if n_workers > 1:
+                with ThreadPoolExecutor(max_workers=n_workers) as ex:
+                    return list(ex.map(fitness_fn, population))
+            return [fitness_fn(ind) for ind in population]
+
+        fit = _eval_all(pop)
+        history = []
+        for _ in range(self.generations):
+            new = []
+            best_idx = int(np.argmax(fit))
+            new.append(pop[best_idx].copy())
+            while len(new) < self.pop_size:
+                r = np.random.rand()
+                if r < 0.9:
+                    p1 = self._select(pop, fit)
+                    p2 = self._select(pop, fit)
+                    new.append(self._crossover(p1, p2))
+                elif r < 0.9 + 0.1:
+                    p = self._select(pop, fit)
+                    new.append(self._mutate(p))
+                else:
+                    new.append(self._select(pop, fit).copy())
+            pop = new
+            fit = _eval_all(pop)
+            history.append(float(max(fit)))
+        best_idx = int(np.argmax(fit))
+        return {"best": pop[best_idx], "fitness": fit[best_idx], "history": history}
