@@ -1,0 +1,30 @@
+{
+  "windows": [
+    {
+      "window": "2017-2018",
+      "bh_cash": 1711.4765294836095,
+      "pso_cash": 1000.0,
+      "gp_cash": 589.7358694570061,
+      "pso_wins": false,
+      "gp_wins": false,
+      "ir_pso": -0.9999999998594472,
+      "ir_gp": -1.576637616820755
+    },
+    {
+      "window": "2020-2021",
+      "bh_cash": 4106.256547273641,
+      "pso_cash": 1000.0,
+      "gp_cash": 4106.256547273641,
+      "pso_wins": false,
+      "gp_wins": false,
+      "ir_pso": -0.9999999999678069,
+      "ir_gp": 0.0
+    }
+  ],
+  "aggregate": {
+    "pso_win_rate": 0.0,
+    "gp_win_rate": 0.0,
+    "avg_ir_pso": -0.9999999999136271,
+    "avg_ir_gp": -0.7883188084103775
+  }
+}
