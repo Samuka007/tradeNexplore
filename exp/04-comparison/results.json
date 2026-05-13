@@ -29,8 +29,8 @@
     },
     {
       "name": "Classic_50_200_SMA",
-      "train_cash": 14615.18,
-      "test_cash": 4048.35
+      "train_cash": 17084.0,
+      "test_cash": 4038.0
     },
     {
       "name": "GP_original_no_penalty",
