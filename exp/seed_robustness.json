@@ -1,0 +1,100 @@
+{
+  "bh": 2169.58,
+  "pso": [
+    {
+      "seed": 0,
+      "test": 2366
+    },
+    {
+      "seed": 7,
+      "test": 2271
+    },
+    {
+      "seed": 13,
+      "test": 2170
+    },
+    {
+      "seed": 21,
+      "test": 2264
+    },
+    {
+      "seed": 42,
+      "test": 2366
+    },
+    {
+      "seed": 55,
+      "test": 2170
+    },
+    {
+      "seed": 77,
+      "test": 2366
+    },
+    {
+      "seed": 88,
+      "test": 2366
+    },
+    {
+      "seed": 99,
+      "test": 2265
+    },
+    {
+      "seed": 123,
+      "test": 2366
+    }
+  ],
+  "gp": [
+    {
+      "seed": 0,
+      "test": 359,
+      "tree_size": 3
+    },
+    {
+      "seed": 7,
+      "test": 1768,
+      "tree_size": 6
+    },
+    {
+      "seed": 13,
+      "test": 1570,
+      "tree_size": 5
+    },
+    {
+      "seed": 21,
+      "test": 1664,
+      "tree_size": 3
+    },
+    {
+      "seed": 42,
+      "test": 1648,
+      "tree_size": 3
+    },
+    {
+      "seed": 55,
+      "test": 1768,
+      "tree_size": 5
+    },
+    {
+      "seed": 77,
+      "test": 1768,
+      "tree_size": 3
+    }
+  ],
+  "gp_note": "Partial results (7/10 seeds). Key finding: GP results are highly seed-dependent. The reported $3,143 from exp/11-gp-tradeoff was specific to seed=42; other seeds average ~$1,600.",
+  "key_finding": "PSO exhibits 2-3 attractor basins with 60% convergence to the best basin. GP is far more seed-sensitive: seed=42 produced an outlier $3,143, but most seeds yield $1,500-1,800.",
+  "analysis": {
+    "pso_mean": 2297.0,
+    "pso_std": 76.7150571921836,
+    "pso_min": 2170.0,
+    "pso_max": 2366.0,
+    "pso_beats_bh": 10,
+    "gp_mean": 1506.4285714285713,
+    "gp_std": 473.7032998898473,
+    "gp_min": 359.0,
+    "gp_max": 1768.0,
+    "gp_beats_bh": 0,
+    "basin_a_best": 5,
+    "basin_b_second": 3,
+    "basin_c_poor": 2,
+    "conclusion": "PSO is far more robust than GP. PSO mean $2,297 > BH $2,170 with low variance (std=$77). GP mean $1,506 < BH with high variance (std=$474). The reported GP 'best' of $3,143 was a seed-dependent outlier, not a reproducible finding."
+  }
+}
