@@ -94,7 +94,7 @@ class VectorStrategy:
             sma_slow = wma(prices, d_slow, sma_filter(d_slow))
             diff = np.nan_to_num(sma_fast - sma_slow, nan=0.0)
             # Sigmoid position: 0 = empty, 1 = full long
-            return 1.0 / (1.0 + np.exp(-diff / self.scale))
+            return 1.0 / (1.0 + np.exp(-np.clip(diff / self.scale, -500, 500)))
         else:
             raise ValueError(f"unknown strategy type: {self.type}")
 

@@ -191,7 +191,7 @@ class GP:
         for i in range(n):
             raw[i] = self._eval(tree, cache, i)
         if continuous:
-            return 1.0 / (1.0 + np.exp(-raw))
+            return 1.0 / (1.0 + np.exp(-np.clip(raw, -500, 500)))
         sig = np.zeros(n, dtype=int)
         prev = 0
         for i in range(n):
