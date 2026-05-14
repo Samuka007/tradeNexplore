@@ -18,7 +18,7 @@
 - [x] **12-GP 函数集**：minimal/original/extended 三档对比
 - [x] **13-Walk-forward PSO**：position_sma，修正步进后 5 窗口
 - [x] **14-GP+PSO Hybrid**：结构 + 参数优化
-- [ ] **15-GP Warm-start**：初始种群注入人类规则（运行中）
+- [x] **15-GP Warm-start**：初始种群注入人类规则（**完成！+40% 提升**）
 - [ ] **16-GP+PSO λ 扫描**：不同惩罚系数下的 hybrid（运行中）
 
 ### 补充分析
