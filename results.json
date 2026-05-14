@@ -1,0 +1,77 @@
+{
+  "bh": 2169.582627048214,
+  "results": [
+    {
+      "lambda": 0,
+      "tree_size": 37,
+      "tree": "(ABS (IF (< (+ volatility(178) (AND (IF (ABS rsi(169)) -0.251 (/ price volatility(75))) (/ (* rsi(112) (* lma(30) lma(44))) (AND -0.875 momentum(199))))) (ABS (> price momentum(53)))) ema(65,0.82) (* (< (+ price momentum(62)) 0.112) (MAX (ABS lma(24)) volatility(53)))))",
+      "gp_train": 38003.05179391849,
+      "gp_test": 821.4148017779132,
+      "refined_train": 38003.05179391849,
+      "refined_test": 821.4148017779132,
+      "n_params": 16,
+      "param_bounds": [
+        "(5, 200)",
+        "(5, 200)",
+        "(-1.0, 1.0)",
+        "(5, 200)",
+        "(5, 200)",
+        "(5, 200)",
+        "(5, 200)",
+        "(-1.0, 1.0)",
+        "(5, 200)",
+        "(5, 200)",
+        "(5, 200)",
+        "(0.01, 0.99)",
+        "(5, 200)",
+        "(-1.0, 1.0)",
+        "(5, 200)",
+        "(5, 200)"
+      ]
+    },
+    {
+      "lambda": 100,
+      "tree_size": 6,
+      "tree": "(ABS (< (+ price momentum(62)) 0.112))",
+      "gp_train": 38003.05179391849,
+      "gp_test": 821.4148017779132,
+      "refined_train": 38003.05179391849,
+      "refined_test": 694.6726156839819,
+      "n_params": 2,
+      "param_bounds": [
+        "(5, 200)",
+        "(-1.0, 1.0)"
+      ]
+    },
+    {
+      "lambda": 500,
+      "tree_size": 5,
+      "tree": "(/ (< volatility(132) ema(16,0.09)) momentum(171))",
+      "gp_train": 44089.366979125334,
+      "gp_test": 2107.1201914680005,
+      "refined_train": 54360.902416715915,
+      "refined_test": 1035.8953862391816,
+      "n_params": 4,
+      "param_bounds": [
+        "(5, 200)",
+        "(5, 200)",
+        "(0.01, 0.99)",
+        "(5, 200)"
+      ]
+    },
+    {
+      "lambda": 1000,
+      "tree_size": 3,
+      "tree": "(> sma(157) volatility(169))",
+      "gp_train": 38003.05179391849,
+      "gp_test": 1647.77986474973,
+      "refined_train": 38003.05179391849,
+      "refined_test": 1762.1866215677167,
+      "n_params": 2,
+      "param_bounds": [
+        "(5, 200)",
+        "(5, 200)"
+      ]
+    }
+  ]
+}
