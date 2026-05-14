@@ -17,8 +17,8 @@
 | 11 | GP 种群/代数 | [report_zh.md](11-gp-tradeoff/report_zh.md) | [results.json](11-gp-tradeoff/results.json) | 75×20: seed=42 偶然 $3,143 |
 | 12 | GP 函数集 | [report_zh.md](12-gp-functionset/report_zh.md) | [results.json](12-gp-functionset/results.json) | extended > minimal > original |
 | 13 | Walk-forward PSO | [report_zh.md](13-walkforward-pso/report_zh.md) | [results.json](13-walkforward-pso/results.json) | 5 窗口，40% 胜率 |
+| 14 | GP+PSO Hybrid | [report_zh.md](14-gp-pso-hybrid/report_zh.md) | [results.json](14-gp-pso-hybrid/results.json) | GP 结构 + PSO 参数，+7% 但 < PSO-only |
 
-## 补充分析
 
 | 分析 | 文档 | 数据 | 核心发现 |
 |------|------|------|----------|
