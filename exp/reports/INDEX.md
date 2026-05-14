@@ -17,7 +17,9 @@
 | 11 | GP 种群/代数 | [11-gp-tradeoff/report_zh.md](../11-gp-tradeoff/report_zh.md) | [11-gp-tradeoff/results.json](../11-gp-tradeoff/results.json) | 75×20: seed=42 偶然 $3,143 |
 | 12 | GP 函数集 | [12-gp-functionset/report_zh.md](../12-gp-functionset/report_zh.md) | [12-gp-functionset/results.json](../12-gp-functionset/results.json) | extended > minimal > original |
 | 13 | Walk-forward PSO | [13-walkforward-pso/report_zh.md](../13-walkforward-pso/report_zh.md) | [13-walkforward-pso/results.json](../13-walkforward-pso/results.json) | 5 窗口，40% 胜率 |
-| 14 | GP+PSO Hybrid | [14-gp-pso-hybrid/report_zh.md](../14-gp-pso-hybrid/report_zh.md) | [14-gp-pso-hybrid/results.json](../14-gp-pso-hybrid/results.json) | GP 结构 + PSO 参数，+7% 但 < PSO-only |
+| 14 | GP+PSO Hybrid | [report_zh.md](../14-gp-pso-hybrid/report_zh.md) | [results.json](../14-gp-pso-hybrid/results.json) | GP 结构 + PSO 参数，+7% 但 < PSO-only |
+| 15 | GP Warm-start | [report_zh.md](../15-gp-warmstart/report_zh.md) | [results.json](../15-gp-warmstart/results.json) | 注入人类规则，GP +40% 接近 PSO |
+| 16 | GP+PSO λ 扫描 | [report_zh.md](../16-gp-pso-lambda-sweep/report_zh.md) | [results.json](../16-gp-pso-lambda-sweep/results.json) | λ=500 GP-alone $2,107 最佳，PSO 破坏复杂树 |
 
 ## 补充分析
 
