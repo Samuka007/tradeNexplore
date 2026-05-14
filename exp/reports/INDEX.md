@@ -20,6 +20,7 @@
 | 14 | GP+PSO Hybrid | [report_zh.md](../14-gp-pso-hybrid/report_zh.md) | [results.json](../14-gp-pso-hybrid/results.json) | GP 结构 + PSO 参数，+7% 但 < PSO-only |
 | 15 | GP Warm-start | [report_zh.md](../15-gp-warmstart/report_zh.md) | [results.json](../15-gp-warmstart/results.json) | 注入人类规则，GP +40% 接近 PSO |
 | 16 | GP+PSO λ 扫描 | [report_zh.md](../16-gp-pso-lambda-sweep/report_zh.md) | [results.json](../16-gp-pso-lambda-sweep/results.json) | λ=500 GP-alone $2,107 最佳，PSO 破坏复杂树 |
+| 17 | GP 系统网格搜索 | [report_zh.md](../17-systematic-hyperparam/report_zh.md) | [results.json](../17-systematic-hyperparam/results.json) | **λ=500 真实甜蜜点**（3×7×2=42 runs） |
 
 ## 补充分析
 

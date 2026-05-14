@@ -1,0 +1,117 @@
+{
+  "bh": 2169.582627048214,
+  "results": [
+    {
+      "seed": 42,
+      "lambda": 100,
+      "depth": 5,
+      "test": 358.8026162245327,
+      "tree_size": 5,
+      "tree": "(< (+ price volatility(30)) sma(140))"
+    },
+    {
+      "seed": 42,
+      "lambda": 100,
+      "depth": 7,
+      "test": 821.4148017779132,
+      "tree_size": 6,
+      "tree": "(ABS (< (+ price momentum(62)) 0.112))"
+    },
+    {
+      "seed": 42,
+      "lambda": 250,
+      "depth": 5,
+      "test": 1685.3786495549775,
+      "tree_size": 3,
+      "tree": "(> sma(145) momentum(126))"
+    },
+    {
+      "seed": 42,
+      "lambda": 250,
+      "depth": 7,
+      "test": 334.0742187698403,
+      "tree_size": 3,
+      "tree": "(> sma(145) price)"
+    },
+    {
+      "seed": 42,
+      "lambda": 500,
+      "depth": 5,
+      "test": 3142.6350990071487,
+      "tree_size": 9,
+      "tree": "(> (< momentum(44) lma(162)) (> (+ price volatility(63)) ema(45,0.30)))"
+    },
+    {
+      "seed": 42,
+      "lambda": 500,
+      "depth": 7,
+      "test": 2107.1201914680005,
+      "tree_size": 5,
+      "tree": "(/ (< volatility(132) ema(16,0.09)) momentum(171))"
+    },
+    {
+      "seed": 42,
+      "lambda": 750,
+      "depth": 5,
+      "test": 1804.1550159654037,
+      "tree_size": 3,
+      "tree": "(> price volatility(121))"
+    },
+    {
+      "seed": 42,
+      "lambda": 750,
+      "depth": 7,
+      "test": 1752.7183921035728,
+      "tree_size": 3,
+      "tree": "(> sma(177) rsi(124))"
+    },
+    {
+      "seed": 42,
+      "lambda": 1000,
+      "depth": 5,
+      "test": 1690.0369647453565,
+      "tree_size": 3,
+      "tree": "(> sma(164) momentum(195))"
+    },
+    {
+      "seed": 42,
+      "lambda": 1000,
+      "depth": 7,
+      "test": 1647.77986474973,
+      "tree_size": 3,
+      "tree": "(> sma(157) volatility(169))"
+    },
+    {
+      "seed": 42,
+      "lambda": 2000,
+      "depth": 5,
+      "test": 1639.2124730402227,
+      "tree_size": 3,
+      "tree": "(> volatility(76) rsi(153))"
+    },
+    {
+      "seed": 42,
+      "lambda": 2000,
+      "depth": 7,
+      "test": 1701.486025450355,
+      "tree_size": 3,
+      "tree": "(< momentum(147) rsi(185))"
+    },
+    {
+      "seed": 42,
+      "lambda": 5000,
+      "depth": 5,
+      "test": 2148.218238632213,
+      "tree_size": 1,
+      "tree": "sma(192)"
+    },
+    {
+      "seed": 42,
+      "lambda": 5000,
+      "depth": 7,
+      "test": 1712.3918347475085,
+      "tree_size": 1,
+      "tree": "sma(131)"
+    }
+  ]
+}

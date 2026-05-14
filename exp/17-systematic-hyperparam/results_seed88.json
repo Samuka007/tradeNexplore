@@ -1,0 +1,117 @@
+{
+  "bh": 2169.582627048214,
+  "results": [
+    {
+      "seed": 88,
+      "lambda": 100,
+      "depth": 5,
+      "test": 1720.081807072984,
+      "tree_size": 7,
+      "tree": "(> (- price (- price rsi(139))) rsi(139))"
+    },
+    {
+      "seed": 88,
+      "lambda": 100,
+      "depth": 7,
+      "test": 422.17141666644676,
+      "tree_size": 7,
+      "tree": "(> 0.674 (+ (+ -0.961 momentum(142)) momentum(95)))"
+    },
+    {
+      "seed": 88,
+      "lambda": 250,
+      "depth": 5,
+      "test": 383.0388484673117,
+      "tree_size": 7,
+      "tree": "(> (< ema(174,0.10) sma(132)) (< lma(181) price))"
+    },
+    {
+      "seed": 88,
+      "lambda": 250,
+      "depth": 7,
+      "test": 1651.123175467201,
+      "tree_size": 4,
+      "tree": "(> (ABS momentum(84)) momentum(142))"
+    },
+    {
+      "seed": 88,
+      "lambda": 500,
+      "depth": 5,
+      "test": 1685.3786495549775,
+      "tree_size": 3,
+      "tree": "(> sma(155) momentum(126))"
+    },
+    {
+      "seed": 88,
+      "lambda": 500,
+      "depth": 7,
+      "test": 3142.6350990071487,
+      "tree_size": 10,
+      "tree": "(> rsi(129) (* (+ momentum(7) (+ momentum(7) rsi(129))) (ABS lma(64))))"
+    },
+    {
+      "seed": 88,
+      "lambda": 750,
+      "depth": 5,
+      "test": 2000.9294052307434,
+      "tree_size": 3,
+      "tree": "(> volatility(128) momentum(118))"
+    },
+    {
+      "seed": 88,
+      "lambda": 750,
+      "depth": 7,
+      "test": 821.4148017779132,
+      "tree_size": 5,
+      "tree": "(> 0.743 (+ momentum(110) price))"
+    },
+    {
+      "seed": 88,
+      "lambda": 1000,
+      "depth": 5,
+      "test": 3142.6350990071487,
+      "tree_size": 5,
+      "tree": "(< ema(53,0.91) (- volatility(15) momentum(30)))"
+    },
+    {
+      "seed": 88,
+      "lambda": 1000,
+      "depth": 7,
+      "test": 1606.0507213394196,
+      "tree_size": 3,
+      "tree": "(> price volatility(139))"
+    },
+    {
+      "seed": 88,
+      "lambda": 2000,
+      "depth": 5,
+      "test": 358.8026162245327,
+      "tree_size": 5,
+      "tree": "(< ema(97,0.56) (+ sma(148) 0.477))"
+    },
+    {
+      "seed": 88,
+      "lambda": 2000,
+      "depth": 7,
+      "test": 1612.0890877145812,
+      "tree_size": 1,
+      "tree": "sma(94)"
+    },
+    {
+      "seed": 88,
+      "lambda": 5000,
+      "depth": 5,
+      "test": 1786.137833331621,
+      "tree_size": 1,
+      "tree": "lma(68)"
+    },
+    {
+      "seed": 88,
+      "lambda": 5000,
+      "depth": 7,
+      "test": 1579.6038108494802,
+      "tree_size": 1,
+      "tree": "lma(159)"
+    }
+  ]
+}
