@@ -1,53 +1,48 @@
 # 实验项目索引
 
-## 核心实验（14 个）
+## 核心实验
 
-| 编号 | 名称 | 报告 | 结果 | 核心发现 |
-|------|------|------|------|----------|
-| 01 | 消融实验 | [01-ablation/report_zh_updated.md](../01-ablation/report_zh_updated.md) | [01-ablation/experiment_results.json](../01-ablation/experiment_results.json) | 制度变迁 > 交易成本 > 过拟合 |
-| 02 | Walk-forward | [02-walk_forward/report_zh.md](../02-walk_forward/report_zh.md) | [02-walk_forward/results.json](../02-walk_forward/results.json) | dual_crossover 在短窗口几乎无交易 |
-| 03 | 鲁棒优化 | [03-robust_opt/report_zh.md](../03-robust_opt/report_zh.md) | [03-robust_opt/results.json](../03-robust_opt/results.json) | GP 退化为不交易；PSO 38.5% 胜率 |
-| 04 | 结构复杂度 | [04-comparison/report_zh.md](../04-comparison/report_zh.md) | [04-comparison/results.json](../04-comparison/results.json) | Classic 50/200 仅交易 1 次即最优 |
-| 05 | MoE | [05-moe/report_zh.md](../05-moe/report_zh.md) | [05-moe/results.json](../05-moe/results.json) | MoE 有害（$478 < $606） |
-| 06 | 仓位控制 | [06-position/report_zh.md](../06-position/report_zh.md) | — | 连续信号首次与 BH 持平 |
-| 07 | PSO 粒子/迭代 | [07-pso-tradeoff/report_zh.md](../07-pso-tradeoff/report_zh.md) | [07-pso-tradeoff/results.json](../07-pso-tradeoff/results.json) | ≥30 粒子均收敛到 $2,296 |
-| 08 | PSO 惯性 | [08-pso-inertia/report_zh.md](../08-pso-inertia/report_zh.md) | [08-pso-inertia/results.json](../08-pso-inertia/results.json) | 三种策略无差异 |
-| 09 | GP 惩罚 | [09-gp-parsimony/report_zh.md](../09-gp-parsimony/report_zh.md) | [09-gp-parsimony/results.json](../09-gp-parsimony/results.json) | λ=1000 首次击败 BH（单种子） |
-| 10 | 仓位 scale | [10-position-scale/report_zh.md](../10-position-scale/report_zh.md) | [10-position-scale/results.json](../10-position-scale/results.json) | 0.1-10 最优 |
-| 11 | GP 种群/代数 | [11-gp-tradeoff/report_zh.md](../11-gp-tradeoff/report_zh.md) | [11-gp-tradeoff/results.json](../11-gp-tradeoff/results.json) | 75×20: seed=42 偶然 $3,143 |
-| 12 | GP 函数集 | [12-gp-functionset/report_zh.md](../12-gp-functionset/report_zh.md) | [12-gp-functionset/results.json](../12-gp-functionset/results.json) | extended > minimal > original |
-| 13 | Walk-forward PSO | [13-walkforward-pso/report_zh.md](../13-walkforward-pso/report_zh.md) | [13-walkforward-pso/results.json](../13-walkforward-pso/results.json) | 5 窗口，40% 胜率 |
-| 14 | GP+PSO Hybrid | [report_zh.md](../14-gp-pso-hybrid/report_zh.md) | [results.json](../14-gp-pso-hybrid/results.json) | GP 结构 + PSO 参数，+7% 但 < PSO-only |
-| 15 | GP Warm-start | [report_zh.md](../15-gp-warmstart/report_zh.md) | [results.json](../15-gp-warmstart/results.json) | 注入人类规则，GP +40% 接近 PSO |
-| 16 | GP+PSO λ 扫描 | [report_zh.md](../16-gp-pso-lambda-sweep/report_zh.md) | [results.json](../16-gp-pso-lambda-sweep/results.json) | λ=500 GP-alone $2,107 最佳，PSO 破坏复杂树 |
-| 17 | GP 系统网格搜索 | [report_zh.md](../17-systematic-hyperparam/report_zh.md) | [results.json](../17-systematic-hyperparam/results.json) | **λ=500 真实甜蜜点**（3×7×2=42 runs） |
+| # | 实验 | 核心发现 | 可信度 |
+|---|------|----------|--------|
+| 01 | [消融实验](../01-ablation/report_zh_updated.md) | 制度变迁 > 交易成本 > 过拟合 | ✅ 高 |
+| 02 | [Walk-forward](../02-walk_forward/report_zh.md) | 5 窗口，40% 胜率 | ✅ 高 |
+| 03 | [鲁棒优化](../03-robust_opt/report_zh.md) | PSO 38.5% 胜率，GP 退化 | ✅ 高 |
+| 04 | [结构复杂度](../04-comparison/report_zh.md) | Classic 50/200 仅交易 1 次 | ✅ 高 |
+| 05 | [MoE](../05-moe/report_zh.md) | MoE 有害 | ✅ 高 |
+| 06 | [仓位控制](../06-position/report_zh.md) | 连续信号 = BH | ✅ 高 |
+| 07 | [PSO 粒子/迭代](../07-pso-tradeoff/report_zh.md) | ≥30 粒子稳定 | ✅ 高 |
+| 08 | [PSO 惯性](../08-pso-inertia/report_zh.md) | 三种策略无差异 | ✅ 高 |
+| 09 | [GP 惩罚](../09-gp-parsimony/report_zh.md) | ~~λ=1000 甜蜜点~~ → **λ=500（exp17 推翻）** | ⚠️ 已修正 |
+| 10 | [仓位 scale](../10-position-scale/report_zh.md) | 0.1-10 最优 | ✅ 高 |
+| 11 | [GP 种群/代数](../11-gp-tradeoff/report_zh.md) | 75×20 偶然 $3,143 | ✅ 高 |
+| 12 | [GP 函数集](../12-gp-functionset/report_zh.md) | extended > minimal > original | ✅ 高 |
+| 13 | [Walk-forward PSO](../13-walkforward-pso/report_zh.md) | 平均 $1,636 < single $2,296 | ✅ 高 |
+| 14 | [GP+PSO Hybrid](../14-gp-pso-hybrid/report_zh.md) | 极简树 +7%，复杂树 -51% | ✅ 高 |
+| 15 | [GP Warm-start](../15-gp-warmstart/report_zh.md) | +40%，6/10 击败 BH | ✅ 高 |
+| 16 | [GP+PSO λ 扫描](../16-gp-pso-lambda-sweep/report_zh.md) | λ=500 GP-alone 最佳 | ✅ 高 |
+| **17** | **[GP 系统网格搜索](../17-systematic-hyperparam/report_zh.md)** | **λ=500 真实甜蜜点（42 runs）** | ✅ **最高** |
 
-## 补充分析
-
-| 分析 | 文档 | 数据 | 核心发现 |
-|------|------|------|----------|
-| 多种子验证 | — | [seed_robustness.json](../analysis/seed_robustness/seed_robustness.json) | PSO 10/10 > BH, GP 0/10 < BH |
-| 手续费敏感性 | [fee_sensitivity.md](../analysis/fee_sensitivity/fee_sensitivity.md) | [fee_sensitivity.json](../analysis/fee_sensitivity/fee_sensitivity.json) | 盈亏平衡点 4.4% |
-| 市场阶段 | [market_regimes.md](../analysis/market_regimes/market_regimes.md) | [market_regimes.json](../analysis/market_regimes/market_regimes.json) | 无策略统治所有阶段 |
-| PSO 收敛 | [pso_convergence.md](../analysis/pso_convergence/pso_convergence.md) | [pso_convergence.json](../analysis/pso_convergence/pso_convergence.json) | Basin A 深+慢 vs B 浅+快 |
-| Basin 分析 | — | [basin_analysis.json](../analysis/landscape/basin_analysis.json) | 少交易 = 高收益 |
-| 2D Landscape | — | [landscape_2d.json](../analysis/landscape/landscape_2d.json) | Basin A (120,180) vs B (35,100) |
-| Equity Curves | — | [equity_curves.json](../analysis/landscape/equity_curves.json) | Classic 50/200 仅交易 1 次 |
-| GP 预算敏感 | [gp_budget_test.md](../analysis/gp_budget/gp_budget_test.md) | [gp_budget_test.json](../analysis/gp_budget/gp_budget_test.json) | 更多预算反而更差 |
-
-## 综合文档
+## 综合报告
 
 | 文档 | 说明 |
 |------|------|
-| [FINAL_REPORT.md](FINAL_REPORT.md) | 项目综合报告（完整版） |
-| [EXECUTIVE_SUMMARY.md](EXECUTIVE_SUMMARY.md) | 执行摘要 |
-| [RESULTS_TABLE.md](RESULTS_TABLE.md) | 全实验结果汇总表 |
-| [NOTES.md](NOTES.md) | 实验洞察（写作素材库） |
-| [KNOWN_ISSUES.md](KNOWN_ISSUES.md) | 已知问题与修复 |
-| [design/report_zh.md](../design/report_zh.md) | 方法论概述 |
+| [FINAL_REPORT.md](FINAL_REPORT.md) | **唯一综合报告**。基于最终数据，修正所有矛盾，每项结论标注 grounding |
+| [METHODOLOGY.md](METHODOLOGY.md) | 方法论文档（参数、函数集、评估协议） |
+| [KNOWN_ISSUES.md](KNOWN_ISSUES.md) | 已知 bug 与修复记录 |
+| [FUTURE_WORK.md](FUTURE_WORK.md) | 未来改进方向 |
 
-## 代码修复记录
+## 补充分析
 
-1. **Walk-forward stepping bug**: `start = train_end` → `start = start + pd.DateOffset(years=test_years)`
-2. **Backtest day 0 block**: 移除 `and i > 0`
-3. **Backtest Infinity overflow**: 添加 `min(..., 1e12)` 上限
+| 分析 | 文档 | 数据 |
+|------|------|------|
+| 多种子验证 | — | [seed_robustness.json](../analysis/seed_robustness/seed_robustness.json) |
+| 手续费敏感性 | [fee_sensitivity.md](../analysis/fee_sensitivity/fee_sensitivity.md) | [fee_sensitivity.json](../analysis/fee_sensitivity/fee_sensitivity.json) |
+| 市场阶段 | [market_regimes.md](../analysis/market_regimes/market_regimes.md) | [market_regimes.json](../analysis/market_regimes/market_regimes.json) |
+| PSO 收敛 | [pso_convergence.md](../analysis/pso_convergence/pso_convergence.md) | [pso_convergence.json](../analysis/pso_convergence/pso_convergence.json) |
+| GP 预算敏感 | [gp_budget_test.md](../analysis/gp_budget/gp_budget_test.md) | [gp_budget_test.json](../analysis/gp_budget/gp_budget_test.json) |
+
+## 代码修复
+
+1. Walk-forward stepping bug
+2. Backtest day 0 block
+3. Backtest Infinity overflow
