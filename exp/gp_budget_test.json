@@ -1,0 +1,32 @@
+{
+  "bh": 2169.582627048214,
+  "results": [
+    {
+      "label": "Low",
+      "pop": 50,
+      "gen": 30,
+      "train": 35003.05179391849,
+      "test": 2274.6721384095326,
+      "tree_size": 3,
+      "tree": "(> volatility(62) rsi(94))"
+    },
+    {
+      "label": "Medium",
+      "pop": 100,
+      "gen": 50,
+      "train": 35003.05179391849,
+      "test": 1774.946654708146,
+      "tree_size": 3,
+      "tree": "(< volatility(120) momentum(126))"
+    },
+    {
+      "label": "High",
+      "pop": 150,
+      "gen": 75,
+      "train": 35003.05179391849,
+      "test": 358.8026162245327,
+      "tree_size": 3,
+      "tree": "(> sma(157) price)"
+    }
+  ]
+}
