@@ -1,103 +1,109 @@
-# AI Trading Bot Framework
+# 基于 PSO 与 GP 的 BTC 交易策略优化研究
 
-A Python framework for comparing nature-inspired optimization algorithms (PSO, ABC, HS, GP) on trading strategy optimization.
+## 项目概述
 
-## Architecture
+本项目系统研究了粒子群优化（PSO）与遗传规划（GP）在 BTC 交易策略优化中的表现，重点在于**理解优化算法本身的行为**，而非追求绝对收益。
+
+**课程**: CITS4404 — 人工智能与自适应系统
+
+## 核心发现
+
+1. **PSO 显著优于 GP**：PSO 10/10 种子击败 Buy-and-Hold（平均 $2,297），GP 0/10（平均 $1,594）
+2. **制度变迁是策略失败的主因**：反转时间顺序带来 25× 收益提升
+3. **交易频率是隐藏的决定性因素**：Classic 50/200 SMA 仅交易 1 次即最优
+4. **不存在全能策略**：不同市场阶段需要不同策略
+5. **手续费是主要障碍**：盈亏平衡点约 4.4%
+6. **Warm-start 使 GP 提升 40%**：注入人类规则后 GP 平均 $2,362，首次接近 PSO
+
+## 项目结构
 
 ```
-trading_bot/
-├── filters.py           # WMA filters (SMA, LMA, EMA) via convolution
-├── strategy.py          # Trading strategies (dual crossover, MACD, GP tree)
-├── backtester.py        # Backtest engine with fitness evaluation
-├── data_loader.py       # Kaggle BTC data loading with train/val/test split
-├── algorithms/          # Optimization algorithm interfaces
-│   ├── base.py          # ContinuousOptimizer, StructuralOptimizer ABCs
-│   ├── pso.py           # PSO implementation (placeholder)
-│   ├── abc.py           # ABC implementation (placeholder)
-│   ├── harmony_search.py # HS implementation (placeholder)
-│   └── genetic_programming.py # GP implementation (placeholder)
-├── experiments/         # Experiment orchestration
-│   └── runner.py        # Run continuous/structural/hierarchical experiments
-├── visualization.py     # Plotting utilities
-└── check_fitness.py     # CLI for checking fixed policy fitness
+exp/                        # 实验目录
+├── 01-ablation/            # 消融实验
+├── 02-walk_forward/        # Walk-forward 验证
+├── 03-robust_opt/          # 鲁棒优化
+├── 04-comparison/          # 结构复杂度与 GP 函数集
+├── 05-moe/                 # Mixture-of-Experts
+├── 06-position/            # 仓位控制
+├── 07-pso-tradeoff/        # PSO 粒子/迭代 trade-off
+├── 08-pso-inertia/         # PSO 惯性策略
+├── 09-gp-parsimony/        # GP 惩罚系数敏感性
+├── 10-position-scale/      # 仓位 scale 敏感性
+├── 11-gp-tradeoff/         # GP 种群/代数 trade-off
+├── 12-gp-functionset/      # GP 函数集对比
+├── 13-walkforward-pso/     # Walk-forward vs 单次切分
+├── 14-gp-pso-hybrid/       # GP 结构 + PSO 参数
+├── 15-gp-warmstart/        # GP Warm-start 初始化
+├── 16-gp-pso-lambda-sweep/ # GP+PSO 的 λ 扫描
+├── analysis/               # 补充分析
+│   ├── seed_robustness/    # 多种子验证
+│   ├── fee_sensitivity/    # 手续费敏感性
+│   ├── market_regimes/     # 市场阶段分析
+│   ├── pso_convergence/    # PSO 收敛分析
+│   ├── gp_budget/          # GP 预算敏感性
+│   └── landscape/          # 2D Landscape
+├── reports/                # 综合报告
+│   ├── FINAL_REPORT.md     # 完整项目报告
+│   ├── EXECUTIVE_SUMMARY.md # 执行摘要
+│   ├── RESULTS_TABLE.md    # 全实验结果汇总
+│   ├── NOTES.md            # 实验洞察
+│   ├── KNOWN_ISSUES.md     # 已知问题与修复
+│   └── INDEX.md            # 项目索引
+└── design/                 # 方法论设计
+
+tiny_bot/                   # 核心代码包
+├── backtest.py             # 回测引擎
+├── strategy.py             # 策略定义
+├── pso.py                  # PSO 实现
+├── gp.py                   # GP 实现
+├── filters.py              # 技术指标过滤器
+├── data.py                 # 数据加载
+└── __init__.py
 ```
 
-## Quick Start
+## 快速导航
 
-### Check Fitness of a Fixed Policy
+| 你想了解什么 | 阅读文档 |
+|-------------|----------|
+| 项目核心结论 | [exp/reports/EXECUTIVE_SUMMARY.md](exp/reports/EXECUTIVE_SUMMARY.md) |
+| 完整分析报告 | [exp/reports/FINAL_REPORT.md](exp/reports/FINAL_REPORT.md) |
+| 所有实验数据 | [exp/reports/RESULTS_TABLE.md](exp/reports/RESULTS_TABLE.md) |
+| 实验目录索引 | [exp/reports/INDEX.md](exp/reports/INDEX.md) |
+
+## 运行实验
 
 ```bash
-# Using synthetic data (no Kaggle download needed)
-python -m trading_bot.check_fitness --synthetic
+# 使用虚拟环境
+.venv/bin/python exp/07-pso-tradeoff/run.py
 
-# With custom parameters
-python -m trading_bot.check_fitness --params "1,0,0,10,20,30,0.3,1,0,0,15,25,35,0.3" --synthetic
-
-# MACD strategy with baseline comparison
-python -m trading_bot.check_fitness --strategy macd --params "12,0.2,26,0.1,9,0.2,0.0" --synthetic --baseline
+# 或安装依赖后
+uv run python exp/07-pso-tradeoff/run.py
 ```
 
-### Load Data
+## 技术栈
 
-```python
-from trading_bot.data_loader import load_or_generate_data
+- **语言**: Python 3.11
+- **核心库**: numpy, pandas, yfinance
+- **数据**: Yahoo Finance BTC-USD 日数据（2014-2022）
 
-# Auto-fallback to synthetic if Kaggle data not present
-dataset = load_or_generate_data("data/btc_daily_2014_2022.csv")
-print(f"Train: {len(dataset.train_prices)}, Val: {len(dataset.val_prices)}, Test: {len(dataset.test_prices)}")
-```
+## 关键数据
 
-### Run an Experiment
+### 多种子验证（10 seeds）
 
-```python
-from trading_bot.experiments import ExperimentRunner
-from trading_bot.algorithms import StubPSO
-from trading_bot.data_loader import load_or_generate_data
-import numpy as np
+| 算法 | 平均测试 | 标准差 | 击败 BH |
+|------|----------|--------|---------|
+| **PSO** | **$2,297** | **$77** | **10/10** |
+| **GP** | **$1,594** | **$432** | **0/10** |
+| **GP Warm-start** | **$2,362** | **$894** | **6/10** |
 
-dataset = load_or_generate_data(fallback_to_synthetic=True)
-runner = ExperimentRunner(dataset)
+### 最优策略对比
 
-# 14D bounds for dual_crossover: [w1,w2,w3,d1,d2,d3,a3,w4,w5,w6,d4,d5,d6,a6]
-bounds = [(0.0, 1.0)]*3 + [(2.0, 200.0)]*3 + [(0.01, 0.99)] + [(0.0, 1.0)]*3 + [(2.0, 200.0)]*3 + [(0.01, 0.99)]
+| 策略 | 测试收益 | 交易次数 |
+|------|----------|----------|
+| Classic 50/200 SMA | $2,236 | **1** |
+| PSO position_sma | **$2,366** | 6 |
+| Buy-and-Hold | $2,170 | 1 |
 
-result = runner.run_continuous(StubPSO(), bounds, strategy_type="dual_crossover")
-print(f"Train fitness: {result.train_fitness:.2f}")
-print(f"Test fitness: {result.test_fitness:.2f}")
-```
+## 版本历史
 
-## Data
-
-The framework expects the **Kaggle Bitcoin Historical Dataset**:
-- Download from: https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data
-- Place at: `data/btc_daily_2014_2022.csv`
-- Split per specification:
-  - **Train**: 2014-2017 (algorithm optimization)
-  - **Validation**: 2018-2019 (hyperparameter tuning, early stopping)
-  - **Test**: 2020-2022 (final evaluation, unseen data)
-
-If real data is unavailable, synthetic data is auto-generated.
-
-## Testing
-
-```bash
-pytest tests/ -v
-```
-
-## Project Structure
-
-- **Framework components** (implemented): data loader, backtester, strategy interfaces, algorithm ABCs, experiment runner, visualization
-- **Core algorithms** (stubs provided): PSO, ABC, Harmony Search, Genetic Programming — implement `optimize()` in respective modules
-
-## Specification Compliance
-
-- ✅ Convolution-based WMA filters (np.convolve)
-- ✅ $1000 initial cash, 3% fee per trade
-- ✅ Full position buy/sell with forced liquidation
-- ✅ Fitness = final cash
-- ✅ Train/Validation/Test split (2014-2017 / 2018-2019 / 2020-2022)
-- ✅ Dual-crossover and MACD strategies
-- ✅ GP TreeStrategy for structural optimization
-- ✅ Buy-and-hold baseline comparison
-- ✅ Penalized fitness function (trade count penalty)
-- ✅ Modular architecture with clean interfaces
+57+ commits，包含 16 个实验、8 项补充分析、独立 reviewer 审查、3 个代码修复。
