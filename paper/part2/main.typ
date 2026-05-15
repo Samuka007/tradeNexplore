@@ -65,7 +65,7 @@ Across 10 seeds, PSO (`position_sma`) achieves mean test \$2,297 ($sigma$ = \$77
 
 === GP Reveals a Rugged Structural Landscape
 
-Raw GP (75-pop/20-gen) achieves mean \$1,689 ($sigma$ = \$677), with only 2/10 seeds beating BH. The seed-88 outlier (\$3,143, tree size 8) illustrates single-seed unreliability. This volatility is diagnostic: unrestricted tree search on weak signal produces a hypothesis space so large that selection is effectively random without regularisation, consistent with Allen and Karjalainen @allen1999using.
+consistent with #cite(<allen1999using>, form: "prose").
 
 #figure(image("assets/seed_robustness.pdf", width: 100%), caption: [GP seed robustness: random vs.\ warm-start (Exp.~15). Dashed = buy-and-hold.]) <fig-seed>
 
@@ -117,7 +117,7 @@ At 0\% fees PSO returns \$2,841; at 3\%, \$2,366. Break-even: ~4.4\%. Classic 50
 
 == Statistical Significance
 
-Wilcoxon signed-rank (one-sided, $alpha = 0.05$) and Mann-Whitney U tests. We note the data-snooping problem in technical trading rules highlighted by White @white2000reality and Sullivan et al.\ @sullivan1999data; our 7-value $lambda$ grid warrants caution with multiple comparisons. We report raw p-values and apply Bonferroni correction as a simple conservative heuristic, acknowledging that more sophisticated methods such as White's reality check are beyond this course's scope.
+highlighted by #cite(<white2000reality>, form: "prose") and #cite(<sullivan1999data>, form: "prose");
 
 + *PSO vs.\ BH*: $W = 55$, $p = 0.001$. Significant.
 + *GP random vs.\ BH*: $W = 9$, $p = 0.976$. Not significant.
@@ -135,9 +135,9 @@ PSO CV = 3.3\%; GP random = 40\%; warm-start = 38\%; GP restricted = 10.4\%. Var
 
 PSO's stability reveals a benign parametric landscape; GP's instability reveals a deceptive structural space. The control experiment resolves the confound that plagued all previous comparisons: when GP is restricted to PSO's representation, it finds the same basins with lower reliability. Our initial working hypothesis---that representation dominates algorithm selection---proved too simplistic. For this problem, the evidence suggests representation shapes attractor geometry while the algorithm shapes exploration reliability.
 
-López de Prado
+This aligns with #cite(<lopezdeprado2018advances>, form: "prose") on single-split overstatement.
 
-*Limitations.* (1) Single asset (BTC-USD). (2) Moving-average variants only. (3) Three market regimes only. (4) Incomplete $lambda times$ depth validation. (5) No daily equity curves for Sharpe/drawdown (Sullivan et al.\ @sullivan1999data). (6) Walk-forward limited to 5 windows.
+(#cite(<sullivan1999data>, form: "prose"))
 
 = Conclusion
 
