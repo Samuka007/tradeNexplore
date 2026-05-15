@@ -2,7 +2,7 @@
 #import "@preview/wordometer:0.1.5": total-words, word-count
 
 #let abstract = [
-  PSO and GP behave characteristically differently on the same Bitcoin trading task. PSO's velocity-averaging converges to two stable basins regardless of initialisation, revealing a smooth fitness landscape. GP's discrete tournament selection produces high variance (s = \$677) on unrestricted trees, revealing a rugged structural space. A control experiment---restricting GP to PSO's exact 3-parameter representation---shows both algorithms discover the same basins, but PSO's convergence reliability is higher (10/10 vs 5/10 seeds beating buy-and-hold). A 171-point grid search visualises the two-basin geometry, and generation-level trajectories show GP's train--test divergence without parsimony pressure. A 42-run grid search identifies $lambda = 500$ as GP's sweet spot, correcting our own earlier single-seed result (Exp.~09) that favoured $lambda = 1,000$. Walk-forward validation cuts returns by 29\% and causes GP to collapse to a no-trade strategy while PSO remains robust, revealing that evaluation protocol choice interacts with search mechanism. For this problem, our results suggest that representation shapes attractor geometry while the algorithm shapes exploration reliability.
+  GP's discrete tournament selection produces high variance (s = \$713) on unrestricted trees, revealing a rugged structural space.
 ]
 
 #show: word-count
@@ -61,11 +61,11 @@ Three evaluation protocols are compared: single split (train pre-2020, test 2020
 
 === PSO Reveals a Smooth Parametric Landscape
 
-Across 10 seeds, PSO (`position_sma`) achieves mean test \$2,297 (s = \$77), with every seed beating BH (\$2,170).
+Across 10 seeds, PSO (`position_sma`) achieves mean test \$2,297 (s = \$81), with every seed beating BH (\$2,170).
 
 === GP Reveals a Rugged Structural Landscape
 
-Raw GP (75-pop/20-gen) achieves mean \$1,689 (s = \$677), with only 2/10 seeds beating BH. The seed-88 outlier (\$3,143, tree size 8) illustrates single-seed unreliability. This volatility is diagnostic: unrestricted tree search on weak signal produces a hypothesis space so large that selection is effectively random without regularisation, consistent with #cite(<allen1999using>, form: "prose").
+Raw GP (75-pop/20-gen) achieves mean \$1,689 (s = \$713), with only 2/10 seeds beating BH.
 
 #figure(image("assets/seed_robustness.pdf", width: 100%), caption: [GP seed robustness: random vs.\ warm-start (Exp.~15). Dashed = buy-and-hold.]) <fig-seed>
 
@@ -91,17 +91,17 @@ On this landscape, the key finding is that representation fixes basin location w
 
 A single-seed sweep suggested $lambda = 1,000$ was optimal. A 42-run grid search (3 seeds $times$ 7 $lambda times$ 2 depths) corrects this: $lambda = 500$ is the sweet spot (@tbl-lambda). $lambda < 500$ permits bloat; $lambda > 500$ shrinks trees to 1--3 nodes and underfits. At $lambda = 500$, mean tree size is 5.7 nodes. Depth 5 slightly outperforms depth 7 (\$1,656 vs.\ \$1,408). Extended function set dominates (\$1,622 vs.\ \$359 original, \$1,000 minimal). Larger budgets paradoxically hurt: $50 times 30$ achieves \$2,275; $150 times 75$ collapses to \$359.
 
-#figure(table(columns: (auto, auto, auto, auto, auto), stroke: none, inset: (x: 6pt, y: 3pt), table.hline(stroke: 1pt), table.header([*$lambda$*], [*Mean test (\$)*], [*Beat BH*], [*Mean tree size*], [*Std (\$)*]), table.hline(stroke: 0.5pt), [100], [988], [0/6], [7.0], [526], [250], [1,025], [0/6], [3.8], [675], [500], [2,366], [3/6], [5.7], [593], [750], [1,553], [0/6], [4.8], [402], [1,000], [1,478], [1/6], [3.3], [934], [2,000], [1,434], [0/6], [3.0], [482], [5,000], [1,879], [1/6], [1.3], [280]), caption: [Systematic hyperparameter grid (Exp.~17, 42 runs).]) <tbl-lambda>
+#figure(table(columns: (auto, auto, auto, auto, auto), stroke: none, inset: (x: 6pt, y: 3pt), table.hline(stroke: 1pt), table.header([*$lambda$*], [*Mean test (\$)*], [*Beat BH*], [*Mean tree size*], [*Std (\$)*]), table.hline(stroke: 0.5pt), [100], [988], [0/6], [7.0], [576], [250], [1,025], [0/6], [3.8], [739], [500], [2,366], [3/6], [5.7], [649], [750], [1,553], [0/6], [4.8], [440], [1,000], [1,478], [1/6], [3.3], [1023], [2,000], [1,434], [0/6], [3.0], [528], [5,000], [1,879], [1/6], [1.3], [307]), caption: [Systematic hyperparameter grid (Exp.~17, 42 runs).]) <tbl-lambda>
 
 #figure(image("assets/lambda_sweep.pdf", width: 100%), caption: [GP parsimony pressure vs.\ test return (Exp.~17).]) <fig-lambda>
 
 == PSO: Implicit Regularisation
 
-PSO needs no explicit parsimony because velocity-update averages noisy gradients across the swarm. The control experiment confirms this: GP restricted discovers the same basins with 3$times$ higher variance. The difference is mechanism, not landscape.
+GP restricted discovers the same basins with 3$times$ higher standard deviation. The difference is mechanism, not landscape.
 
 == Evaluation Protocol Is Not Neutral
 
-Walk-forward validation (5 windows) reduces PSO mean from \$2,296 to \$1,636 (29\% drop); win rate falls from 10/10 to 2/5. GP degenerates to a no-trade strategy (1/5 wins, 20\%).
+Walk-forward validation (5 windows) reduces PSO mean from \$2,297 to \$1,636 (29\% drop); win rate falls from 10/10 to 2/5.
 
 Robust optimisation (52 windows) yields the same pattern: PSO wins 38.5\%; GP degenerates to no-trade.
 
@@ -129,7 +129,7 @@ Wilcoxon signed-rank (one-sided, $alpha = 0.05$) and Mann-Whitney U tests. We no
 
 == Risk-Adjusted Returns
 
-PSO CV = 3.3\%; GP random = 40\%; warm-start = 38\%; GP restricted = 10.4\%. Variance is driven by both representation and algorithm mechanism. Estimated annualised Sharpe: ~0.75--0.88 for PSO. Precise Sharpe and max drawdown require daily equity curves not exported---a limitation.
+PSO CV = 3.5\%; GP random = 42\%; warm-start = 40\%; GP restricted = 11\%.
 
 = Discussion and Limitations
 
@@ -137,10 +137,10 @@ PSO's stability reveals a benign parametric landscape; GP's instability reveals 
 
 This aligns with #cite(<lopezdeprado2018advances>, form: "prose") on single-split overstatement.
 
-(#cite(<sullivan1999data>, form: "prose"))
+*Limitations.* (1) Single asset (BTC-USD). (2) Moving-average variants only. (3) Three market regimes only. (4) Incomplete $lambda times$ depth validation. (5) No daily equity curves for Sharpe/drawdown (cf. #cite(<sullivan1999data>, form: "prose")). (6) Walk-forward limited to 5 windows.
 
 = Conclusion
 
-Three patterns recur across experiments. First, PSO's swarm averaging makes it robust on smooth parametric landscapes; its 3.3\% CV reveals broad attractors and low ridges. Second, GP's discrete selection makes it powerful but fragile on rugged landscapes; $lambda = 500$ is an empirically tuned complexity control identified by grid search. Third, evaluation protocol is an algorithmic variable---walk-forward destroys GP's selection signal while leaving PSO intact.
+its 3.5\% CV reveals broad attractors and low ridges.
 
 The practical implication: match the algorithm to what you know about the problem. Known structure $arrow.r$ parameterise + implicit regularisation. Unknown structure $arrow.r$ structural search with explicit regularisation, multi-seed validation, and honest protocols that preserve the selection signal.
