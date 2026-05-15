@@ -91,7 +91,7 @@ On this landscape, the key finding is that representation fixes basin location w
 
 A single-seed sweep suggested $lambda = 1,000$ was optimal. A 42-run grid search (3 seeds $times$ 7 $lambda times$ 2 depths) corrects this: $lambda = 500$ is the sweet spot (@tbl-lambda). $lambda < 500$ permits bloat; $lambda > 500$ shrinks trees to 1--3 nodes and underfits. At $lambda = 500$, mean tree size is 5.7 nodes. Depth 5 slightly outperforms depth 7 (\$1,656 vs.\ \$1,408). Extended function set dominates (\$1,622 vs.\ \$359 original, \$1,000 minimal). Larger budgets paradoxically hurt: $50 times 30$ achieves \$2,275; $150 times 75$ collapses to \$359.
 
-#figure(table(columns: (auto, auto, auto, auto, auto), stroke: none, inset: (x: 6pt, y: 3pt), table.hline(stroke: 1pt), table.header([*$lambda$*], [*Mean test (\$)*], [*Beat BH*], [*Mean tree size*], [*Std (\$)*]), table.hline(stroke: 0.5pt), [100], [988], [0/6], [7.0], [576], [250], [1,025], [0/6], [3.8], [739], [500], [2,366], [3/6], [5.7], [649], [750], [1,553], [0/6], [4.8], [440], [1,000], [1,478], [1/6], [3.3], [1023], [2,000], [1,434], [0/6], [3.0], [528], [5,000], [1,879], [1/6], [1.3], [307]), caption: [Systematic hyperparameter grid (Exp.~17, 42 runs).]) <tbl-lambda>
+#figure(table(columns: (auto, auto, auto, auto, auto), stroke: none, inset: (x: 6pt, y: 3pt), table.hline(stroke: 1pt), table.header([*$lambda$*], [*Mean test (\$)*], [*Beat BH*], [*Mean tree size*], [*s (\$)*]), table.hline(stroke: 0.5pt), [100], [988], [0/6], [7.0], [577], [250], [1,025], [0/6], [3.8], [740], [500], [2,366], [3/6], [5.7], [650], [750], [1,553], [0/6], [4.8], [440], [1,000], [1,478], [1/6], [3.3], [1023], [2,000], [1,434], [0/6], [3.0], [528], [5,000], [1,879], [1/6], [1.3], [307]), caption: [Systematic hyperparameter grid (Exp.~17, 42 runs).]) <tbl-lambda>
 
 #figure(image("assets/lambda_sweep.pdf", width: 100%), caption: [GP parsimony pressure vs.\ test return (Exp.~17).]) <fig-lambda>
 
@@ -141,6 +141,6 @@ This aligns with #cite(<lopezdeprado2018advances>, form: "prose") on single-spli
 
 = Conclusion
 
-its 3.5\% CV reveals broad attractors and low ridges.
+Three patterns recur across experiments. First, PSO's swarm averaging makes it robust on smooth parametric landscapes; its 3.5\% CV reveals broad attractors and low ridges. Second, GP's discrete selection makes it powerful but fragile on rugged landscapes; $lambda = 500$ is an empirically tuned complexity control identified by grid search. Third, evaluation protocol is an algorithmic variable---walk-forward destroys GP's selection signal while leaving PSO intact.
 
 The practical implication: match the algorithm to what you know about the problem. Known structure $arrow.r$ parameterise + implicit regularisation. Unknown structure $arrow.r$ structural search with explicit regularisation, multi-seed validation, and honest protocols that preserve the selection signal.
