@@ -110,7 +110,7 @@ Robust optimisation (52 windows, Exp.~03) yields the same pattern: PSO wins 38.5
 
 == Joint Optimisation Cannot Be Decoupled
 
-GP-then-PSO hybridisation (Exp.~14): 3-node trees improve +7\% (\$1,648 to \$1,762), but the absolute gain is small because the tree structure `(> sma volatility)` itself has weak predictive power. PSO's parameter refinement cannot compensate for a poorly chosen representation. GP's fitness jointly optimises structure and parameters; post-hoc PSO overfits in ways that break GP's implicit regularisation. Structure and parameters are entangled and must be optimised jointly.
+GP-then-PSO hybridisation (Exp.~14): 3-node trees improve +7\% (\$1,648 to \$1,762), but the absolute gain is small because the tree structure `(> sma volatility)` itself has weak predictive power. A systematic sweep across tree sizes (Exp.~14-supplementary) reveals the interaction is non-monotonic: overfit trees (size 5 and 9, GP-only \$3,142) collapse to \$485 and \$422 after PSO refinement (--85\%), because post-hoc parameter tuning cannot repair a structure that has already overfit. Conversely, a 10-node tree improves +10\% (\$1,606 to \$1,768), suggesting larger trees with genuine signal benefit from parameter refinement. The key insight is not that hybridisation always fails or always succeeds, but that it depends on whether the tree has learned a predictive structure or merely memorised noise. Structure and parameters are entangled: GP's fitness jointly optimises both, and post-hoc PSO can only refine, not rescue.
 
 == Transaction Costs Shape the Effective Landscape
 
