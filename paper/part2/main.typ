@@ -104,7 +104,7 @@ PSO needs no explicit parsimony because the velocity update averages noisy gradi
 
 Walk-forward validation (5 windows) reduces PSO mean from \$2,297 to \$1,636 (29\% drop); win rate falls from 10/10 to 2/5. GP degenerates to a no-trade strategy (1/5 wins, 20\%). Walk-forward averaging destroys the sharp gradients GP's tournament selection relies on; with fitness compressed to noise, selection collapses. PSO's swarm averaging is naturally robust to window-wise noise. This reveals a mechanistic difference: GP's selection is discrete (keep/kill), PSO's is continuous (weighted velocity update). Evaluation protocol choice interacts with search mechanism.
 
-Robust optimisation (52 windows, Exp.~03) yields the same pattern: PSO wins 38.5\%; GP degenerates to no-trade.
+Robust optimisation (52 windows, Exp.~03) yields the same pattern: PSO wins 38.5\% of windows; GP wins none. The PSO wins are concentrated in early windows (bull market 2015--2017), where excess returns reach +1.99×; losses in late windows (bear market 2018--2022) reach --4.73×. The average excess return is negative (--0.33), meaning robust optimisation sacrifices upside to cap downside. This is a property of min-max objective functions, not PSO per se.
 
 #figure(image("assets/walk_forward.pdf", width: 100%), caption: [Walk-forward results (Exp.~13).]) <fig-wf>
 
@@ -114,7 +114,7 @@ GP-then-PSO hybridisation (Exp.~14): 3-node trees improve +7\%; 5-node trees des
 
 == Transaction Costs Shape the Effective Landscape
 
-At 0\% fees PSO returns \$2,841; at 3\%, \$2,366. Break-even: ~4.4\%. Classic 50/200 SMA (1 trade) achieves \$2,236, confirming trading frequency dominates net profit. Both algorithms converge to low-frequency solutions, suggesting the optimum lies near the no-trade boundary. Transaction costs are a structural feature of the landscape.
+At 0\% fees PSO returns \$2,841 (6 trades); at 3\%, \$2,366. The relationship is nearly linear (\$158 per 1\% fee increment) because trade count is fixed. Break-even: ~4.4\%. Classic 50/200 SMA (1 trade) achieves \$2,236 at 3\% fees, confirming trading frequency dominates net profit. Both algorithms converge to low-frequency solutions, suggesting the optimum lies near the no-trade boundary. Transaction costs are a structural feature of the landscape.
 
 == Statistical Significance
 
