@@ -31,7 +31,7 @@
 
 Nature-inspired algorithms differ fundamentally in _what_ they optimise and _how_ they represent solutions. PSO @kennedy1995particle tunes continuous parameters within a fixed template; GP @koza1992genetic discovers the template itself by evolving program trees. Which is better---and does the question make sense without specifying the template?
 
-We choose PSO and GP as two ends of a spectrum---parametric vs.\ structural optimisation---and apply them to Bitcoin trading with a 3\% transaction fee. Our question is not "which algorithm wins?" but _what does each algorithm's behaviour reveal about the search space it inhabits?_
+We choose PSO and GP as two ends of a spectrum---parametric vs. structural optimisation---and apply them to Bitcoin trading with a 3\% transaction fee. Our question is not "which algorithm wins?" but _what does each algorithm's behaviour reveal about the search space it inhabits?_
 
 This reframing matters because comparisons are typically apples-to-oranges: PSO searches 3 parameters while GP searches an infinite-dimensional tree space. We run a control experiment---restricting GP to PSO's 3-parameter representation---to disentangle representation from algorithm. Across 20 experiments and ~120 runs, the answer is nuanced. The algorithms' _behavioural signatures_ are diagnostic of different search-space geometries. When representation is held constant, both discover the same basins, but PSO's continuous velocity-averaging provides convergence stability that GP's discrete tournament selection lacks.
 
@@ -67,11 +67,11 @@ Across 10 seeds, PSO (`position_sma`) achieves mean test \$2,297 (s = \$81), wit
 
 Raw GP (75-pop/20-gen) achieves mean \$1,689 (s = \$713), with only 2/10 seeds beating BH. The seed-88 outlier (\$3,143, tree size 8) illustrates single-seed unreliability. This volatility is diagnostic: unrestricted tree search on weak signal produces a hypothesis space so large that selection is effectively random without regularisation, consistent with #cite(<allen1999using>, form: "prose").
 
-#figure(image("assets/seed_robustness.pdf", width: 100%), caption: [GP seed robustness: random vs.\ warm-start (Exp.~15). Dashed = buy-and-hold.]) <fig-seed>
+#figure(image("assets/seed_robustness.pdf", width: 100%), caption: [GP seed robustness: random vs. warm-start (Exp.~15). Dashed = buy-and-hold.]) <fig-seed>
 
 *Generation-level trajectory.* Under $lambda = 0$, train fitness rises from \$20,674 to \$38,003 while test stagnates at ~\$1,600 and collapses to \$1,000 at generation 11; tree size grows from 6 to 30 nodes. Under $lambda = 500$, train stabilises at \$25,019 from generation 3, test holds at \$2,245, and tree size stays at 3 nodes (@fig-trajectory). Parsimony pressure defines the effective search space by pruning overfit subspaces.
 
-#figure(image("assets/gp_trajectory.pdf", width: 100%), caption: [GP trajectory: $lambda = 0$ vs.\ $lambda = 500$ (Exp.~20).]) <fig-trajectory>
+#figure(image("assets/gp_trajectory.pdf", width: 100%), caption: [GP trajectory: $lambda = 0$ vs. $lambda = 500$ (Exp.~20).]) <fig-trajectory>
 
 Warm-start (50\% human rules) raises mean to \$2,362 (6/10 beat BH), though 5/10 seeds converge to the same \$3,143 tree, a common-mode failure that overstates reliability.
 
@@ -89,11 +89,11 @@ On this landscape, the key finding is that representation fixes basin location w
 
 === GP: Parsimony Pressure
 
-A single-seed sweep suggested $lambda = 1,000$ was optimal. A 42-run grid search (3 seeds $times$ 7 $lambda times$ 2 depths) corrects this: $lambda = 500$ is the sweet spot (@tbl-lambda). $lambda < 500$ permits bloat; $lambda > 500$ shrinks trees to 1--3 nodes and underfits. At $lambda = 500$, mean tree size is 5.7 nodes. Depth 5 slightly outperforms depth 7 (\$1,656 vs.\ \$1,408). Extended function set dominates (\$1,622 vs.\ \$359 original, \$1,000 minimal) (Exp.~12). Larger budgets paradoxically hurt: $50 times 30$ achieves \$2,275; $150 times 75$ collapses to \$359 (Exp.~20).
+A single-seed sweep suggested $lambda = 1,000$ was optimal. A 42-run grid search (3 seeds $times$ 7 $lambda times$ 2 depths) corrects this: $lambda = 500$ is the sweet spot (@tbl-lambda). $lambda < 500$ permits bloat; $lambda > 500$ shrinks trees to 1--3 nodes and underfits. At $lambda = 500$, mean tree size is 5.7 nodes. Depth 5 slightly outperforms depth 7 (\$1,656 vs. \$1,408). Extended function set dominates (\$1,622 vs. \$359 original, \$1,000 minimal) (Exp.~12). Larger budgets paradoxically hurt: $50 times 30$ achieves \$2,275; $150 times 75$ collapses to \$359 (Exp.~20).
 
 #figure(table(columns: (auto, auto, auto, auto, auto), stroke: none, inset: (x: 6pt, y: 3pt), table.hline(stroke: 1pt), table.header([*$lambda$*], [*Mean test (\$)*], [*Beat BH*], [*Mean tree size*], [*s (\$)*]), table.hline(stroke: 0.5pt), [100], [988], [0/6], [7.0], [577], [250], [1,025], [0/6], [3.8], [740], [500], [2,366], [3/6], [5.7], [650], [750], [1,553], [0/6], [4.8], [440], [1,000], [1,478], [1/6], [3.3], [1023], [2,000], [1,434], [0/6], [3.0], [528], [5,000], [1,879], [1/6], [1.3], [307]), caption: [Systematic hyperparameter grid (Exp.~17, 42 runs).]) <tbl-lambda>
 
-#figure(image("assets/lambda_sweep.pdf", width: 100%), caption: [GP parsimony pressure vs.\ test return (Exp.~17).]) <fig-lambda>
+#figure(image("assets/lambda_sweep.pdf", width: 100%), caption: [GP parsimony pressure vs. test return (Exp.~17).]) <fig-lambda>
 
 === PSO: Implicit Regularisation
 
@@ -120,12 +120,12 @@ At 0\% fees PSO returns \$2,841 (6 trades); at 3\%, \$2,366. The relationship is
 
 Wilcoxon signed-rank (one-sided, $alpha = 0.05$) and Mann-Whitney U tests. We note the data-snooping problem in technical trading rules highlighted by #cite(<white2000reality>, form: "prose") and #cite(<sullivan1999data>, form: "prose"); our 7-value $lambda$ grid warrants caution with multiple comparisons. We report raw p-values and apply Bonferroni correction as a simple conservative heuristic, acknowledging that more sophisticated methods such as White's reality check are beyond this course's scope.
 
-+ *PSO vs.\ BH*: $W = 55$, $p = 0.001$. Significant.
-+ *GP random vs.\ BH*: $W = 9$, $p = 0.976$. Not significant.
-+ *GP warm-start vs.\ BH*: $W = 36$, $p = 0.211$. Not significant despite 6/10 win rate.
-+ *PSO vs.\ GP random*: $U = 85$, $p = 0.004$, $r = -0.70$. Large effect.
-+ *Warm-start vs.\ random GP*: $U = 79$, $p = 0.014$. Significant.
-+ *Across $lambda$*: Kruskal-Wallis $H = 16.2$, $p = 0.013$. $lambda = 500$ vs.\ $lambda = 1000$: $U = 30$, $p = 0.032$.
++ *PSO vs. BH*: $W = 55$, $p = 0.001$. Significant.
++ *GP random vs. BH*: $W = 9$, $p = 0.976$. Not significant.
++ *GP warm-start vs. BH*: $W = 36$, $p = 0.211$. Not significant despite 6/10 win rate.
++ *PSO vs. GP random*: $U = 85$, $p = 0.004$, $r = -0.70$. Large effect.
++ *Warm-start vs. random GP*: $U = 79$, $p = 0.014$. Significant.
++ *Across $lambda$*: Kruskal-Wallis $H = 16.2$, $p = 0.013$. $lambda = 500$ vs. $lambda = 1000$: $U = 30$, $p = 0.032$.
 + *Walk-forward*: $W = 3$, $p = 0.625$. Not significant (5 windows only).
 
 == Risk-Adjusted Returns
