@@ -170,7 +170,7 @@ Using 90-day returns, we identify three regimes in BTC 2014--2022: bull ($> +30\
     [1],
     [12],
   ),
-  caption: [GP performance and tree structure by market regime (Exp.~22, 10 seeds per regime). "Conditional nodes" counts IF + AND. "Trend features" counts SMA + LMA + EMA terminals.],
+  caption: [GP performance and tree structure by market regime (Exp.~22, 10 seeds per regime). "Mean tree size" and "Mean depth" are per-tree averages across seeds. "Conditional nodes" (IF + AND) and "Trend features" (SMA + LMA + EMA terminals) are cumulative counts across all 10 trees.],
 ) <tbl-regime>
 
 The pattern is clear. In bull markets, GP converges to trivial terminals because buy-and-hold is optimal and any active trading incurs fees. In bear markets, GP produces the largest and most complex trees, using conditional logic (IF/AND) and multiple trend indicators---structures that can switch between long and flat positions. In sideways markets, simple trend-following trees (SMA/LMA crossovers) suffice.
