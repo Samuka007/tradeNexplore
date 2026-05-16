@@ -73,7 +73,7 @@ Raw GP (75-pop/20-gen) achieves mean \$1,689 (s = \$713), with only 2/10 seeds b
 
 #figure(image("assets/gp_trajectory.pdf", width: 100%), caption: [GP trajectory: $lambda = 0$ vs.\ $lambda = 500$ (Exp.~20).]) <fig-trajectory>
 
-Warm-start (50\% human rules) raises mean to \$2,362 (6/10 beat BH), though 5/10 seeds converge to the same \$3,143 tree, inflating the mean.
+Warm-start (50\% human rules) raises mean to \$2,362 (6/10 beat BH), though 5/10 seeds converge to the same \$3,143 tree, a common-mode failure that overstates reliability.
 
 == The Control Experiment: Same Representation, Different Algorithm
 
@@ -97,7 +97,7 @@ A single-seed sweep suggested $lambda = 1,000$ was optimal. A 42-run grid search
 
 == PSO: Implicit Regularisation
 
-PSO needs no explicit parsimony because velocity-update averages noisy gradients across the swarm. The control experiment confirms this: GP restricted discovers the same basins with 3$times$ higher standard deviation. The difference is mechanism, not landscape.
+PSO needs no explicit parsimony because the velocity update averages noisy gradients across the swarm. The control experiment confirms this: GP restricted discovers the same basins with 3$times$ higher standard deviation. The difference is mechanism, not landscape.
 
 == Evaluation Protocol Is Not Neutral
 
@@ -129,7 +129,7 @@ Wilcoxon signed-rank (one-sided, $alpha = 0.05$) and Mann-Whitney U tests. We no
 
 == Risk-Adjusted Returns
 
-PSO CV = 3.5\%; GP random = 42\%; warm-start = 40\%; GP restricted = 11\%. Variance is driven by both representation and algorithm mechanism. Estimated annualised Sharpe: ~0.75--0.88 for PSO. Precise Sharpe and max drawdown require daily equity curves not exported---a limitation.
+Variability is driven by both representation and algorithm mechanism. Estimated annualised Sharpe: ~0.75--0.88 for PSO. Precise Sharpe and max drawdown require daily equity curves not exported---a limitation.
 
 = Discussion and Limitations
 
