@@ -110,7 +110,7 @@ Robust optimisation (52 windows, Exp.~03) yields the same pattern: PSO wins 38.5
 
 == Joint Optimisation Cannot Be Decoupled
 
-GP-then-PSO hybridisation (Exp.~14): 3-node trees improve +7\%; 5-node trees destroy performance (-51\%); 37-node trees show no effect. GP's fitness jointly optimises structure and parameters; post-hoc PSO overfits in ways that break GP's implicit regularisation. Structure and parameters are entangled and must be optimised jointly.
+GP-then-PSO hybridisation (Exp.~14): 3-node trees improve +7\% (\$1,648 to \$1,762), but the absolute gain is small because the tree structure `(> sma volatility)` itself has weak predictive power. PSO's parameter refinement cannot compensate for a poorly chosen representation. GP's fitness jointly optimises structure and parameters; post-hoc PSO overfits in ways that break GP's implicit regularisation. Structure and parameters are entangled and must be optimised jointly.
 
 == Transaction Costs Shape the Effective Landscape
 
