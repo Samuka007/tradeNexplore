@@ -134,7 +134,7 @@ Variability is driven by both representation and algorithm mechanism. PSO's 3.5\
 
 = Discussion and Limitations
 
-PSO's stability reveals a benign parametric landscape; GP's instability reveals a deceptive structural space. The control experiment resolves the confound that plagued all previous comparisons: when GP is restricted to PSO's representation, it finds the same basins with lower reliability. Our initial working hypothesis---that representation dominates algorithm selection---proved too simplistic. For this problem, the evidence suggests representation shapes attractor geometry while the algorithm shapes exploration reliability.
+PSO's stability reveals a benign parametric landscape; GP's instability reveals a deceptive structural space. The control experiment resolves the confound that plagued all previous comparisons: when GP is restricted to PSO's representation, it finds the same basins with lower reliability. Our initial working hypothesis---that representation dominates algorithm selection---proved too simplistic. For this problem, the evidence suggests representation shapes attractor geometry while the algorithm shapes exploration reliability. Walk-forward and robust-optimisation protocols tell the same story: PSO's continuous averaging survives regime shifts, while GP's discrete selection collapses when fitness variance is compressed.
 
 This aligns with #cite(<lopezdeprado2018advances>, form: "prose") on single-split overstatement.
 
