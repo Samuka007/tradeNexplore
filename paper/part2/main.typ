@@ -142,6 +142,6 @@ This aligns with #cite(<lopezdeprado2018advances>, form: "prose") on single-spli
 
 = Conclusion
 
-Three patterns recur across experiments. First, PSO's swarm averaging makes it robust on smooth parametric landscapes; its 3.5\% CV reveals broad attractors and low ridges. Second, GP's discrete selection makes it powerful but fragile on rugged landscapes; $lambda = 500$ is an empirically tuned complexity control identified by grid search. Third, evaluation protocol is an algorithmic variable---walk-forward destroys GP's selection signal while leaving PSO intact.
+Three patterns recur across experiments. First, PSO's swarm averaging makes it robust on smooth parametric landscapes: its 3.5\% CV reflects broad attractors, and the 171-point grid search (Exp.~19) confirms low ridges between basins. Second, GP's discrete selection makes it powerful but fragile on rugged landscapes; $lambda = 500$ is an empirically tuned complexity control identified by grid search. Third, evaluation protocol is an algorithmic variable---walk-forward destroys GP's selection signal while leaving PSO intact.
 
 The practical implication: match the algorithm to what you know about the problem. When structure is known, parameterise and rely on implicit regularisation. When structure is unknown, use structural search with explicit regularisation, multi-seed validation, and honest protocols that preserve the selection signal.
