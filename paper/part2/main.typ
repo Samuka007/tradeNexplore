@@ -2,7 +2,7 @@
 #import "@preview/wordometer:0.1.5": total-words, word-count
 
 #let abstract = [
-  Genetic programming (GP) is often criticised for high variance on financial forecasting tasks. We argue that this variance is not random noise but a mechanistic consequence of subtree crossover. On a Bitcoin trading task with 3\% transaction fees, we instrument GP to log every parent-offspring pair across 10 independent seeds (13,245 pairs total). Parent-offspring fitness correlation declines from $r = 0.51$ at generation~0 to $r = -0.03$ at generation~19---crossover shifts from preserving advantage to systematically destroying it. This epistasis effect explains GP's instability without invoking search-space metaphors. Two supplementary findings contextualise the result: (1)~GP adapts tree structure to market regime---bear markets demand complex conditional trees (mean size~12.9) while sideways markets need simple trend indicators (size~3.5); (2)~tree nesting ratio predicts train-test divergence ($r = 0.81$, $p < 10^{-16}$), showing that overfitting has structural signatures visible before testing. Together, these results frame GP's variance not as a bug to be fixed but as a set of mechanisms that can be monitored and controlled.
+  Genetic programming (GP) is often criticised for high variance on financial forecasting tasks. We argue that this variance is not random noise but a mechanistic consequence of subtree crossover. On a Bitcoin trading task with 3\% transaction fees, we instrument GP to log every parent-offspring pair across 10 independent seeds (13,245 pairs total). Parent-offspring fitness correlation declines from $r = 0.51$ at generation~0 to $r = -0.03$ at generation~19---crossover shifts from preserving advantage to systematically destroying it. This epistasis effect explains GP's instability without invoking search-space metaphors. Two supplementary findings contextualise the result: (1)~GP adapts tree structure to market regime---bear markets demand complex conditional trees (mean size~12.9) while sideways markets need simple trend indicators (size~3.5); (2)~tree nesting ratio predicts train-test divergence ($r = 0.81$, $p < 10^(-16)$), showing that overfitting has structural signatures visible before testing. Together, these results frame GP's variance not as a bug to be fixed but as a set of mechanisms that can be monitored and controlled.
 ]
 
 #show: word-count
@@ -17,10 +17,34 @@
   ],
   abstract: abstract,
   authors: (
-    (name: "Lyuchen Dai", department: [School of Physics, Mathematics and Computing], organization: [The University of Western Australia], location: [Perth, Australia], email: "24754678@student.uwa.edu.au"),
-    (name: "Mika Li", department: [School of Physics, Mathematics and Computing], organization: [The University of Western Australia], location: [Perth, Australia], email: "24386354@student.uwa.edu.au"),
-    (name: "Simona Han", department: [School of Physics, Mathematics and Computing], organization: [The University of Western Australia], location: [Perth, Australia], email: "25152074@student.uwa.edu.au"),
-    (name: "Xinqi Lin", department: [School of Physics, Mathematics and Computing], organization: [The University of Western Australia], location: [Perth, Australia], email: "24745401@student.uwa.edu.au"),
+    (
+      name: "Lyuchen Dai",
+      department: [School of Physics, Mathematics and Computing],
+      organization: [The University of Western Australia],
+      location: [Perth, Australia],
+      email: "24754678@student.uwa.edu.au",
+    ),
+    (
+      name: "Mika Li",
+      department: [School of Physics, Mathematics and Computing],
+      organization: [The University of Western Australia],
+      location: [Perth, Australia],
+      email: "24386354@student.uwa.edu.au",
+    ),
+    (
+      name: "Simona Han",
+      department: [School of Physics, Mathematics and Computing],
+      organization: [The University of Western Australia],
+      location: [Perth, Australia],
+      email: "25152074@student.uwa.edu.au",
+    ),
+    (
+      name: "Xinqi Lin",
+      department: [School of Physics, Mathematics and Computing],
+      organization: [The University of Western Australia],
+      location: [Perth, Australia],
+      email: "24745401@student.uwa.edu.au",
+    ),
   ),
   index-terms: ("genetic programming", "epistasis", "algorithmic trading", "overfitting", "market regime"),
   bibliography: bibliography("refs.bib"),
@@ -90,9 +114,12 @@ Across all 10 seeds and 13,245 parent-offspring pairs, the Pearson correlation b
 
 === Temporal Decline
 
-The striking pattern emerges when correlation is computed per generation (@fig-epistasis). At generation~0, the pooled correlation is $r = 0.514$ ($p < 10^{-46}$): offspring strongly resemble their parents. By generation~5, $r$ has fallen to $0.125$ ($p = 0.001$). By generation~10, the correlation turns *negative*: $r = -0.323$ ($p < 10^{-17}$). At generation~19, $r = -0.029$ ($p = 0.45$, not significant).
+The striking pattern emerges when correlation is computed per generation (@fig-epistasis). At generation~0, the pooled correlation is $r = 0.514$ ($p < 10^(-46)$): offspring strongly resemble their parents. By generation~5, $r$ has fallen to $0.125$ ($p = 0.001$). By generation~10, the correlation turns *negative*: $r = -0.323$ ($p < 10^(-17)$). At generation~19, $r = -0.029$ ($p = 0.45$, not significant).
 
-#figure(image("assets/epistasis_decline.pdf", width: 100%), caption: [Parent-offspring fitness correlation per generation (Exp.~21, 10 seeds, 13,245 pairs). Error bars show standard deviation across seeds.]) <fig-epistasis>
+#figure(
+  image("assets/epistasis_decline.pdf", width: 100%),
+  caption: [Parent-offspring fitness correlation per generation (Exp.~21, 10 seeds, 13,245 pairs). Error bars show standard deviation across seeds.],
+) <fig-epistasis>
 
 === Mechanistic Interpretation
 
@@ -114,7 +141,35 @@ Using 90-day returns, we identify three regimes in BTC 2014--2022: bull ($> +30\
 
 === Structural Differences Across Regimes
 
-#figure(table(columns: (auto, auto, auto, auto, auto, auto), stroke: none, inset: (x: 6pt, y: 3pt), table.hline(stroke: 1pt), table.header([*Regime*], [*Win rate*], [*Mean tree size*], [*Mean depth*], [*Conditional nodes*], [*Trend features*]), table.hline(stroke: 0.5pt), [Bull], [0/10], [1.2], [1.0], [0], [1], [Bear], [6/10], [12.9], [4.4], [8], [33], [Sideways], [8/10], [3.5], [2.1], [1], [13]), caption: [GP performance and tree structure by market regime (Exp.~22, 10 seeds per regime). "Conditional nodes" counts IF + AND. "Trend features" counts SMA + LMA + EMA terminals.]) <tbl-regime>
+#figure(
+  table(
+    columns: (auto, 1fr, 1fr, 1fr, 1fr, 1fr),
+    stroke: none,
+    inset: (x: 3pt, y: 3pt),
+    table.hline(stroke: 1pt),
+    table.header([*Regime*], [*Win\ rate*], [*Mean\ tree size*], [*Mean\ depth*], [*Cond nodes*], [*Trend\ features*]),
+    table.hline(stroke: 0.5pt),
+    [Bull],
+    [0/10],
+    [1.2],
+    [1.0],
+    [0],
+    [1],
+    [Bear],
+    [6/10],
+    [12.9],
+    [4.4],
+    [8],
+    [33],
+    [Sideways],
+    [8/10],
+    [3.5],
+    [2.1],
+    [1],
+    [13],
+  ),
+  caption: [GP performance and tree structure by market regime (Exp.~22, 10 seeds per regime). "Conditional nodes" counts IF + AND. "Trend features" counts SMA + LMA + EMA terminals.],
+) <tbl-regime>
 
 The pattern is clear. In bull markets, GP converges to trivial terminals (`price`, single SMA) because buy-and-hold is optimal and any active trading incurs fees. In bear markets, winning trees are the largest and most complex, using conditional logic (IF/AND) and multiple trend indicators---structures that can switch between long and flat positions. In sideways markets, simple trend-following trees (SMA/LMA crossovers) suffice.
 
@@ -130,7 +185,7 @@ The regime dependence contributes to seed-to-seed variance in standard (single-s
 
 We analyse 64 trees from prior experiments with known train and test returns. Train-test gap (train cash minus test cash) correlates with structural metrics as follows:
 
-- `nesting_ratio` (internal nodes / total nodes): Pearson $r = 0.814$ ($p < 10^{-16}$)
+- `nesting_ratio` (internal nodes / total nodes): Pearson $r = 0.814$ ($p < 10^(-16)$)
 - `depth`: Pearson $r = 0.347$ ($p = 0.005$)
 - `unique_terminals`: Pearson $r = 0.378$ ($p = 0.002$)
 - `tree_size`: Pearson $r = 0.109$ ($p = 0.39$, not significant)
