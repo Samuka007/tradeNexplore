@@ -1,0 +1,145 @@
+{
+  "lambda": 500,
+  "trajectory": [
+    {
+      "gen": 0,
+      "train": 20674.19466731782,
+      "test": 1577.2336607475277,
+      "tree_size": 6,
+      "fitness_with_penalty": 17674.19466731782
+    },
+    {
+      "gen": 1,
+      "train": 18883.983741577133,
+      "test": 1594.6777697161392,
+      "tree_size": 1,
+      "fitness_with_penalty": 18383.983741577133
+    },
+    {
+      "gen": 2,
+      "train": 20674.19466731782,
+      "test": 1577.2336607475277,
+      "tree_size": 1,
+      "fitness_with_penalty": 20174.19466731782
+    },
+    {
+      "gen": 3,
+      "train": 25019.492168622415,
+      "test": 2245.5280629598806,
+      "tree_size": 3,
+      "fitness_with_penalty": 23519.492168622415
+    },
+    {
+      "gen": 4,
+      "train": 25019.492168622415,
+      "test": 2245.5280629598806,
+      "tree_size": 3,
+      "fitness_with_penalty": 23519.492168622415
+    },
+    {
+      "gen": 5,
+      "train": 25019.492168622415,
+      "test": 2245.5280629598806,
+      "tree_size": 3,
+      "fitness_with_penalty": 23519.492168622415
+    },
+    {
+      "gen": 6,
+      "train": 25019.492168622415,
+      "test": 2245.5280629598806,
+      "tree_size": 3,
+      "fitness_with_penalty": 23519.492168622415
+    },
+    {
+      "gen": 7,
+      "train": 25019.492168622415,
+      "test": 2245.5280629598806,
+      "tree_size": 3,
+      "fitness_with_penalty": 23519.492168622415
+    },
+    {
+      "gen": 8,
+      "train": 25019.492168622415,
+      "test": 2245.5280629598806,
+      "tree_size": 3,
+      "fitness_with_penalty": 23519.492168622415
+    },
+    {
+      "gen": 9,
+      "train": 25019.492168622415,
+      "test": 2245.5280629598806,
+      "tree_size": 3,
+      "fitness_with_penalty": 23519.492168622415
+    },
+    {
+      "gen": 10,
+      "train": 25019.492168622415,
+      "test": 2245.5280629598806,
+      "tree_size": 3,
+      "fitness_with_penalty": 23519.492168622415
+    },
+    {
+      "gen": 11,
+      "train": 25019.492168622415,
+      "test": 2245.5280629598806,
+      "tree_size": 3,
+      "fitness_with_penalty": 23519.492168622415
+    },
+    {
+      "gen": 12,
+      "train": 25019.492168622415,
+      "test": 2245.5280629598806,
+      "tree_size": 3,
+      "fitness_with_penalty": 23519.492168622415
+    },
+    {
+      "gen": 13,
+      "train": 25019.492168622415,
+      "test": 2245.5280629598806,
+      "tree_size": 3,
+      "fitness_with_penalty": 23519.492168622415
+    },
+    {
+      "gen": 14,
+      "train": 25019.492168622415,
+      "test": 2245.5280629598806,
+      "tree_size": 3,
+      "fitness_with_penalty": 23519.492168622415
+    },
+    {
+      "gen": 15,
+      "train": 25019.492168622415,
+      "test": 2245.5280629598806,
+      "tree_size": 3,
+      "fitness_with_penalty": 23519.492168622415
+    },
+    {
+      "gen": 16,
+      "train": 25019.492168622415,
+      "test": 2245.5280629598806,
+      "tree_size": 3,
+      "fitness_with_penalty": 23519.492168622415
+    },
+    {
+      "gen": 17,
+      "train": 25019.492168622415,
+      "test": 2245.5280629598806,
+      "tree_size": 3,
+      "fitness_with_penalty": 23519.492168622415
+    },
+    {
+      "gen": 18,
+      "train": 25019.492168622415,
+      "test": 2245.5280629598806,
+      "tree_size": 3,
+      "fitness_with_penalty": 23519.492168622415
+    },
+    {
+      "gen": 19,
+      "train": 25019.492168622415,
+      "test": 2245.5280629598806,
+      "tree_size": 3,
+      "fitness_with_penalty": 23519.492168622415
+    }
+  ]
+}

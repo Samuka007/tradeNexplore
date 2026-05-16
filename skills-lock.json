@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "paper-finding": {
+      "source": "yylonly/paper-finding-skill",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "1faa2ea17ae8c9b441588b69183984b396358eb719ed0a064de88d7c6912c750"
+    }
+  }
+}

@@ -1,20 +1,42 @@
-"""Load BTC data and split into train (<2020) and test (2020-2022)."""
+"""Load BTC data and split into train (<2020) and test (2020-2022).
 
-from pathlib import Path
+All experiments use the same yfinance source for consistency.
+"""
+
 import numpy as np
 import pandas as pd
+import yfinance as yf
 
 
-def load_btc_data(csv_path: str):
-    """Return (train_prices, test_prices) as numpy arrays."""
-    path = Path(csv_path)
-    if not path.exists():
-        raise FileNotFoundError(f"BTC data not found: {path}")
+def load_btc_data():
+    """Return (train_prices, test_prices, full_dataframe) from yfinance BTC-USD.
 
-    df = pd.read_csv(path)
-    df["date"] = pd.to_datetime(df["date"])
-    df = df.sort_values("date").reset_index(drop=True)
+    Uses the same source and date range as all experiments in exp/.
+    """
+    df = yf.download(
+        "BTC-USD",
+        start="2014-01-01",
+        end="2022-12-31",
+        progress=False,
+        auto_adjust=True,
+    )
+    df = df.reset_index()
+    df["Date"] = pd.to_datetime(df["Date"])
+    df = df.sort_values("Date").reset_index(drop=True)
 
-    train = df[df["date"] < "2020-01-01"]["close"].to_numpy(dtype=np.float64)
-    test = df[df["date"] >= "2020-01-01"]["close"].to_numpy(dtype=np.float64)
-    return train, test
+    train = (
+        df[df["Date"] < "2020-01-01"]["Close"]
+        .to_numpy(dtype=np.float64)
+        .flatten()
+    )
+    test = (
+        df[df["Date"] >= "2020-01-01"]["Close"]
+        .to_numpy(dtype=np.float64)
+        .flatten()
+    )
+    return train, test, df
+
+
+def buy_and_hold_value(test):
+    """Final cash from buy-and-hold with $1000 initial."""
+    return 1000.0 * test[-1] / test[0]

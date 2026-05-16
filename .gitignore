@@ -8,7 +8,3 @@ wheels/
 
 # Virtual environments
 .venv
-
-# agent documents
-AGENTS.md
-proj/

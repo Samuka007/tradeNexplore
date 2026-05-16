@@ -2,7 +2,7 @@
 #import "@preview/wordometer:0.1.5": total-words, word-count
 
 #let abstract = [
-  GP's discrete tournament selection produces high variance (s = \$713) on unrestricted trees, revealing a rugged structural space.
+  PSO and GP behave characteristically differently on the same Bitcoin trading task. PSO's velocity-averaging converges to two stable basins regardless of initialisation, revealing a smooth fitness landscape. GP's discrete tournament selection produces high variance (s = \$713) on unrestricted trees, revealing a rugged structural space. A control experiment---restricting GP to PSO's exact 3-parameter representation---shows both algorithms discover the same basins, but PSO's convergence reliability is higher (10/10 vs 5/10 seeds beating buy-and-hold). A 171-point grid search visualises the two-basin geometry, and generation-level trajectories show GP's train--test divergence without parsimony pressure. A 42-run grid search identifies $lambda = 500$ as GP's sweet spot, correcting our own earlier single-seed result (Exp.~09) that favoured $lambda = 1,000$. Walk-forward validation cuts returns by 29\% and causes GP to collapse to a no-trade strategy while PSO remains robust, revealing that evaluation protocol choice interacts with search mechanism. For this problem, our results suggest that representation shapes attractor geometry while the algorithm shapes exploration reliability.
 ]
 
 #show: word-count
@@ -39,7 +39,7 @@ This reframing matters because comparisons are typically apples-to-oranges: PSO 
 
 We implemented three strategy families: discrete crossover (`dual_crossover`), trivial SMA (`trivial_sma`), and position SMA (`position_sma`), the latter using a sigmoid to produce continuous exposure in $[0, 1]$:
 $ p_t = "sigmoid"(s("fast") - s("slow")) $
-Training: pre-2020 BTC-USD daily via yfinance; testing: 2020--2022.
+We abandoned MACD and Mixture-of-Experts after pilot ablations (test \$949 and \$478 respectively). Evaluation uses \$1,000 initial cash, 3\% fee per round-trip, and final cash as fitness. Training: pre-2020 BTC-USD daily via yfinance; testing: 2020--2022.
 
 = Algorithm Selection
 
@@ -61,11 +61,11 @@ Three evaluation protocols are compared: single split (train pre-2020, test 2020
 
 === PSO Reveals a Smooth Parametric Landscape
 
-Across 10 seeds, PSO (`position_sma`) achieves mean test \$2,297 (s = \$81), with every seed beating BH (\$2,170).
+Across 10 seeds, PSO (`position_sma`) achieves mean test \$2,297 (s = \$81), with every seed beating BH (\$2,170). Two dominant basins emerge: Basin A $(119, 179, 0.1)$ at \$2,366 (6 trades) and Basin B $(37, 99, 0.1)$ at \$2,264 (12 trades). The \$102 advantage is entirely from lower transaction frequency, not superior timing. Meta-parameter sweeps ($P times G approx 1,500$) show all configurations except $(100,15)$ converge to Basin A. Inertia strategy makes no meaningful difference.
 
 === GP Reveals a Rugged Structural Landscape
 
-Raw GP (75-pop/20-gen) achieves mean \$1,689 (s = \$713), with only 2/10 seeds beating BH.
+Raw GP (75-pop/20-gen) achieves mean \$1,689 (s = \$713), with only 2/10 seeds beating BH. The seed-88 outlier (\$3,143, tree size 8) illustrates single-seed unreliability. This volatility is diagnostic: unrestricted tree search on weak signal produces a hypothesis space so large that selection is effectively random without regularisation, consistent with #cite(<allen1999using>, form: "prose").
 
 #figure(image("assets/seed_robustness.pdf", width: 100%), caption: [GP seed robustness: random vs.\ warm-start (Exp.~15). Dashed = buy-and-hold.]) <fig-seed>
 
@@ -97,11 +97,11 @@ A single-seed sweep suggested $lambda = 1,000$ was optimal. A 42-run grid search
 
 == PSO: Implicit Regularisation
 
-GP restricted discovers the same basins with 3$times$ higher standard deviation. The difference is mechanism, not landscape.
+PSO needs no explicit parsimony because velocity-update averages noisy gradients across the swarm. The control experiment confirms this: GP restricted discovers the same basins with 3$times$ higher standard deviation. The difference is mechanism, not landscape.
 
 == Evaluation Protocol Is Not Neutral
 
-Walk-forward validation (5 windows) reduces PSO mean from \$2,297 to \$1,636 (29\% drop); win rate falls from 10/10 to 2/5.
+Walk-forward validation (5 windows) reduces PSO mean from \$2,297 to \$1,636 (29\% drop); win rate falls from 10/10 to 2/5. GP degenerates to a no-trade strategy (1/5 wins, 20\%). Walk-forward averaging destroys the sharp gradients GP's tournament selection relies on; with fitness compressed to noise, selection collapses. PSO's swarm averaging is naturally robust to window-wise noise. This reveals a mechanistic difference: GP's selection is discrete (keep/kill), PSO's is continuous (weighted velocity update). Evaluation protocol choice interacts with search mechanism.
 
 Robust optimisation (52 windows) yields the same pattern: PSO wins 38.5\%; GP degenerates to no-trade.
 
@@ -129,7 +129,7 @@ Wilcoxon signed-rank (one-sided, $alpha = 0.05$) and Mann-Whitney U tests. We no
 
 == Risk-Adjusted Returns
 
-PSO CV = 3.5\%; GP random = 42\%; warm-start = 40\%; GP restricted = 11\%.
+PSO CV = 3.5\%; GP random = 42\%; warm-start = 40\%; GP restricted = 11\%. Variance is driven by both representation and algorithm mechanism. Estimated annualised Sharpe: ~0.75--0.88 for PSO. Precise Sharpe and max drawdown require daily equity curves not exported---a limitation.
 
 = Discussion and Limitations
 
