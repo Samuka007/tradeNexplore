@@ -39,7 +39,7 @@ This reframing matters because comparisons are typically apples-to-oranges: PSO 
 
 We implemented three strategy families: discrete crossover (`dual_crossover`), trivial SMA (`trivial_sma`), and position SMA (`position_sma`), the latter using a sigmoid to produce continuous exposure in $[0, 1]$:
 $ p_t = "sigmoid"(s("fast") - s("slow")) $
-We abandoned MACD and Mixture-of-Experts after pilot ablations (test \$949 and \$478 respectively). Evaluation uses \$1,000 initial cash, 3\% fee per round-trip, and final cash as fitness. Training: pre-2020 BTC-USD daily via yfinance; testing: 2020--2022.
+We abandoned MACD (test \$949) and Mixture-of-Experts (test \$478) after pilot ablations. Evaluation uses \$1,000 initial cash, 3\% fee per round-trip, and final cash as fitness. Training: pre-2020 BTC-USD daily via yfinance; testing: 2020--2022.
 
 = Algorithm Selection
 
@@ -47,7 +47,7 @@ From Part 1's four algorithms, PSO and GP were selected; ABC and HS were dropped
 
 *PSO.* 30 particles, 50 iterations, inertia decay $w: 0.9 arrow.r 0.4$, $c_1 = c_2 = 2.05$. The velocity-update formula---weighted sum of inertia, cognitive, and social terms---provides implicit smoothing that damps local noise.
 
-*GP.* Tournament selection (size 3), subtree crossover 0.9, mutation 0.1, grow initialization (depth 5/7). Function set: arithmetic, comparison (LT, GT), logical (IF, AND), and technical indicators (SMA, EMA, LMA, RSI, momentum, volatility). Parsimony pressure subtracts $lambda dot "tree size"$ from raw fitness. Without it, trees bloat to 96 nodes.
+*GP.* Tournament selection (size 3), subtree crossover 0.9, mutation 0.1, grow initialization (depth 5/7). Function set: arithmetic, comparison (LT, GT), logical (IF, AND), and technical indicators (SMA, EMA, LMA, RSI, momentum, volatility). Parsimony pressure subtracts $lambda dot "tree size"$ from raw fitness. Without it, trees bloat to 96 nodes (Exp.~09).
 
 = Experimental Design
 
@@ -95,7 +95,8 @@ A single-seed sweep suggested $lambda = 1,000$ was optimal. A 42-run grid search
 
 #figure(image("assets/lambda_sweep.pdf", width: 100%), caption: [GP parsimony pressure vs.\ test return (Exp.~17).]) <fig-lambda>
 
-== PSO: Implicit Regularisation
+=== PSO: Implicit Regularisation
+
 
 PSO needs no explicit parsimony because the velocity update averages noisy gradients across the swarm. The control experiment confirms this: GP restricted discovers the same basins with 3$times$ higher standard deviation. The difference is mechanism, not landscape.
 
@@ -143,4 +144,4 @@ This aligns with #cite(<lopezdeprado2018advances>, form: "prose") on single-spli
 
 Three patterns recur across experiments. First, PSO's swarm averaging makes it robust on smooth parametric landscapes; its 3.5\% CV reveals broad attractors and low ridges. Second, GP's discrete selection makes it powerful but fragile on rugged landscapes; $lambda = 500$ is an empirically tuned complexity control identified by grid search. Third, evaluation protocol is an algorithmic variable---walk-forward destroys GP's selection signal while leaving PSO intact.
 
-The practical implication: match the algorithm to what you know about the problem. Known structure $arrow.r$ parameterise + implicit regularisation. Unknown structure $arrow.r$ structural search with explicit regularisation, multi-seed validation, and honest protocols that preserve the selection signal.
+The practical implication: match the algorithm to what you know about the problem. When structure is known, parameterise and rely on implicit regularisation. When structure is unknown, use structural search with explicit regularisation, multi-seed validation, and honest protocols that preserve the selection signal.
