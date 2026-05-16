@@ -2,7 +2,7 @@
 #import "@preview/wordometer:0.1.5": total-words, word-count
 
 #let abstract = [
-  Genetic programming (GP) is often criticised for high variance on financial forecasting tasks. We argue that this variance is not random noise but a mechanistic consequence of subtree crossover. On a Bitcoin trading task with 3\% transaction fees, we instrument GP to log every parent-offspring pair across 10 independent seeds (13,245 pairs total). Parent-offspring fitness correlation declines from $r = 0.51$ at generation~0 to $r = -0.03$ at generation~19---crossover shifts from preserving advantage to systematically destroying it. This epistasis effect explains GP's instability without invoking search-space metaphors. Two supplementary findings contextualise the result: (1)~GP adapts tree structure to market regime---bear markets demand complex conditional trees (mean size~12.9) while sideways markets need simple trend indicators (size~3.5); (2)~tree nesting ratio predicts train-test divergence ($r = 0.81$, $p < 10^(-16)$), showing that overfitting has structural signatures visible before testing. Together, these results frame GP's variance not as a bug to be fixed but as a set of mechanisms that can be monitored and controlled.
+  Genetic programming (GP) is often criticised for high variance on financial forecasting tasks. We argue that this variance is not random noise but a mechanistic consequence of subtree crossover. On a Bitcoin trading task with 3\% transaction fees, we instrument GP to log every parent-offspring pair across 10 independent seeds (13,245 pairs total). Parent-offspring fitness correlation declines from $r = 0.51$ at generation~0 to $r = -0.323$ at generation~10---crossover shifts from preserving advantage to systematically destroying it. This epistasis effect explains GP's instability without invoking search-space metaphors. Two supplementary findings contextualise the result: (1)~GP adapts tree structure to market regime---bear markets demand complex conditional trees (mean size~12.9) while sideways markets need simple trend indicators (size~3.5); (2)~tree nesting ratio predicts train-test divergence ($r = 0.81$, $p < 10^{-16}$), showing that overfitting has structural signatures visible before testing. Together, these results frame GP's variance not as a bug to be fixed but as a set of mechanisms that can be monitored and controlled.
 ]
 
 #show: word-count
@@ -88,6 +88,8 @@ We copy the GP implementation and instrument `optimize()` to log every crossover
 
 This yields approximately 1,325 pairs per seed (slight variation due to elitism), 13,245 total. We compute Pearson's $r$ between parent-mean and offspring fitness, both per-generation and pooled across generations.
 
+For comparison, we apply an identical logging protocol to PSO (`position_sma`, 30 particles, 50 iterations, 10 seeds), recording parent (previous best position) and offspring (new position after velocity update) fitness at each iteration. This yields 15,000 pairs total.
+
 == Experiment 22: Regime-Specific Runs
 
 We classify each trading day into one of three regimes based on 90-day returns: bull ($> +30\%$), bear ($< -30\%$), sideways (otherwise). For each regime, we concatenate all contiguous periods into a single training set and run GP (10 seeds, $lambda = 500$, depth~5). Winning trees (test $>$ BH) are structurally analysed by counting node types, depth, and terminal diversity.
@@ -129,7 +131,7 @@ This is epistasis in its classical sense: the fitness contribution of a gene (su
 
 === Comparison with PSO
 
-For contrast, we log parent-offspring pairs in PSO (velocity update on `position_sma`, 10 seeds, 15,000 pairs). The overall correlation is $r = 0.414$---similar to GP's overall---but critically, PSO's correlation is stable across iterations. There is no temporal decline because PSO's parameter update is a smooth perturbation: offspring positions are always near parent positions in the same parametric space. GP's discrete subtree swap, by contrast, is a structural jump that becomes increasingly destructive as the population diversifies.
+For contrast, we log parent-offspring pairs in PSO (velocity update on `position_sma`, 10 seeds, 15,000 pairs). The overall correlation is $r = 0.414$---similar to GP's overall---but critically, PSO's correlation shows no systematic temporal decline. Individual iteration correlations fluctuate between $-0.095$ and $+0.593$, but there is no monotonic trend. This is because PSO's parameter update is a smooth perturbation: offspring positions are always near parent positions in the same parametric space. GP's discrete subtree swap, by contrast, is a structural jump that becomes increasingly destructive as the population diversifies.
 
 This difference is not about algorithmic superiority but about the nature of the search operator. PSO's continuous velocity update preserves local structure; GP's discrete subtree crossover disrupts it.
 
@@ -154,7 +156,7 @@ Using 90-day returns, we identify three regimes in BTC 2014--2022: bull ($> +30\
     [1.2],
     [1.0],
     [0],
-    [1],
+    [3],
     [Bear],
     [6/10],
     [12.9],
@@ -166,12 +168,12 @@ Using 90-day returns, we identify three regimes in BTC 2014--2022: bull ($> +30\
     [3.5],
     [2.1],
     [1],
-    [13],
+    [12],
   ),
   caption: [GP performance and tree structure by market regime (Exp.~22, 10 seeds per regime). "Conditional nodes" counts IF + AND. "Trend features" counts SMA + LMA + EMA terminals.],
 ) <tbl-regime>
 
-The pattern is clear. In bull markets, GP converges to trivial terminals (`price`, single SMA) because buy-and-hold is optimal and any active trading incurs fees. In bear markets, winning trees are the largest and most complex, using conditional logic (IF/AND) and multiple trend indicators---structures that can switch between long and flat positions. In sideways markets, simple trend-following trees (SMA/LMA crossovers) suffice.
+The pattern is clear. In bull markets, GP converges to trivial terminals because buy-and-hold is optimal and any active trading incurs fees. In bear markets, GP produces the largest and most complex trees, using conditional logic (IF/AND) and multiple trend indicators---structures that can switch between long and flat positions. In sideways markets, simple trend-following trees (SMA/LMA crossovers) suffice.
 
 This is not evidence that GP "discovers" regime-dependent strategies in a single run. Rather, it shows that when the data distribution changes, GP's structural search space contains solutions with different architectures, and selection favours the architecture that matches the regime. This adaptability is a consequence of structural search---a parametric optimiser like PSO, locked into a fixed template, cannot switch architectures.
 
@@ -200,13 +202,13 @@ Regressing train-test gap on tree size, depth, nesting ratio, constant ratio, an
 
 === Parsimony as Structural Control
 
-At $lambda = 500$, GP automatically produces small, shallow trees (mean size~5.7, depth~2). The structural early-stopping experiment (Exp.~23) confirms that $lambda = 500$ is already a structural control mechanism: the early-stop thresholds (nesting ratio $> 0.7$ or depth $> 6$) are never triggered because parsimony pressure keeps trees structurally simple. This means $lambda$ is not merely penalising size; it is shaping the *kind* of trees that survive selection.
+At $lambda = 500$, GP automatically produces small, shallow trees (typically 3--7 nodes). The structural early-stopping experiment (Exp.~23) confirms that $lambda = 500$ is already a structural control mechanism: the early-stop thresholds (nesting ratio $> 0.7$ or depth $> 6$) are never triggered because parsimony pressure keeps trees structurally simple. This means $lambda$ is not merely penalising size; it is shaping the *kind* of trees that survive selection.
 
 = Discussion
 
 Our three studies converge on a single conclusion: GP's variance on financial tasks is not an irreducible noise floor but a composite of three identifiable mechanisms.
 
-*Epistasis* (Exp.~21) is the primary source of instability. Crossover starts as a constructive operator ($r = 0.51$) but becomes destructive ($r = -0.03$) as the population diversifies. This temporal dynamic explains why GP is reliable early in the search but unpredictable later---exactly the pattern observed in practice, where "good" seeds are often those that happen to converge before crossover turns destructive.
+*Epistasis* (Exp.~21) is the primary source of instability. Crossover starts as a constructive operator ($r = 0.51$) but becomes destructive by generation~10 ($r = -0.323$, $p < 10^{-17}$), declining to near-zero at generation~19 ($r = -0.029$, not significant). This temporal dynamic explains why GP is reliable early in the search but unpredictable later---exactly the pattern observed in practice, where "good" seeds are often those that happen to converge before crossover turns destructive.
 
 *Regime adaptation* (Exp.~22) explains why some seeds outperform others. Different market states demand different strategy architectures, and GP's structural search can discover them. But in a single-split experiment, the training data is dominated by one regime (bull in 2014--2019), so seeds that initialise near trend-following structures are favoured. This is not a failure of GP; it is a consequence of training on a non-stationary distribution.
 
@@ -218,7 +220,7 @@ Together, these findings support a diagnostic rather than competitive framing. I
 
 = Conclusion
 
-We have shown that GP's variance on a Bitcoin trading task has three mechanistic sources: epistasis in crossover, regime-dependent structural demands, and structural signatures of overfitting. The central finding---that parent-offspring fitness correlation declines from $r = 0.51$ to $r = -0.03$ over 20 generations---is direct empirical evidence that GP's primary search operator becomes systematically destructive as evolution proceeds. This is not a flaw to be patched with larger populations or more generations; it is an intrinsic property of context-dependent subtree crossover.
+We have shown that GP's variance on a Bitcoin trading task has three mechanistic sources: epistasis in crossover, regime-dependent structural demands, and structural signatures of overfitting. The central finding---that parent-offspring fitness correlation declines from $r = 0.51$ to $r = -0.323$ by generation~10---is direct empirical evidence that GP's primary search operator becomes systematically destructive as evolution proceeds. This is not a flaw to be patched with larger populations or more generations; it is an intrinsic property of context-dependent subtree crossover.
 
 The practical implication is that GP users should treat variance as a diagnostic signal, not a nuisance. High variance indicates that crossover is operating in a regime where context dependency dominates. The response should not be "more compute" but "more structure": stronger parsimony pressure (which controls nesting ratio), regime-aware training (which matches structure to data), or alternative crossover operators that preserve semantic context.
 
