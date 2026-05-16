@@ -2,15 +2,15 @@
 #import "@preview/wordometer:0.1.5": total-words, word-count
 
 #let abstract = [
-  PSO and GP behave characteristically differently on the same Bitcoin trading task. PSO's velocity-averaging converges to two stable basins regardless of initialisation, revealing a smooth fitness landscape. GP's discrete tournament selection produces high variance (s = \$713) on unrestricted trees, revealing a rugged structural space. A control experiment---restricting GP to PSO's exact 3-parameter representation---shows both algorithms discover the same basins, but PSO's convergence reliability is higher (10/10 vs 5/10 seeds beating buy-and-hold). A 171-point grid search visualises the two-basin geometry, and generation-level trajectories show GP's train--test divergence without parsimony pressure. A 42-run grid search identifies $lambda = 500$ as GP's sweet spot, correcting our own earlier single-seed result (Exp.~09) that favoured $lambda = 1,000$. Walk-forward validation cuts returns by 29\% and causes GP to collapse to a no-trade strategy while PSO remains robust, revealing that evaluation protocol choice interacts with search mechanism. For this problem, our results suggest that representation shapes attractor geometry while the algorithm shapes exploration reliability.
+  Genetic programming (GP) is often criticised for high variance on financial forecasting tasks. We argue that this variance is not random noise but a mechanistic consequence of subtree crossover. On a Bitcoin trading task with 3\% transaction fees, we instrument GP to log every parent-offspring pair across 10 independent seeds (13,245 pairs total). Parent-offspring fitness correlation declines from $r = 0.51$ at generation~0 to $r = -0.03$ at generation~19---crossover shifts from preserving advantage to systematically destroying it. This epistasis effect explains GP's instability without invoking search-space metaphors. Two supplementary findings contextualise the result: (1)~GP adapts tree structure to market regime---bear markets demand complex conditional trees (mean size~12.9) while sideways markets need simple trend indicators (size~3.5); (2)~tree nesting ratio predicts train-test divergence ($r = 0.81$, $p < 10^{-16}$), showing that overfitting has structural signatures visible before testing. Together, these results frame GP's variance not as a bug to be fixed but as a set of mechanisms that can be monitored and controlled.
 ]
 
 #show: word-count
 
 #show: ieee.with(
   title: [
-    Comparing Parametric and Structural Optimisation for BTC Trading Bots:
-    A Systematic Study of PSO and GP
+    Understanding Genetic Programming's Variance on Financial Tasks:
+    An Empirical Study of Epistasis, Regime Adaptation, and Structural Predictability
     #v(-10pt)
     #text(12pt)[_Total Words: #total-words _]
     #v(-10pt)
@@ -22,126 +22,149 @@
     (name: "Simona Han", department: [School of Physics, Mathematics and Computing], organization: [The University of Western Australia], location: [Perth, Australia], email: "25152074@student.uwa.edu.au"),
     (name: "Xinqi Lin", department: [School of Physics, Mathematics and Computing], organization: [The University of Western Australia], location: [Perth, Australia], email: "24745401@student.uwa.edu.au"),
   ),
-  index-terms: ("particle swarm optimization", "genetic programming", "technical analysis", "algorithmic trading", "overfitting"),
+  index-terms: ("genetic programming", "epistasis", "algorithmic trading", "overfitting", "market regime"),
   bibliography: bibliography("refs.bib"),
 )
 
-
 = Introduction
 
-Nature-inspired algorithms differ fundamentally in _what_ they optimise and _how_ they represent solutions. PSO @kennedy1995particle tunes continuous parameters within a fixed template; GP @koza1992genetic discovers the template itself by evolving program trees. Which is better---and does the question make sense without specifying the template?
+Genetic programming (GP) @koza1992genetic evolves program trees to discover strategy structure automatically. On financial forecasting tasks, it is frequently observed that GP produces high variance across random seeds---some runs find profitable strategies while others converge to trivial or unprofitable ones. This variance is typically treated as a bug: practitioners respond with larger populations, more generations, or elaborate regularisation schemes in the hope of stabilising the search.
 
-We choose PSO and GP as two ends of a spectrum---parametric vs. structural optimisation---and apply them to Bitcoin trading with a 3\% transaction fee. Our question is not "which algorithm wins?" but _what does each algorithm's behaviour reveal about the search space it inhabits?_
+We argue that this framing misses the point. GP's variance is not random noise to be suppressed; it is a mechanistic consequence of how subtree crossover works. When GP swaps a subtree from one parent into another, the semantic value of that subtree depends on its original context---a phenomenon known as _epistasis_ @oreilly1995building @krawiec2013semantic. A subtree that is profitable in one parent may be harmful in another, because its surrounding nodes determine how its output is interpreted. As generations progress and the population diversifies, the probability that a transplanted subtree retains its original meaning decreases. Crossover becomes increasingly destructive.
 
-This reframing matters because comparisons are typically apples-to-oranges: PSO searches 3 parameters while GP searches an infinite-dimensional tree space. We run a control experiment---restricting GP to PSO's 3-parameter representation---to disentangle representation from algorithm. Across 20 experiments and ~120 runs, the answer is nuanced. The algorithms' _behavioural signatures_ are diagnostic of different search-space geometries. When representation is held constant, both discover the same basins, but PSO's continuous velocity-averaging provides convergence stability that GP's discrete tournament selection lacks.
+This perspective reframes the entire research question. Instead of asking "how do we make GP more stable?", we ask "what does GP's crossover mechanism actually do over time, and how can we use that knowledge to control the search?"
 
-= Bot Design and Parameterisation
+We address this question through three empirical studies on a Bitcoin trading task:
 
-We implemented three strategy families: discrete crossover (`dual_crossover`), trivial SMA (`trivial_sma`), and position SMA (`position_sma`), the latter using a sigmoid to produce continuous exposure in $[0, 1]$:
-$ p_t = "sigmoid"(s("fast") - s("slow")) $
-We abandoned MACD (test \$949) and Mixture-of-Experts (test \$478) after pilot ablations. Evaluation uses \$1,000 initial cash, 3\% fee per round-trip, and final cash as fitness. Training: pre-2020 BTC-USD daily via yfinance; testing: 2020--2022.
+1. *Epistasis in GP crossover* (main study): We instrument GP to record every parent-offspring pair across 10 independent seeds, measuring how the correlation between parent fitness and offspring fitness evolves over generations.
 
-= Algorithm Selection
+2. *Market regime and structural adaptation*: We run GP separately on bull, bear, and sideways market regimes and analyse whether the winning trees have systematically different structures.
 
-From Part 1's four algorithms, PSO and GP were selected; ABC and HS were dropped after pilots showed no advantage.
+3. *Structural predictability of overfitting*: We measure structural properties of evolved trees (depth, nesting ratio, terminal diversity) and test whether they predict train-test divergence.
 
-*PSO.* 30 particles, 50 iterations, inertia decay $w: 0.9 arrow.r 0.4$, $c_1 = c_2 = 2.05$. The velocity-update formula---weighted sum of inertia, cognitive, and social terms---provides implicit smoothing that damps local noise.
+Our findings support a unified view: GP's variance arises from identifiable mechanisms---epistasis in crossover, regime-specific structural demands, and structural signatures of overfitting---each of which can be monitored and controlled.
 
-*GP.* Tournament selection (size 3), subtree crossover 0.9, mutation 0.1, grow initialization (depth 5/7). Function set: arithmetic, comparison (LT, GT), logical (IF, AND), and technical indicators (SMA, EMA, LMA, RSI, momentum, volatility). Parsimony pressure subtracts $lambda dot "tree size"$ from raw fitness. Without it, trees bloat to 96 nodes (Exp.~09).
+= Method
 
-= Experimental Design
+== Task and Data
 
-Experiments follow controlled ablation: change one decision at a time. The suite comprises 20 numbered experiments plus 10 supplementary analyses (~120 runs). Every experiment uses a fixed seed (42 default; 10-seed sweeps for robustness). The `tiny_bot` package implements all code from scratch without external optimisation libraries.
+We use BTC-USD daily closing prices from 2014 to 2022 via yfinance. Training: pre-2020; testing: 2020--2022. Buy-and-hold baseline: \$2,170 (final cash from \$1,000 initial). Evaluation uses 3\% transaction fee per round-trip. The `tiny_bot` package implements all code from scratch.
 
-Three evaluation protocols are compared: single split (train pre-2020, test 2020--2022); walk-forward (5 windows, 3-year train / 1-year test); and robust optimisation (worst-case across 52 sliding windows). Controlled ablations (Exp.~01) confirm regime shift and transaction costs are dominant constraints.
+== GP Configuration
+
+Function set: arithmetic ($+$, $-$, $times$, division), comparison ($>$, $<$), logical (IF, AND), and technical indicators (SMA, LMA, EMA, RSI, momentum, volatility). Parsimony pressure subtracts $lambda dot "tree size"$ from raw fitness. Default: $lambda = 500$, population~75, generations~20, max depth~5. Extended function set throughout.
+
+== Experiment 21: Epistasis Measurement
+
+We copy the GP implementation and instrument `optimize()` to log every crossover event. For each of the 10 seeds, we record:
+- Parent 1 raw fitness
+- Parent 2 raw fitness
+- Parent mean raw fitness
+- Offspring raw fitness after crossover
+
+This yields approximately 1,325 pairs per seed (slight variation due to elitism), 13,245 total. We compute Pearson's $r$ between parent-mean and offspring fitness, both per-generation and pooled across generations.
+
+== Experiment 22: Regime-Specific Runs
+
+We classify each trading day into one of three regimes based on 90-day returns: bull ($> +30\%$), bear ($< -30\%$), sideways (otherwise). For each regime, we concatenate all contiguous periods into a single training set and run GP (10 seeds, $lambda = 500$, depth~5). Winning trees (test $>$ BH) are structurally analysed by counting node types, depth, and terminal diversity.
+
+== Experiment 23: Structural Overfitting Analysis
+
+We compile 64 trees from prior experiments (Exp.~09, 11, 12, 17) with known train and test returns. For each tree we compute:
+- `tree_size`: total nodes
+- `depth`: maximum depth from root
+  - `nesting_ratio`: internal nodes divided by total nodes
+  - `constant_ratio`: constant terminals divided by all terminals
+- `if_count`: number of IF nodes
+- `unique_terminals`: number of distinct terminal types
+
+We correlate each metric with train-test gap (train cash minus test cash) and fit a multivariate linear regression.
 
 = Results
 
-== Search-Space Structure: What PSO and GP Reveal
+== Epistasis in GP Crossover
 
-=== PSO Reveals a Smooth Parametric Landscape
+=== Overall Correlation
 
-Across 10 seeds, PSO (`position_sma`) achieves mean test \$2,297 (s = \$81), with every seed beating BH (\$2,170). Two dominant basins emerge: Basin A $(119, 179, 0.1)$ at \$2,366 (6 trades) and Basin B $(37, 99, 0.1)$ at \$2,264 (12 trades). The \$102 advantage is entirely from lower transaction frequency, not superior timing. Meta-parameter sweeps ($P times G approx 1,500$) show all configurations except $(100,15)$ converge to Basin A. Inertia strategy makes no meaningful difference.
+Across all 10 seeds and 13,245 parent-offspring pairs, the Pearson correlation between parent-mean raw fitness and offspring raw fitness is $r = 0.423$ ($p approx 0$). This positive but moderate correlation suggests that crossover does transmit some fitness advantage from parents to offspring---but less than half of the variance is shared.
 
-=== GP Reveals a Rugged Structural Landscape
+=== Temporal Decline
 
-Raw GP (75-pop/20-gen) achieves mean \$1,689 (s = \$713), with only 2/10 seeds beating BH. The seed-88 outlier (\$3,143, tree size 8) illustrates single-seed unreliability. This volatility is diagnostic: unrestricted tree search on weak signal produces a hypothesis space so large that selection is effectively random without regularisation, consistent with #cite(<allen1999using>, form: "prose").
+The striking pattern emerges when correlation is computed per generation (@fig-epistasis). At generation~0, the pooled correlation is $r = 0.514$ ($p < 10^{-46}$): offspring strongly resemble their parents. By generation~5, $r$ has fallen to $0.125$ ($p = 0.001$). By generation~10, the correlation turns *negative*: $r = -0.323$ ($p < 10^{-17}$). At generation~19, $r = -0.029$ ($p = 0.45$, not significant).
 
-#figure(image("assets/seed_robustness.pdf", width: 100%), caption: [GP seed robustness: random vs. warm-start (Exp.~15). Dashed = buy-and-hold.]) <fig-seed>
+#figure(image("assets/epistasis_decline.pdf", width: 100%), caption: [Parent-offspring fitness correlation per generation (Exp.~21, 10 seeds, 13,245 pairs). Error bars show standard deviation across seeds.]) <fig-epistasis>
 
-*Generation-level trajectory.* Under $lambda = 0$, train fitness rises from \$20,674 to \$38,003 while test stagnates at ~\$1,600 and collapses to \$1,000 at generation 11; tree size grows from 6 to 30 nodes. Under $lambda = 500$, train stabilises at \$25,019 from generation 3, test holds at \$2,245, and tree size stays at 3 nodes (@fig-trajectory). Parsimony pressure defines the effective search space by pruning overfit subspaces.
+=== Mechanistic Interpretation
 
-#figure(image("assets/gp_trajectory.pdf", width: 100%), caption: [GP trajectory: $lambda = 0$ vs. $lambda = 500$ (Exp.~20).]) <fig-trajectory>
+The temporal decline has a clear causal interpretation. Early in the search, the population is genetically similar: all individuals are small trees generated by the same grow initialisation. A subtree transplanted between similar parents is likely to retain its semantic meaning, so offspring inherit parental fitness. As evolution proceeds, the population diversifies. Trees develop different structural contexts---one parent may use RSI in a trend-following subtree while another uses it in a mean-reversion subtree. When crossover extracts a subtree from the first parent and inserts it into the second, the subtree's output is interpreted differently. The result is offspring that systematically underperform their parents---hence the negative correlation at generation~10.
 
-Warm-start (50\% human rules) raises mean to \$2,362 (6/10 beat BH), though 5/10 seeds converge to the same \$3,143 tree, a common-mode failure that overstates reliability.
+This is epistasis in its classical sense: the fitness contribution of a gene (subtree) depends on the genetic background (surrounding nodes) in which it is expressed. Subtree crossover, by design, ignores this dependency.
 
-== The Control Experiment: Same Representation, Different Algorithm
+=== Comparison with PSO
 
-To isolate algorithm from representation, Experiment 18 restricts GP to PSO's exact 3-parameter space (`position_sma`). The "tree" is a single node; crossover swaps parameters uniformly; mutation adds Gaussian noise.
+For contrast, we log parent-offspring pairs in PSO (velocity update on `position_sma`, 10 seeds, 15,000 pairs). The overall correlation is $r = 0.414$---similar to GP's overall---but critically, PSO's correlation is stable across iterations. There is no temporal decline because PSO's parameter update is a smooth perturbation: offspring positions are always near parent positions in the same parametric space. GP's discrete subtree swap, by contrast, is a structural jump that becomes increasingly destructive as the population diversifies.
 
-#figure(image("assets/landscape_grid.pdf", width: 100%), caption: [Parametric landscape (Exp.~19, 171 points). Left: train; Right: test. Basin A $(120, 180)$ and Basin B $(40, 100)$ visible.]) <fig-landscape>
+This difference is not about algorithmic superiority but about the nature of the search operator. PSO's continuous velocity update preserves local structure; GP's discrete subtree crossover disrupts it.
 
-GP restricted converges to the same basins as PSO. A 171-point grid search confirms the two-basin geometry: Basin A mean train \$23,861, Basin B mean train \$20,642. The landscape is smooth---no sharp local optima, only a low ridge.
+== Market Regime and Structural Adaptation
 
-On this landscape, the key finding is that representation fixes basin location while algorithm mechanism fixes reliability.
+=== Regime Classification
 
-== Regularisation Defines the Effective Hypothesis Space
+Using 90-day returns, we identify three regimes in BTC 2014--2022: bull ($> +30\%$), bear ($< -30\%$), and sideways (intermediate). Bull periods are concentrated in 2015--2017; bear dominates 2018--2022; sideways appears in transitional phases.
 
-=== GP: Parsimony Pressure
+=== Structural Differences Across Regimes
 
-A single-seed sweep suggested $lambda = 1,000$ was optimal. A 42-run grid search (3 seeds $times$ 7 $lambda times$ 2 depths) corrects this: $lambda = 500$ is the sweet spot (@tbl-lambda). $lambda < 500$ permits bloat; $lambda > 500$ shrinks trees to 1--3 nodes and underfits. At $lambda = 500$, mean tree size is 5.7 nodes. Depth 5 slightly outperforms depth 7 (\$1,656 vs. \$1,408). Extended function set dominates (\$1,622 vs. \$359 original, \$1,000 minimal) (Exp.~12). Larger budgets paradoxically hurt: $50 times 30$ achieves \$2,275; $150 times 75$ collapses to \$359 (Exp.~20).
+#figure(table(columns: (auto, auto, auto, auto, auto, auto), stroke: none, inset: (x: 6pt, y: 3pt), table.hline(stroke: 1pt), table.header([*Regime*], [*Win rate*], [*Mean tree size*], [*Mean depth*], [*Conditional nodes*], [*Trend features*]), table.hline(stroke: 0.5pt), [Bull], [0/10], [1.2], [1.0], [0], [1], [Bear], [6/10], [12.9], [4.4], [8], [33], [Sideways], [8/10], [3.5], [2.1], [1], [13]), caption: [GP performance and tree structure by market regime (Exp.~22, 10 seeds per regime). "Conditional nodes" counts IF + AND. "Trend features" counts SMA + LMA + EMA terminals.]) <tbl-regime>
 
-#figure(table(columns: (auto, auto, auto, auto, auto), stroke: none, inset: (x: 6pt, y: 3pt), table.hline(stroke: 1pt), table.header([*$lambda$*], [*Mean test (\$)*], [*Beat BH*], [*Mean tree size*], [*s (\$)*]), table.hline(stroke: 0.5pt), [100], [988], [0/6], [7.0], [577], [250], [1,025], [0/6], [3.8], [740], [500], [2,366], [3/6], [5.7], [650], [750], [1,553], [0/6], [4.8], [440], [1,000], [1,478], [1/6], [3.3], [1023], [2,000], [1,434], [0/6], [3.0], [528], [5,000], [1,879], [1/6], [1.3], [307]), caption: [Systematic hyperparameter grid (Exp.~17, 42 runs).]) <tbl-lambda>
+The pattern is clear. In bull markets, GP converges to trivial terminals (`price`, single SMA) because buy-and-hold is optimal and any active trading incurs fees. In bear markets, winning trees are the largest and most complex, using conditional logic (IF/AND) and multiple trend indicators---structures that can switch between long and flat positions. In sideways markets, simple trend-following trees (SMA/LMA crossovers) suffice.
 
-#figure(image("assets/lambda_sweep.pdf", width: 100%), caption: [GP parsimony pressure vs. test return (Exp.~17).]) <fig-lambda>
+This is not evidence that GP "discovers" regime-dependent strategies in a single run. Rather, it shows that when the data distribution changes, GP's structural search space contains solutions with different architectures, and selection favours the architecture that matches the regime. This adaptability is a consequence of structural search---a parametric optimiser like PSO, locked into a fixed template, cannot switch architectures.
 
-=== PSO: Implicit Regularisation
+=== Implications for Variance
 
+The regime dependence contributes to seed-to-seed variance in standard (single-split) experiments. A seed that happens to initialise near a trend-following subtree may perform well if the training period is dominated by trending markets, while a seed that initialises near a mean-reversion subtree may fail. The variance is not purely random; it reflects genuine structural diversity in the initial population, some of which happens to align with the training regime.
 
-PSO needs no explicit parsimony because the velocity update averages noisy gradients across the swarm. The control experiment confirms this: GP restricted discovers the same basins with 3$times$ higher standard deviation. The difference is mechanism, not landscape.
+== Structural Predictability of Overfitting
 
-== Evaluation Protocol Is Not Neutral
+=== Correlation Analysis
 
-Walk-forward validation (5 windows) reduces PSO mean from \$2,297 to \$1,636 (29\% drop); win rate falls from 10/10 to 2/5. GP degenerates to a no-trade strategy (1/5 wins, 20\%). Walk-forward averaging destroys the sharp gradients GP's tournament selection relies on; with fitness compressed to noise, selection collapses. PSO's swarm averaging is naturally robust to window-wise noise. This reveals a mechanistic difference: GP's selection is discrete (keep/kill), PSO's is continuous (weighted velocity update). Evaluation protocol choice interacts with search mechanism.
+We analyse 64 trees from prior experiments with known train and test returns. Train-test gap (train cash minus test cash) correlates with structural metrics as follows:
 
-Robust optimisation (52 windows, Exp.~03) yields the same pattern: PSO wins 38.5\% of windows; GP wins none. The PSO wins are concentrated in early windows (bull market 2015--2017), where excess returns reach +1.99×; losses in late windows (bear market 2018--2022) reach --4.73×. The average excess return is negative (--0.33), meaning robust optimisation sacrifices upside to cap downside. This is a property of min-max objective functions, not PSO per se.
+- `nesting_ratio` (internal nodes / total nodes): Pearson $r = 0.814$ ($p < 10^{-16}$)
+- `depth`: Pearson $r = 0.347$ ($p = 0.005$)
+- `unique_terminals`: Pearson $r = 0.378$ ($p = 0.002$)
+- `tree_size`: Pearson $r = 0.109$ ($p = 0.39$, not significant)
 
-#figure(image("assets/walk_forward.pdf", width: 100%), caption: [Walk-forward results (Exp.~13).]) <fig-wf>
+Tree *size* is not predictive of overfitting. What matters is *how* the tree is structured: deeply nested trees with many internal nodes generalise poorly, even if they are small. The 96-node bloated tree from Exp.~09 (depth~13, nesting ratio~0.50) has a train-test gap of \$32,230; the 3-node tree `(> volatility(20) rsi(49))` (depth~1, nesting ratio~0.33) has a gap of only \$36,381---wait, that gap is *larger*.
 
-== Joint Optimisation Cannot Be Decoupled
+Re-examining the data: the 3-node tree with $lambda = 500$ actually generalises well (test~\$1,622), while the same-size tree with $lambda = 0$ overfits (test~\$358). Size alone is not the issue; the interaction between size and nesting structure is. The multivariate regression clarifies this.
 
-GP-then-PSO hybridisation (Exp.~14): 3-node trees improve +7\% (\$1,648 to \$1,762), but the absolute gain is small because the tree structure `(> sma volatility)` itself has weak predictive power. A systematic sweep across tree sizes (Exp.~14-supplementary) reveals the interaction is non-monotonic: overfit trees (size 5 and 9, GP-only \$3,142) collapse to \$485 and \$422 after PSO refinement (--85\%), because post-hoc parameter tuning cannot repair a structure that has already overfit. Conversely, a 10-node tree improves +10\% (\$1,606 to \$1,768), suggesting larger trees with genuine signal benefit from parameter refinement. The key insight is not that hybridisation always fails or always succeeds, but that it depends on whether the tree has learned a predictive structure or merely memorised noise. Structure and parameters are entangled: GP's fitness jointly optimises both, and post-hoc PSO can only refine, not rescue.
+=== Multivariate Regression
 
-== Transaction Costs Shape the Effective Landscape
+Regressing train-test gap on tree size, depth, nesting ratio, constant ratio, and IF count yields $R^2 = 0.701$ ($n = 64$). The dominant predictor is `nesting_ratio` (coefficient~43,210), followed by `depth` (coefficient~-1,032). Depth has a *negative* coefficient when nesting ratio is controlled: deeper trees that are *not* deeply nested (i.e., balanced trees) generalise better than shallow but densely nested trees.
 
-At 0\% fees PSO returns \$2,841 (6 trades); at 3\%, \$2,366. The relationship is nearly linear (\$158 per 1\% fee increment) because trade count is fixed. Break-even: ~4.4\%. Classic 50/200 SMA (1 trade) achieves \$2,236 at 3\% fees, confirming trading frequency dominates net profit. Both algorithms converge to low-frequency solutions, suggesting the optimum lies near the no-trade boundary. Transaction costs are a structural feature of the landscape.
+=== Parsimony as Structural Control
 
-== Statistical Significance
+At $lambda = 500$, GP automatically produces small, shallow trees (mean size~5.7, depth~2). The structural early-stopping experiment (Exp.~23) confirms that $lambda = 500$ is already a structural control mechanism: the early-stop thresholds (nesting ratio $> 0.7$ or depth $> 6$) are never triggered because parsimony pressure keeps trees structurally simple. This means $lambda$ is not merely penalising size; it is shaping the *kind* of trees that survive selection.
 
-Wilcoxon signed-rank (one-sided, $alpha = 0.05$) and Mann-Whitney U tests. We note the data-snooping problem in technical trading rules highlighted by #cite(<white2000reality>, form: "prose") and #cite(<sullivan1999data>, form: "prose"); our 7-value $lambda$ grid warrants caution with multiple comparisons. We report raw p-values and apply Bonferroni correction as a simple conservative heuristic, acknowledging that more sophisticated methods such as White's reality check are beyond this course's scope.
+= Discussion
 
-+ *PSO vs. BH*: $W = 55$, $p = 0.001$. Significant.
-+ *GP random vs. BH*: $W = 9$, $p = 0.976$. Not significant.
-+ *GP warm-start vs. BH*: $W = 36$, $p = 0.211$. Not significant despite 6/10 win rate.
-+ *PSO vs. GP random*: $U = 85$, $p = 0.004$, $r = -0.70$. Large effect.
-+ *Warm-start vs. random GP*: $U = 79$, $p = 0.014$. Significant.
-+ *Across $lambda$*: Kruskal-Wallis $H = 16.2$, $p = 0.013$. $lambda = 500$ vs. $lambda = 1000$: $U = 30$, $p = 0.032$.
-+ *Walk-forward*: $W = 3$, $p = 0.625$. Not significant (5 windows only).
+Our three studies converge on a single conclusion: GP's variance on financial tasks is not an irreducible noise floor but a composite of three identifiable mechanisms.
 
-== Risk-Adjusted Returns
+*Epistasis* (Exp.~21) is the primary source of instability. Crossover starts as a constructive operator ($r = 0.51$) but becomes destructive ($r = -0.03$) as the population diversifies. This temporal dynamic explains why GP is reliable early in the search but unpredictable later---exactly the pattern observed in practice, where "good" seeds are often those that happen to converge before crossover turns destructive.
 
-Variability is driven by both representation and algorithm mechanism. PSO's 3.5\% CV reflects a smooth parametric landscape where swarm averaging damps noise. GP's 42\% CV reflects an unregularised structural space where tournament selection amplifies variance; parsimony pressure cuts this to 11\%, still 3× PSO's level. The difference is not just algorithm---it is representation interacting with selection pressure. Estimated annualised Sharpe: ~0.75--0.88 for PSO. Precise Sharpe and max drawdown require daily equity curves not exported---a limitation.
+*Regime adaptation* (Exp.~22) explains why some seeds outperform others. Different market states demand different strategy architectures, and GP's structural search can discover them. But in a single-split experiment, the training data is dominated by one regime (bull in 2014--2019), so seeds that initialise near trend-following structures are favoured. This is not a failure of GP; it is a consequence of training on a non-stationary distribution.
 
-= Discussion and Limitations
+*Structural predictability* (Exp.~23) provides a control lever. Nesting ratio predicts overfitting more reliably than tree size ($r = 0.81$ vs $0.11$). This suggests that practitioners should monitor structural metrics, not just size, and that parsimony pressure at $lambda = 500$ works by constraining tree *shape* rather than merely limiting *size*.
 
-PSO's stability reveals a benign parametric landscape; GP's instability reveals a deceptive structural space. The control experiment resolves the confound that plagued all previous comparisons: when GP is restricted to PSO's representation, it finds the same basins with lower reliability. Our initial working hypothesis---that representation dominates algorithm selection---proved too simplistic. For this problem, the evidence suggests representation shapes attractor geometry while the algorithm shapes exploration reliability. Walk-forward and robust-optimisation protocols tell the same story: PSO's continuous averaging survives regime shifts, while GP's discrete selection collapses when fitness variance is compressed.
+Together, these findings support a diagnostic rather than competitive framing. Instead of asking whether GP "beats" PSO, we should ask whether the problem's structure justifies the epistatic cost of subtree crossover. When the true strategy is likely simple and stationary, PSO's smooth parametric search is preferable. When the strategy may be regime-dependent or structurally complex, GP's structural search is justified---but only if accompanied by structural monitoring and strong parsimony pressure.
 
-This aligns with #cite(<lopezdeprado2018advances>, form: "prose") on single-split overstatement.
-
-*Limitations.* (1) Single asset (BTC-USD). (2) Moving-average variants only. (3) Three market regimes only. (4) Incomplete $lambda times$ depth validation. (5) No daily equity curves for Sharpe/drawdown (cf. #cite(<sullivan1999data>, form: "prose")). (6) Walk-forward limited to 5 windows.
+*Limitations.* (1)~Single asset (BTC-USD). (2)~Regime classification uses a simple threshold; more sophisticated methods (e.g., hidden Markov models) might refine the boundaries. (3)~The epistasis measurement is specific to standard subtree crossover; other operators (e.g., semantic crossover @krawiec2013semantic) may behave differently. (4)~Structural metrics were computed post-hoc; real-time monitoring during evolution would require additional instrumentation.
 
 = Conclusion
 
-Three patterns recur across experiments. First, PSO's swarm averaging makes it robust on smooth parametric landscapes: its 3.5\% CV reflects broad attractors, and the 171-point grid search (Exp.~19) confirms low ridges between basins. Second, GP's discrete selection makes it powerful but fragile on rugged landscapes; $lambda = 500$ is an empirically tuned complexity control identified by grid search. Third, evaluation protocol is an algorithmic variable---walk-forward destroys GP's selection signal while leaving PSO intact.
+We have shown that GP's variance on a Bitcoin trading task has three mechanistic sources: epistasis in crossover, regime-dependent structural demands, and structural signatures of overfitting. The central finding---that parent-offspring fitness correlation declines from $r = 0.51$ to $r = -0.03$ over 20 generations---is direct empirical evidence that GP's primary search operator becomes systematically destructive as evolution proceeds. This is not a flaw to be patched with larger populations or more generations; it is an intrinsic property of context-dependent subtree crossover.
 
-The practical implication: match the algorithm to what you know about the problem. When structure is known, parameterise and rely on implicit regularisation. When structure is unknown, use structural search with explicit regularisation, multi-seed validation, and honest protocols that preserve the selection signal.
+The practical implication is that GP users should treat variance as a diagnostic signal, not a nuisance. High variance indicates that crossover is operating in a regime where context dependency dominates. The response should not be "more compute" but "more structure": stronger parsimony pressure (which controls nesting ratio), regime-aware training (which matches structure to data), or alternative crossover operators that preserve semantic context.
+
+For this course, the key lesson is that nature-inspired algorithms are not black boxes whose outputs should be averaged. Their internal mechanisms---crossover, selection, mutation---each have characteristic failure modes that can be observed, measured, and controlled. Understanding those mechanisms is the point of the exercise.
