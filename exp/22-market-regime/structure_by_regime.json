@@ -1,0 +1,195 @@
+{
+  "regimes": {
+    "bull": {
+      "regime": "bull",
+      "n_seeds": 10,
+      "n_winning": 0,
+      "winning_pct": 0.0,
+      "winning_trees": {
+        "mean_size": 0.0,
+        "mean_depth": 0.0,
+        "trend_following_nodes": 0,
+        "mean_reversion_nodes": 0,
+        "conditional_nodes": 0,
+        "feature_counts": {},
+        "trees_with_feature": {}
+      },
+      "all_trees": {
+        "mean_size": 1.2,
+        "mean_depth": 1.0,
+        "feature_counts": {
+          "sma": 1,
+          "lma": 1,
+          "ema": 1,
+          "rsi": 0,
+          "momentum": 4,
+          "volatility": 3,
+          "IF": 0,
+          "AND": 0,
+          "price": 0,
+          "const": 0
+        },
+        "trees_with_feature": {
+          "volatility": 3,
+          "momentum": 4,
+          "sma": 1,
+          "lma": 1,
+          "ema": 1
+        }
+      }
+    },
+    "bear": {
+      "regime": "bear",
+      "n_seeds": 10,
+      "n_winning": 6,
+      "winning_pct": 60.0,
+      "winning_trees": {
+        "mean_size": 12.0,
+        "mean_depth": 4.0,
+        "trend_following_nodes": 21,
+        "mean_reversion_nodes": 8,
+        "conditional_nodes": 4,
+        "feature_counts": {
+          "sma": 8,
+          "lma": 4,
+          "ema": 9,
+          "rsi": 1,
+          "momentum": 3,
+          "volatility": 7,
+          "IF": 2,
+          "AND": 2,
+          "price": 3,
+          "const": 0
+        },
+        "trees_with_feature": {
+          "sma": 6,
+          "lma": 3,
+          "rsi": 1,
+          "volatility": 4,
+          "IF": 2,
+          "price": 2,
+          "ema": 4,
+          "momentum": 2,
+          "AND": 1
+        }
+      },
+      "all_trees": {
+        "mean_size": 12.9,
+        "mean_depth": 4.4,
+        "feature_counts": {
+          "sma": 12,
+          "lma": 9,
+          "ema": 12,
+          "rsi": 5,
+          "momentum": 12,
+          "volatility": 8,
+          "IF": 6,
+          "AND": 2,
+          "price": 7,
+          "const": 0
+        },
+        "trees_with_feature": {
+          "sma": 9,
+          "lma": 6,
+          "rsi": 4,
+          "volatility": 5,
+          "IF": 4,
+          "price": 3,
+          "ema": 7,
+          "momentum": 5,
+          "AND": 1
+        }
+      }
+    },
+    "sideways": {
+      "regime": "sideways",
+      "n_seeds": 10,
+      "n_winning": 8,
+      "winning_pct": 80.0,
+      "winning_trees": {
+        "mean_size": 2.25,
+        "mean_depth": 1.625,
+        "trend_following_nodes": 9,
+        "mean_reversion_nodes": 1,
+        "conditional_nodes": 0,
+        "feature_counts": {
+          "sma": 3,
+          "lma": 6,
+          "ema": 0,
+          "rsi": 0,
+          "momentum": 2,
+          "volatility": 1,
+          "IF": 0,
+          "AND": 0,
+          "price": 1,
+          "const": 0
+        },
+        "trees_with_feature": {
+          "sma": 3,
+          "lma": 5,
+          "momentum": 2,
+          "volatility": 1,
+          "price": 1
+        }
+      },
+      "all_trees": {
+        "mean_size": 3.5,
+        "mean_depth": 2.1,
+        "feature_counts": {
+          "sma": 3,
+          "lma": 9,
+          "ema": 0,
+          "rsi": 2,
+          "momentum": 4,
+          "volatility": 1,
+          "IF": 1,
+          "AND": 0,
+          "price": 1,
+          "const": 0
+        },
+        "trees_with_feature": {
+          "sma": 3,
+          "lma": 7,
+          "rsi": 2,
+          "momentum": 3,
+          "volatility": 1,
+          "IF": 1,
+          "price": 1
+        }
+      }
+    }
+  },
+  "comparison": {
+    "mean_size": {
+      "bull": 0.0,
+      "bear": 12.0,
+      "sideways": 2.25
+    },
+    "mean_depth": {
+      "bull": 0.0,
+      "bear": 4.0,
+      "sideways": 1.625
+    },
+    "trend_following_nodes": {
+      "bull": 0,
+      "bear": 21,
+      "sideways": 9
+    },
+    "mean_reversion_nodes": {
+      "bull": 0,
+      "bear": 8,
+      "sideways": 1
+    },
+    "conditional_nodes": {
+      "bull": 0,
+      "bear": 4,
+      "sideways": 0
+    },
+    "interpretations": [
+      "bull-market winning trees are simplest (mean size=0.0 vs bear=12.0, sideways=2.2)",
+      "bear-market trees use most conditional logic (4.0 IF/AND nodes)",
+      "bear-market trees use most trend-following features (21.0 SMA/LMA/EMA nodes)",
+      "bear-market trees use most mean-reversion features (8.0 RSI/volatility nodes)"
+    ]
+  }
+}

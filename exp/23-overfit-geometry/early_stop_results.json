@@ -1,0 +1,373 @@
+{
+  "bh": 2169.582627048214,
+  "conditions": {
+    "control": {
+      "seeds": [
+        {
+          "seed": 0,
+          "train_cash": 38003.05179391849,
+          "test_cash": 2364.4470828734525,
+          "tree_size": 3,
+          "tree": "(> volatility(81) rsi(91))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 3,
+            "depth": 1,
+            "nesting_ratio": 0.3333333333333333,
+            "if_count": 0,
+            "constant_ratio": 0.0
+          },
+          "elapsed_s": 51.8
+        },
+        {
+          "seed": 1,
+          "train_cash": 47009.32741789306,
+          "test_cash": 1766.5570496041748,
+          "tree_size": 7,
+          "tree": "(MIN (< rsi(159) rsi(181)) (- ema(60,0.96) sma(147)))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 7,
+            "depth": 2,
+            "nesting_ratio": 0.42857142857142855,
+            "if_count": 0,
+            "constant_ratio": 0.0
+          },
+          "elapsed_s": 44.6
+        },
+        {
+          "seed": 2,
+          "train_cash": 38003.05179391849,
+          "test_cash": 422.17141666644676,
+          "tree_size": 3,
+          "tree": "(< lma(16) lma(180))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 3,
+            "depth": 1,
+            "nesting_ratio": 0.3333333333333333,
+            "if_count": 0,
+            "constant_ratio": 0.0
+          },
+          "elapsed_s": 33.9
+        },
+        {
+          "seed": 3,
+          "train_cash": 38003.05179391849,
+          "test_cash": 1612.7050640614357,
+          "tree_size": 3,
+          "tree": "(> volatility(5) rsi(51))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 3,
+            "depth": 1,
+            "nesting_ratio": 0.3333333333333333,
+            "if_count": 0,
+            "constant_ratio": 0.0
+          },
+          "elapsed_s": 32.8
+        },
+        {
+          "seed": 4,
+          "train_cash": 83980.5335040844,
+          "test_cash": 418.75090021456543,
+          "tree_size": 9,
+          "tree": "(MIN (> sma(131) lma(28)) (- ema(62,0.34) (+ momentum(44) volatility(5))))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 9,
+            "depth": 3,
+            "nesting_ratio": 0.4444444444444444,
+            "if_count": 0,
+            "constant_ratio": 0.0
+          },
+          "elapsed_s": 47.2
+        },
+        {
+          "seed": 5,
+          "train_cash": 32030.17928134978,
+          "test_cash": 449.26981937069877,
+          "tree_size": 3,
+          "tree": "(> lma(174) ema(123,0.05))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 3,
+            "depth": 1,
+            "nesting_ratio": 0.3333333333333333,
+            "if_count": 0,
+            "constant_ratio": 0.0
+          },
+          "elapsed_s": 78.8
+        },
+        {
+          "seed": 6,
+          "train_cash": 47623.97942778189,
+          "test_cash": 3215.8478563378562,
+          "tree_size": 7,
+          "tree": "(MIN (< volatility(184) price) (- lma(77) lma(138)))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 7,
+            "depth": 2,
+            "nesting_ratio": 0.42857142857142855,
+            "if_count": 0,
+            "constant_ratio": 0.0
+          },
+          "elapsed_s": 62.8
+        },
+        {
+          "seed": 7,
+          "train_cash": 38003.05179391849,
+          "test_cash": 3142.6350990071487,
+          "tree_size": 7,
+          "tree": "(> (- (- ema(11,0.41) 0.927) volatility(44)) volatility(197))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 7,
+            "depth": 3,
+            "nesting_ratio": 0.42857142857142855,
+            "if_count": 0,
+            "constant_ratio": 0.25
+          },
+          "elapsed_s": 52.0
+        },
+        {
+          "seed": 8,
+          "train_cash": 38003.05179391849,
+          "test_cash": 1540.2661334311115,
+          "tree_size": 3,
+          "tree": "(< rsi(48) volatility(26))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 3,
+            "depth": 1,
+            "nesting_ratio": 0.3333333333333333,
+            "if_count": 0,
+            "constant_ratio": 0.0
+          },
+          "elapsed_s": 46.2
+        },
+        {
+          "seed": 9,
+          "train_cash": 38003.05179391849,
+          "test_cash": 422.17141666644676,
+          "tree_size": 9,
+          "tree": "(< 0.705 (- sma(161) (- momentum(51) (/ price -0.644))))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 9,
+            "depth": 4,
+            "nesting_ratio": 0.4444444444444444,
+            "if_count": 0,
+            "constant_ratio": 0.4
+          },
+          "elapsed_s": 56.2
+        }
+      ],
+      "mean_test": 1535.4821838233336,
+      "std_test": 1051.617883645154,
+      "min_test": 418.75090021456543,
+      "max_test": 3215.8478563378562,
+      "beats_bh": 3,
+      "win_rate_vs_bh": 0.3,
+      "mean_stop_gen": 30.0,
+      "mean_elapsed_s": 50.629999999999995,
+      "mean_train": 43866.23303946201,
+      "mean_tree_size": 5.4
+    },
+    "structural_stop": {
+      "seeds": [
+        {
+          "seed": 0,
+          "train_cash": 38003.05179391849,
+          "test_cash": 2364.4470828734525,
+          "tree_size": 3,
+          "tree": "(> volatility(81) rsi(91))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 3,
+            "depth": 1,
+            "nesting_ratio": 0.3333333333333333,
+            "if_count": 0,
+            "constant_ratio": 0.0
+          },
+          "elapsed_s": 48.7
+        },
+        {
+          "seed": 1,
+          "train_cash": 47009.32741789306,
+          "test_cash": 1766.5570496041748,
+          "tree_size": 7,
+          "tree": "(MIN (< rsi(159) rsi(181)) (- ema(60,0.96) sma(147)))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 7,
+            "depth": 2,
+            "nesting_ratio": 0.42857142857142855,
+            "if_count": 0,
+            "constant_ratio": 0.0
+          },
+          "elapsed_s": 43.3
+        },
+        {
+          "seed": 2,
+          "train_cash": 38003.05179391849,
+          "test_cash": 422.17141666644676,
+          "tree_size": 3,
+          "tree": "(< lma(16) lma(180))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 3,
+            "depth": 1,
+            "nesting_ratio": 0.3333333333333333,
+            "if_count": 0,
+            "constant_ratio": 0.0
+          },
+          "elapsed_s": 32.8
+        },
+        {
+          "seed": 3,
+          "train_cash": 38003.05179391849,
+          "test_cash": 1612.7050640614357,
+          "tree_size": 3,
+          "tree": "(> volatility(5) rsi(51))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 3,
+            "depth": 1,
+            "nesting_ratio": 0.3333333333333333,
+            "if_count": 0,
+            "constant_ratio": 0.0
+          },
+          "elapsed_s": 32.4
+        },
+        {
+          "seed": 4,
+          "train_cash": 83980.5335040844,
+          "test_cash": 418.75090021456543,
+          "tree_size": 9,
+          "tree": "(MIN (> sma(131) lma(28)) (- ema(62,0.34) (+ momentum(44) volatility(5))))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 9,
+            "depth": 3,
+            "nesting_ratio": 0.4444444444444444,
+            "if_count": 0,
+            "constant_ratio": 0.0
+          },
+          "elapsed_s": 46.3
+        },
+        {
+          "seed": 5,
+          "train_cash": 32030.17928134978,
+          "test_cash": 449.26981937069877,
+          "tree_size": 3,
+          "tree": "(> lma(174) ema(123,0.05))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 3,
+            "depth": 1,
+            "nesting_ratio": 0.3333333333333333,
+            "if_count": 0,
+            "constant_ratio": 0.0
+          },
+          "elapsed_s": 78.5
+        },
+        {
+          "seed": 6,
+          "train_cash": 47623.97942778189,
+          "test_cash": 3215.8478563378562,
+          "tree_size": 7,
+          "tree": "(MIN (< volatility(184) price) (- lma(77) lma(138)))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 7,
+            "depth": 2,
+            "nesting_ratio": 0.42857142857142855,
+            "if_count": 0,
+            "constant_ratio": 0.0
+          },
+          "elapsed_s": 62.2
+        },
+        {
+          "seed": 7,
+          "train_cash": 38003.05179391849,
+          "test_cash": 3142.6350990071487,
+          "tree_size": 7,
+          "tree": "(> (- (- ema(11,0.41) 0.927) volatility(44)) volatility(197))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 7,
+            "depth": 3,
+            "nesting_ratio": 0.42857142857142855,
+            "if_count": 0,
+            "constant_ratio": 0.25
+          },
+          "elapsed_s": 50.9
+        },
+        {
+          "seed": 8,
+          "train_cash": 38003.05179391849,
+          "test_cash": 1540.2661334311115,
+          "tree_size": 3,
+          "tree": "(< rsi(48) volatility(26))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 3,
+            "depth": 1,
+            "nesting_ratio": 0.3333333333333333,
+            "if_count": 0,
+            "constant_ratio": 0.0
+          },
+          "elapsed_s": 45.5
+        },
+        {
+          "seed": 9,
+          "train_cash": 38003.05179391849,
+          "test_cash": 422.17141666644676,
+          "tree_size": 9,
+          "tree": "(< 0.705 (- sma(161) (- momentum(51) (/ price -0.644))))",
+          "stop_gen": 30,
+          "stop_reason": "completed",
+          "metrics": {
+            "tree_size": 9,
+            "depth": 4,
+            "nesting_ratio": 0.4444444444444444,
+            "if_count": 0,
+            "constant_ratio": 0.4
+          },
+          "elapsed_s": 54.9
+        }
+      ],
+      "mean_test": 1535.4821838233336,
+      "std_test": 1051.617883645154,
+      "min_test": 418.75090021456543,
+      "max_test": 3215.8478563378562,
+      "beats_bh": 3,
+      "win_rate_vs_bh": 0.3,
+      "mean_stop_gen": 30.0,
+      "mean_elapsed_s": 49.55,
+      "mean_train": 43866.23303946201,
+      "mean_tree_size": 5.4
+    }
+  }
+}

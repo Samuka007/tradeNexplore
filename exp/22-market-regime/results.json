@@ -1,0 +1,26 @@
+{
+  "bull": {
+    "mean_test": 1153.6586095674131,
+    "std_test": 63.15004970478024,
+    "median_test": 1174.7086261356733,
+    "max_test": 1174.7086261356733,
+    "beats_bh": 0,
+    "n_seeds": 10
+  },
+  "bear": {
+    "mean_test": 865.3035245942343,
+    "std_test": 44.05163719056926,
+    "median_test": 861.1487908157993,
+    "max_test": 940.9,
+    "beats_bh": 6,
+    "n_seeds": 10
+  },
+  "sideways": {
+    "mean_test": 860.600722666871,
+    "std_test": 105.7701115407885,
+    "median_test": 870.0033236933267,
+    "max_test": 1000.0,
+    "beats_bh": 8,
+    "n_seeds": 10
+  }
+}
