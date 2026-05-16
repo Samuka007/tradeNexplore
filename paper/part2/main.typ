@@ -130,7 +130,7 @@ Wilcoxon signed-rank (one-sided, $alpha = 0.05$) and Mann-Whitney U tests. We no
 
 == Risk-Adjusted Returns
 
-Variability is driven by both representation and algorithm mechanism. Estimated annualised Sharpe: ~0.75--0.88 for PSO. Precise Sharpe and max drawdown require daily equity curves not exported---a limitation.
+Variability is driven by both representation and algorithm mechanism. PSO's 3.5\% CV reflects a smooth parametric landscape where swarm averaging damps noise. GP's 42\% CV reflects an unregularised structural space where tournament selection amplifies variance; parsimony pressure cuts this to 11\%, still 3× PSO's level. The difference is not just algorithm---it is representation interacting with selection pressure. Estimated annualised Sharpe: ~0.75--0.88 for PSO. Precise Sharpe and max drawdown require daily equity curves not exported---a limitation.
 
 = Discussion and Limitations
 
