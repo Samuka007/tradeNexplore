@@ -208,11 +208,51 @@ Regressing train-test gap on tree size, depth, nesting ratio, constant ratio, an
 
 At $lambda = 500$, GP automatically produces small, shallow trees (typically 3--7 nodes). The structural early-stopping experiment (Exp.~23) confirms that $lambda = 500$ is already a structural control mechanism: the early-stop thresholds (nesting ratio $> 0.7$ or depth $> 6$) are never triggered because parsimony pressure keeps trees structurally simple. This means $lambda$ penalises size indirectly, by shaping which tree structures survive selection.
 
-= Human Bias and Structural Search
+// = Human Bias and Structural Search
 
-All three epistasis studies above assume that structural search is worthwhile, that the optimal strategy shape is unknown and must be discovered. But what if the best strategy shape is already known?
+// We compare three configurations on the same data split, holding budget constant at 1,500 evaluations:
 
-We compare three configurations on the same data split, holding budget constant at 1,500 evaluations:
+// #figure(
+//   table(
+//     columns: (auto, 1fr, 1fr, 1fr, 1fr),
+//     stroke: none,
+//     inset: (x: 3pt, y: 3pt),
+//     table.hline(stroke: 1pt),
+//     table.header([*Configuration*], [*Mean test*], [*Std*], [*Beat BH*], [*CV*]),
+//     table.hline(stroke: 0.5pt),
+//     [PSO + position\_sma], [$2,297$], [$81$], [10/10], [3.5%],
+//     [GA + position\_sma], [$2,220$], [$230$], [5/10], [10.4%],
+//     [GP + free trees], [$1,689$], [$713$], [2/10], [42.2%],
+//     table.hline(stroke: 1pt),
+//   ),
+//   caption: [Cross-algorithm comparison on the same BTC data split. All three configurations use 1,500 evaluations per seed (10 seeds).],
+// ) <tbl-comparison>
+
+// Budget is controlled at 1,500 evaluations per seed. PSO uses 30 particles $times$ 50 iterations; the GA and GP both use 30 individuals $times$ 50 generations. The GA-restricted uses the same `position_sma` representation as PSO but with tournament selection and parameter crossover. GP free trees use the full function set with $lambda = 500$ and depth~5.
+
+// The result is striking. Both PSO and the restricted GA converge to the same basin (around \$2,200), but PSO is three times more stable. More importantly, the free GP, with its unlimited structural search space, performs *worse* on average than either parametric approach. Its best seed (\$3,142) is an outlier; the median is \$1,400.
+
+// This suggests that, for this particular BTC task, the `position_sma` template is already a good hypothesis space. The extra freedom of GP's structural search does not discover better architectures; it discovers *more complex* architectures that overfit. The human bias encoded in `position_sma` (two moving averages and a crossover threshold) is not a limitation, it is a useful inductive prior.
+
+// The practical implication is that structural search should be reserved for problems where the strategy shape is genuinely unknown. When a plausible parametric template exists, parameter optimisation is both more stable and, on this evidence, at least as effective.
+
+// = Discussion
+
+// Our three studies confirm that known GP phenomena jointly explain the observed seed-to-seed variance on this BTC trading task.
+
+// *Epistasis* (Exp.~21). Prior work identified the mechanism: subtree crossover ignores context dependency #cite(<oreilly1995building>, form: "prose"), which #cite(<dignum2006less>, form: "prose") characterised as "disrespect for the context of swapped subtrees" and #cite(<kronberger2009crossover>, form: "prose") measured empirically via crossover success rate. Exp.~21 quantifies this on a financial task. The parent-offspring correlation declines from $r = 0.51$ to $r = -0.323$ by generation~10, and the per-generation curve shows exactly when crossover transitions from constructive to destructive.
+
+// *Regime adaptation* (Exp.~22). Exp.~22 confirms that GP trees differ structurally across regimes, consistent with prior regime-adaptation studies (#cite(<allen1999using>, form: "prose"), #cite(<dempster2001realtime>, form: "prose")). The new observation is the magnitude. Bear-market trees average 12.9 nodes (heavily conditional), while sideways-market trees average 3.5 (simple trend-following). In a single-split experiment dominated by bull-market training data, seeds that initialise near trend-following structures are favoured.
+
+// *Structural predictability* (Exp.~23). Nesting ratio dominates tree size as a predictor of train-test divergence on this task ($r = 0.81$, $p < 10^{-16}$, Exp.~23). This aligns with prior work: #cite(<vanneschi2010measuring>, form: "prose") showed that functional complexity predicts overfitting better than size, and #cite(<goncalves2015model>, form: "prose") confirmed this across benchmarks. The interaction with parsimony pressure is new. At $lambda = 500$, the penalty controls tree shape, not just size.
+
+// Together, these findings confirm that GP's variance on this task is a composite of known mechanisms. Each has a practical control lever.
+
+// *Limitations.* (1)~Single asset (BTC-USD). (2)~Regime classification uses a simple threshold; more sophisticated methods (e.g., hidden Markov models) might refine the boundaries. (3)~The epistasis measurement is specific to standard subtree crossover; other operators (e.g., semantic crossover @krawiec2013semantic) may behave differently. (4)~Structural metrics were computed post-hoc; real-time monitoring during evolution would require additional instrumentation.
+
+= Discussion
+
+We zoom out from GP's internal mechanisms to ask: is structural search necessary at all? Comparing three configurations on the same data split with equal budget (1,500 evaluations $times$ 10 seeds) reveals a striking pattern.
 
 #figure(
   table(
@@ -222,35 +262,27 @@ We compare three configurations on the same data split, holding budget constant 
     table.hline(stroke: 1pt),
     table.header([*Configuration*], [*Mean test*], [*Std*], [*Beat BH*], [*CV*]),
     table.hline(stroke: 0.5pt),
-    [PSO + position\_sma], [$2,297$], [$81$], [10/10], [3.5%],
-    [GA + position\_sma], [$2,220$], [$230$], [5/10], [10.4%],
-    [GP + free trees], [$1,689$], [$713$], [2/10], [42.2%],
+    [PSO + position\_sma], [\$2,297], [\$81], [10/10], [3.5%],
+    [GA + position\_sma], [\$2,220], [\$230], [5/10], [10.4%],
+    [GP + free trees], [\$1,689], [\$713], [2/10], [42.2%],
     table.hline(stroke: 1pt),
   ),
-  caption: [Cross-algorithm comparison on the same BTC data split. All three configurations use 1,500 evaluations per seed (10 seeds).],
-) <tbl-comparison>
+  caption: [Cross-algorithm comparison. All configurations use 1,500 evaluations per seed (10 seeds). PSO and the GA both search the `position_sma` parameter space; GP searches the full tree space.],
+) <tbl-cross>
 
-Budget is controlled at 1,500 evaluations per seed. PSO uses 30 particles $times$ 50 iterations; the GA and GP both use 30 individuals $times$ 50 generations. The GA-restricted uses the same `position_sma` representation as PSO but with tournament selection and parameter crossover. GP free trees use the full function set with $lambda = 500$ and depth~5.
+PSO and the restricted GA converge to the same basin (around \$2,200), but PSO is three times more stable. The free GP, with its unlimited structural search space, performs *worse* on average than either parametric approach. Its best seed (\$3,142) is an outlier; the median is \$1,400. For this BTC task, the `position_sma` template is already a good hypothesis space. The extra freedom of GP's structural search does not discover better architectures; it discovers more complex ones that overfit.
 
-The result is striking. Both PSO and the restricted GA converge to the same basin (around \$2,200), but PSO is three times more stable. More importantly, the free GP, with its unlimited structural search space, performs *worse* on average than either parametric approach. Its best seed (\$3,142) is an outlier; the median is \$1,400.
+Zooming back in, the three experiments explain *why* GP underperforms.
 
-This suggests that, for this particular BTC task, the `position_sma` template is already a good hypothesis space. The extra freedom of GP's structural search does not discover better architectures; it discovers *more complex* architectures that overfit. The human bias encoded in `position_sma` (two moving averages and a crossover threshold) is not a limitation, it is a useful inductive prior.
+*Epistasis* (Exp.~21). Crossover starts constructive ($r = 0.51$) but becomes destructive by generation~10 ($r = -0.323$) as population diversity breaks the semantic context on which swapped subtrees depend. This is a known mechanism @oreilly1995building @dignum2006less @kronberger2009crossover, directly measured here on a financial task.
 
-The practical implication is that structural search should be reserved for problems where the strategy shape is genuinely unknown. When a plausible parametric template exists, parameter optimisation is both more stable and, on this evidence, at least as effective.
+*Regime adaptation* (Exp.~22). GP trees differ structurally across regimes: bear markets produce heavily conditional trees (mean~12.9 nodes), sideways markets produce simple trend-following trees (~3.5 nodes). But in a single-split experiment, the training data is dominated by one regime, so seeds that happen to initialise near the favored structure win. This structural lottery amplifies variance.
 
-= Discussion
+*Structural overfitting* (Exp.~23). Nesting ratio predicts train-test divergence far better than tree size ($r = 0.81$ vs $0.11$). Parsimony pressure at $lambda = 500$ controls tree shape, not just size, keeping nesting ratio low and generalisation high.
 
-Our three studies confirm that known GP phenomena jointly explain the observed seed-to-seed variance on this BTC trading task.
+Together, these mechanisms explain GP's variance on this task. But @tbl-cross reframes their significance. Fixing all three would narrow GP's variance, but it would not change the fundamental finding: the `position_sma` template, with PSO tuning its parameters, already reaches the best basin in this search space. Structural search on this task adds complexity without adding value.
 
-*Epistasis* (Exp.~21). Prior work identified the mechanism: subtree crossover ignores context dependency #cite(<oreilly1995building>, form: "prose"), which #cite(<dignum2006less>, form: "prose") characterised as "disrespect for the context of swapped subtrees" and #cite(<kronberger2009crossover>, form: "prose") measured empirically via crossover success rate. Exp.~21 quantifies this on a financial task. The parent-offspring correlation declines from $r = 0.51$ to $r = -0.323$ by generation~10, and the per-generation curve shows exactly when crossover transitions from constructive to destructive.
-
-*Regime adaptation* (Exp.~22). Exp.~22 confirms that GP trees differ structurally across regimes, consistent with prior regime-adaptation studies (#cite(<allen1999using>, form: "prose"), #cite(<dempster2001realtime>, form: "prose")). The new observation is the magnitude. Bear-market trees average 12.9 nodes (heavily conditional), while sideways-market trees average 3.5 (simple trend-following). In a single-split experiment dominated by bull-market training data, seeds that initialise near trend-following structures are favoured.
-
-*Structural predictability* (Exp.~23). Nesting ratio dominates tree size as a predictor of train-test divergence on this task ($r = 0.81$, $p < 10^{-16}$, Exp.~23). This aligns with prior work: #cite(<vanneschi2010measuring>, form: "prose") showed that functional complexity predicts overfitting better than size, and #cite(<goncalves2015model>, form: "prose") confirmed this across benchmarks. The interaction with parsimony pressure is new. At $lambda = 500$, the penalty controls tree shape, not just size.
-
-Together, these findings confirm that GP's variance on this task is a composite of known mechanisms. Each has a practical control lever.
-
-*Limitations.* (1)~Single asset (BTC-USD). (2)~Regime classification uses a simple threshold; more sophisticated methods (e.g., hidden Markov models) might refine the boundaries. (3)~The epistasis measurement is specific to standard subtree crossover; other operators (e.g., semantic crossover @krawiec2013semantic) may behave differently. (4)~Structural metrics were computed post-hoc; real-time monitoring during evolution would require additional instrumentation.
+*Limitations.* (1)~Single asset (BTC-USD). (2)~Regime classification uses a simple threshold. (3)~The epistasis measurement is specific to standard subtree crossover; semantic crossover @krawiec2013semantic may behave differently. (4)~Structural metrics were computed post-hoc.
 
 = Conclusion
 
