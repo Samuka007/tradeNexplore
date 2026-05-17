@@ -52,7 +52,7 @@
 
 = Introduction
 
-Nature-inspired algorithms for trading fall into two broad strategies: optimize parameters inside a fixed template, or search for the template itself. This paper studies the second approach, applying Genetic Programming (GP) @koza1992genetic to a Bitcoin trading task and examining why its results vary so dramatically across runs.
+Nature-inspired algorithms for trading fall into two broad strategies: optimize parameters inside a fixed template (e.g., PSO @kennedy1995particle), or search for the template itself. This paper studies the second approach, applying Genetic Programming (GP) @koza1992genetic to a Bitcoin trading task, with PSO as a comparative baseline.
 
 On financial forecasting tasks, GP frequently produces high variance across random seeds---some runs find profitable strategies while others converge to trivial or unprofitable ones. While this variance is well documented @allen1999using, the specific mechanisms contributing to it have rarely been quantified in a single controlled study.
 
@@ -118,14 +118,14 @@ We correlate each metric with train-test gap (train cash minus test cash) and fi
 
 Across all 10 seeds and 13,245 parent-offspring pairs, the Pearson correlation between parent-mean raw fitness and offspring raw fitness is $r = 0.423$ ($p approx 0$). This positive but moderate correlation suggests that crossover does transmit some fitness advantage from parents to offspring---but less than half of the variance is shared.
 
-=== Temporal Decline
-
-The striking pattern emerges when correlation is computed per generation (@fig-epistasis). At generation~0, the pooled correlation is $r = 0.514$ ($p < 10^(-46)$): offspring strongly resemble their parents. By generation~5, $r$ has fallen to $0.125$ ($p = 0.001$). By generation~10, the correlation turns *negative*: $r = -0.323$ ($p < 10^(-17)$). At generation~19, $r = -0.029$ ($p = 0.45$, not significant).
-
 #figure(
   image("assets/epistasis_decline.pdf", width: 100%),
   caption: [Parent-offspring fitness correlation per generation (Exp.~21, 10 seeds, 13,245 pairs). Error bars show standard deviation across seeds.],
 ) <fig-epistasis>
+
+=== Temporal Decline
+
+The striking pattern emerges when correlation is computed per generation (@fig-epistasis). At generation~0, the pooled correlation is $r = 0.514$ ($p < 10^(-46)$): offspring strongly resemble their parents. By generation~5, $r$ has fallen to $0.125$ ($p = 0.001$). By generation~10, the correlation turns *negative*: $r = -0.323$ ($p < 10^(-17)$). At generation~19, $r = -0.029$ ($p = 0.45$, not significant).
 
 === Mechanistic Interpretation
 
