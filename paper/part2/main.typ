@@ -52,7 +52,9 @@
 
 = Introduction
 
-Genetic programming (GP) @koza1992genetic evolves program trees to discover strategy structure automatically. On financial forecasting tasks, it is frequently observed that GP produces high variance across random seeds---some runs find profitable strategies while others converge to trivial or unprofitable ones. While GP's high variance on financial tasks is well documented @allen1999using, the specific mechanisms contributing to it have rarely been quantified in a single controlled study.
+Nature-inspired algorithms for trading fall into two broad strategies: optimize parameters inside a fixed template, or search for the template itself. This paper studies the second approach, applying Genetic Programming (GP) @koza1992genetic to a Bitcoin trading task and examining why its results vary so dramatically across runs.
+
+On financial forecasting tasks, GP frequently produces high variance across random seeds---some runs find profitable strategies while others converge to trivial or unprofitable ones. While this variance is well documented @allen1999using, the specific mechanisms contributing to it have rarely been quantified in a single controlled study.
 
 The contribution of epistasis (context-dependency in subtree crossover) to GP's instability has been recognized since #cite(<oreilly1995building>, form: "prose"), who argued that GP crossover "is likely to change the context of a schema from one generation to the next which likely results in high variance." #cite(<dignum2006less>, form: "prose") later characterized this as crossover's "disrespect for the context of swapped subtrees" and proposed Context-Preserving Crossover specifically to address it. #cite(<kronberger2009crossover>, form: "prose") empirically measured crossover success rate and found destructive effects predominant. However, the temporal dynamics of parent-offspring fitness correlation, specifically how crossover shifts from constructive to destructive as the population diversifies, have not been quantified on a financial task.
 
@@ -225,8 +227,10 @@ We compare three configurations on the same data split, holding budget constant 
     [GP + free trees], [$1,689$], [$713$], [2/10], [42.2%],
     table.hline(stroke: 1pt),
   ),
-  caption: [Head-to-head comparison on the same BTC data split. Budget: 1,500 evaluations per seed, 10 seeds. GP free trees use full function set, $lambda = 500$, depth~5. GA-restricted uses the same `position_sma` representation as PSO but with tournament selection and parameter crossover.],
+  caption: [Cross-algorithm comparison on the same BTC data split. All three configurations use 1,500 evaluations per seed (10 seeds).],
 ) <tbl-comparison>
+
+Budget is controlled at 1,500 evaluations per seed. PSO uses 30 particles $times$ 50 iterations; the GA and GP both use 30 individuals $times$ 50 generations. The GA-restricted uses the same `position_sma` representation as PSO but with tournament selection and parameter crossover. GP free trees use the full function set with $lambda = 500$ and depth~5.
 
 The result is striking. Both PSO and the restricted GA converge to the same basin (around \$2,200), but PSO is three times more stable. More importantly, the free GP, with its unlimited structural search space, performs *worse* on average than either parametric approach. Its best seed (\$3,142) is an outlier; the median is \$1,400.
 
