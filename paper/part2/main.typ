@@ -206,6 +206,34 @@ Regressing train-test gap on tree size, depth, nesting ratio, constant ratio, an
 
 At $lambda = 500$, GP automatically produces small, shallow trees (typically 3--7 nodes). The structural early-stopping experiment (Exp.~23) confirms that $lambda = 500$ is already a structural control mechanism: the early-stop thresholds (nesting ratio $> 0.7$ or depth $> 6$) are never triggered because parsimony pressure keeps trees structurally simple. This means $lambda$ penalises size indirectly, by shaping which tree structures survive selection.
 
+= Human Bias and Structural Search
+
+All three epistasis studies above assume that structural search is worthwhile, that the optimal strategy shape is unknown and must be discovered. But what if the best strategy shape is already known?
+
+We compare three configurations on the same data split, holding budget constant at 1,500 evaluations:
+
+#figure(
+  table(
+    columns: (auto, 1fr, 1fr, 1fr, 1fr),
+    stroke: none,
+    inset: (x: 3pt, y: 3pt),
+    table.hline(stroke: 1pt),
+    table.header([*Configuration*], [*Mean test*], [*Std*], [*Beat BH*], [*CV*]),
+    table.hline(stroke: 0.5pt),
+    [PSO + position\_sma], [$2,297$], [$81$], [10/10], [3.5%],
+    [GA + position\_sma], [$2,220$], [$230$], [5/10], [10.4%],
+    [GP + free trees], [$1,689$], [$713$], [2/10], [42.2%],
+    table.hline(stroke: 1pt),
+  ),
+  caption: [Head-to-head comparison on the same BTC data split. Budget: 1,500 evaluations per seed, 10 seeds. GP free trees use full function set, $lambda = 500$, depth~5. GA-restricted uses the same `position_sma` representation as PSO but with tournament selection and parameter crossover.],
+) <tbl-comparison>
+
+The result is striking. Both PSO and the restricted GA converge to the same basin (around \$2,200), but PSO is three times more stable. More importantly, the free GP, with its unlimited structural search space, performs *worse* on average than either parametric approach. Its best seed (\$3,142) is an outlier; the median is \$1,400.
+
+This suggests that, for this particular BTC task, the `position_sma` template is already a good hypothesis space. The extra freedom of GP's structural search does not discover better architectures; it discovers *more complex* architectures that overfit. The human bias encoded in `position_sma` (two moving averages and a crossover threshold) is not a limitation, it is a useful inductive prior.
+
+The practical implication is that structural search should be reserved for problems where the strategy shape is genuinely unknown. When a plausible parametric template exists, parameter optimisation is both more stable and, on this evidence, at least as effective.
+
 = Discussion
 
 Our three studies confirm that known GP phenomena jointly explain the observed seed-to-seed variance on this BTC trading task.
